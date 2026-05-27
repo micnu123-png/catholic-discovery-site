@@ -1,55 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Catholic Discovery</title>
 
-    <style>
-        body{
-            margin:0;
-            font-family:Arial;
-            background:#111;
-            color:white;
-            text-align:center;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        header{
-            background:#8B0000;
-            padding:40px;
-        }
+<title>Catholic Discovery</title>
 
-        h1{
-            font-size:50px;
-        }
+<style>
 
-        .btn{
-            display:inline-block;
-            padding:15px 30px;
-            background:gold;
-            color:black;
-            text-decoration:none;
-            border-radius:10px;
-            margin-top:20px;
-            font-weight:bold;
-        }
+body{
+    margin:0;
+    font-family:Arial;
+    background:#111;
+    color:white;
+    text-align:center;
+}
 
-        .section{
-            padding:50px;
-        }
+header{
+    background:#8B0000;
+    padding:40px 20px;
+}
 
-        iframe{
-            width:90%;
-            max-width:800px;
-            height:450px;
-            border:none;
-            border-radius:20px;
-        }
-    </style>
+.logo{
+    width:120px;
+    border-radius:50%;
+    border:4px solid gold;
+}
+
+h1{
+    font-size:50px;
+    margin-top:15px;
+}
+
+p{
+    font-size:20px;
+}
+
+.btn{
+    display:inline-block;
+    padding:15px 30px;
+    background:gold;
+    color:black;
+    text-decoration:none;
+    border-radius:10px;
+    margin-top:20px;
+    font-weight:bold;
+}
+
+.section{
+    padding:50px 20px;
+}
+
+iframe{
+    width:90%;
+    max-width:900px;
+    height:500px;
+    border:none;
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(255,255,255,0.2);
+}
+
+footer{
+    background:#000;
+    padding:20px;
+    margin-top:40px;
+    font-size:18px;
+}
+
+</style>
+
 </head>
 
 <body>
 
 <header>
+
+    <!-- CHANNEL LOGO -->
+    <img class="logo"
+    src="logo.png">
+
     <h1>✝ Catholic Discovery</h1>
 
     <p>
@@ -57,17 +88,22 @@
     </p>
 
     <a class="btn"
-       href="https://youtube.com">
-       Subscribe on YouTube
+    href="https://www.youtube.com/@CTF-q5l"
+    target="_blank">
+
+    Subscribe on YouTube
+
     </a>
+
 </header>
 
 <div class="section">
 
     <h2>Latest Video</h2>
 
+    <!-- LATEST VIDEO -->
     <iframe
-    src="https://www.youtube.com/embed/tkKG5gBYY20">
+    src="https://www.youtube.com/embed?listType=user_uploads&list=CTF-q5l">
     </iframe>
 
 </div>
@@ -77,11 +113,26 @@
     <h2>Daily Prayer</h2>
 
     <p>
-        Lord Jesus, guide us daily in faith,
-        hope, and love. Amen.
+    Lord Jesus, guide us daily in faith,
+    hope, and love. Amen.
     </p>
 
 </div>
+
+<footer>
+
+    © <span id="year"></span>
+    Catholic Discovery.
+    All Rights Reserved.
+
+</footer>
+
+<script>
+
+document.getElementById("year").innerHTML =
+new Date().getFullYear();
+
+</script>
 
 </body>
 </html>
