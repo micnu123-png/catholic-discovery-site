@@ -3,10 +3,12 @@
 // YouTube Data API v3 settings.
 // Replace API_KEY if you rotate your key in Google Cloud Console.
 const API_KEY = "AIzaSyAlaLf4j4lsRSXFeS0_K1olojfZfskEeEI";
-const CHANNEL_ID = "UCkDYIeGnavKtlGDuC08rE_g";
-const CHANNEL_URL = "https://www.youtube.com/@CTF-q5l";
-const MAX_RESULTS = 10;
+const CHANNEL_ID = "UCN13DiW7FaMrXmlyipTxIJA";
 
+fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=10`)
+  .then(res => res.json())
+  .then(data => console.log(data))
+  .catch(err => console.error(err));
 const DAILY_PRAYERS = [
   "Lord Jesus, guide us daily in faith, hope, and love. Open our hearts to Your Word and help us live as joyful witnesses of the Gospel. Amen.",
   "Heavenly Father, fill our homes with peace, our hearts with charity, and our lives with the light of Christ. Amen.",
@@ -20,7 +22,7 @@ const FALLBACK_POSTS = [
   {
     title: "Welcome to Catholic Discovery",
     date: "2026-06-27",
-    body: "This posts area is ready for ministry updates, reflections, announcements, and prayer notes. Use manage_posts.py to add new posts to posts.json."
+    body: "This posts area is ready for ministry updates, reflections, announcements, and prayer notes. "
   }
 ];
 
@@ -38,23 +40,23 @@ const DAILY_READINGS = [
     readings: [
       {
         label: "First Reading",
-        reference: "Open official readings",
-        text: "Use the official readings link above for today's full approved Scripture text. Add your own short summary here if desired."
+        reference: "Loading...",
+        text: "Loading.."
       },
       {
         label: "Responsorial Psalm",
-        reference: "Open official readings",
-        text: "Use this card for the psalm response, reflection notes, or a brief summary you write yourself."
+        reference: "Loading..",
+        text: "Loading.."
       },
       {
         label: "Second Reading",
-        reference: "Sundays and solemnities",
-        text: "Use this card when a second reading is assigned. For weekdays, you can write Not assigned."
+        reference: "Loading...",
+        text: "Loading..."
       },
       {
         label: "Gospel",
-        reference: "Open official readings",
-        text: "Use the official readings link above for today's Gospel text. Add your own Gospel reflection here if desired."
+        reference: "Loading...",
+        text: "Loading..."
       }
     ]
   }
