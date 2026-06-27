@@ -2,6 +2,8 @@
 
 // YouTube Data API v3 settings.
 // Replace API_KEY if you rotate your key in Google Cloud Console.
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const CHANNEL_URL = "https://www.youtube.com/@CTF-q5l";
 const API_KEY = "AIzaSyAlaLf4j4lsRSXFeS0_K1olojfZfskEeEI";
 const CHANNEL_ID = "UCN13DiW7FaMrXmlyipTxIJA";
@@ -179,27 +181,15 @@ function setupLogoFallback() {
 }
 
 async function loadPosts() {
-  if (!elements.postsGrid || !elements.postStatus) return;
+  const querySnapshot = await getDocs(collection(db, "posts"));
 
-  try {
-    const response = await fetch(`posts.json?cache=${Date.now()}`);
-    if (!response.ok) throw new Error(`Posts file returned ${response.status}.`);
+  const posts = [];
 
-    const posts = await response.json();
-    const cleanPosts = Array.isArray(posts) ? posts : posts.posts;
+  querySnapshot.forEach((doc) => {
+    posts.push(doc.data());
+  });
 
-    if (!Array.isArray(cleanPosts) || !cleanPosts.length) {
-      throw new Error("No posts were found.");
-    }
-
-    renderPosts(cleanPosts);
-    elements.postStatus.textContent = "";
-    elements.postStatus.classList.remove("error");
-  } catch (error) {
-    console.warn("Posts could not be loaded. Showing fallback post.", error);
-    renderPosts(FALLBACK_POSTS);
-    elements.postStatus.textContent = "Posts are showing from the built-in fallback. Add posts with manage_posts.py and upload posts.json.";
-  }
+  renderPosts(posts);
 }
 
 function renderPosts(posts) {
