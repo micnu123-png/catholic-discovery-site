@@ -6,12 +6,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCWQC1tU9HyyrQhNVt3t3Ep1rhtzYmobMQ",
+  authDomain: "catholic-discovery-websi-af85b.firebaseapp.com",
+  projectId: ""catholic-discovery-websi-af85b",
+  storageBucket: "catholic-discovery-websi-af85b.firebasestorage.app",
+  messagingSenderId: "981649696506",
+  appId: "1:981649696506:web:06ecfceeee7fb90bb50b43"
 };
 
 const app = initializeApp(firebaseConfig);
