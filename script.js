@@ -201,12 +201,11 @@ async function loadPosts() {
       posts.push(doc.data());
     });
 
-    if (posts.length === 0) {
-      renderPosts(FALLBACK_POSTS);
-      return;
-    }
-
-    renderPosts(posts);
+    if (!posts.length) {
+  renderPosts(FALLBACK_POSTS);
+  return;
+}
+renderPosts(posts);
 
   } catch (err) {
     console.error("Firebase error:", err);
