@@ -392,6 +392,8 @@ h3 {
 
 .hero-brand-card,
 .featured-video,
+.readings-panel,
+.post-card,
 .prayer-box,
 .mission-list {
   border: 1px solid var(--line);
@@ -457,6 +459,109 @@ h3 {
   border-left: 4px solid var(--gold);
   background: rgba(246, 209, 122, 0.1);
   padding: 14px 16px;
+}
+
+.readings-section {
+  background: var(--bg-soft);
+}
+
+.readings-panel {
+  padding: clamp(22px, 4vw, 34px);
+}
+
+.readings-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.readings-header h3 {
+  margin-bottom: 0;
+  font-size: clamp(1.45rem, 3vw, 2.15rem);
+}
+
+.readings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.reading-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 20px;
+}
+
+:root[data-theme="light"] .reading-card {
+  background: rgba(123, 17, 19, 0.04);
+}
+
+.reading-card h4 {
+  margin: 0 0 6px;
+  color: var(--gold);
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.reading-card strong {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--text);
+  font-size: 1.05rem;
+}
+
+.reading-card p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.posts-section {
+  background: linear-gradient(180deg, var(--bg), rgba(123, 17, 19, 0.1), var(--bg));
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.post-card {
+  padding: 22px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(246, 209, 122, 0.58);
+  box-shadow: var(--shadow);
+}
+
+.post-card time {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--gold);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.post-card h3 {
+  margin-bottom: 10px;
+}
+
+.post-card p {
+  color: var(--muted);
+}
+
+.post-card p:last-child {
+  margin-bottom: 0;
 }
 
 .video-grid {
@@ -731,6 +836,7 @@ h3 {
 
   .hero-grid,
   .featured-video,
+  .readings-header,
   .prayer-grid,
   .about-grid,
   .contact-grid {
@@ -743,6 +849,14 @@ h3 {
 
   .video-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .posts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .readings-header {
+    display: grid;
   }
 }
 
@@ -781,6 +895,8 @@ h3 {
   }
 
   .video-grid,
+  .posts-grid,
+  .readings-grid,
   .social-links {
     grid-template-columns: 1fr;
   }
