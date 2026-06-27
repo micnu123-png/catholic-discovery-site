@@ -457,3 +457,18 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+function renderPosts(posts) {
+  const sorted = [...posts].sort((a, b) =>
+    new Date(b.date) - new Date(a.date)
+  );
+
+  if (!elements.postsGrid) return;
+
+  elements.postsGrid.innerHTML = sorted.map(post => `
+    <article class="post-card">
+      <time datetime="${post.date}">${post.date}</time>
+      <h3>${post.title}</h3>
+      <p>${post.body}</p>
+    </article>
+  `).join("");
+}
