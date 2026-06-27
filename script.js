@@ -197,12 +197,19 @@ async function loadPosts() {
     const snapshot = await getDocs(collection(db, "posts"));
 
     const posts = [];
-    snapshot.forEach(doc => posts.push(doc.data()));
+    snapshot.forEach(doc => {
+      posts.push(doc.data());
+    });
 
-    renderPosts();
+    if (posts.length === 0) {
+      renderPosts(FALLBACK_POSTS);
+      return;
+    }
+
+    renderPosts(posts);
+
   } catch (err) {
     console.error("Firebase error:", err);
-
     renderPosts(FALLBACK_POSTS);
   }
 }
