@@ -8,7 +8,7 @@ import { getFirestore, collection, getDocs } from "https://www.gstatic.com/fireb
 const firebaseConfig = {
   apiKey: "AIzaSyCWQC1tU9HyyrQhNVt3t3Ep1rhtzYmobMQ",
   authDomain: "catholic-discovery-websi-af85b.firebaseapp.com",
-  projectId: ""catholic-discovery-websi-af85b",
+  projectId: "catholic-discovery-websi-af85b",
   storageBucket: "catholic-discovery-websi-af85b.firebasestorage.app",
   messagingSenderId: "981649696506",
   appId: "1:981649696506:web:06ecfceeee7fb90bb50b43"
@@ -193,41 +193,19 @@ function setupLogoFallback() {
 }
 
 async function loadPosts() {
-  if (!elements.postsGrid || !elements.postStatus) return;
-
   try {
-    const response = await fetch(`posts.json?cache=${Date.now()}`);
-    if (!response.ok) throw new Error(`Posts file returned ${response.status}.`);
+    const snapshot = await getDocs(collection(db, "posts"));
 
-    const posts = await response.json();
-    const cleanPosts = Array.isArray(posts) ? posts : posts.posts;
+    const posts = [];
+    snapshot.forEach(doc => posts.push(doc.data()));
 
-    if (!Array.isArray(cleanPosts) || !cleanPosts.length) {
-      throw new Error("No posts were found.");
-    }
+    renderPosts();
+  } catch (err) {
+    console.error("Firebase error:", err);
 
-    renderPosts(cleanPosts);
-    elements.postStatus.textContent = "";
-    elements.postStatus.classList.remove("error");
-  } catch (error) {
-    console.warn("Posts could not be loaded. Showing fallback post.", error);
     renderPosts(FALLBACK_POSTS);
-    elements.postStatus.textContent = "Posts are showing from the built-in fallback. Add posts with manage_posts.py and upload posts.json.";
   }
 }
-
-function renderPosts(posts) {
-  const sortedPosts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  elements.postsGrid.innerHTML = sortedPosts.map((post) => `
-    <article class="post-card">
-      <time datetime="${escapeHtml(post.date || "")}">${formatDate(post.date)}</time>
-      <h3>${escapeHtml(post.title || "Catholic Discovery post")}</h3>
-      <p>${escapeHtml(post.body || "")}</p>
-    </article>
-  `).join("");
-}
-
 function setupThemeToggle() {
   if (!elements.themeToggle) return;
 
