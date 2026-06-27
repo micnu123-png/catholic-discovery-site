@@ -380,7 +380,7 @@ function renderFeaturedVideo(video) {
     </iframe>
     <div class="featured-info">
       <p class="card-label">Featured latest video</p>
-      <h3>${escapeHtml(video.title)}</h3>
+      <h3>${video.title}</h3>
       <p>${escapeHtml(trimText(video.description, 150))}</p>
       <p>${formatDate(video.publishedAt)}</p>
       <a class="text-link" href="${video.url}" target="_blank" rel="noopener">Watch on YouTube</a>
@@ -396,7 +396,7 @@ function renderVideoGrid(videos) {
         <span class="play-badge" aria-hidden="true"></span>
       </a>
       <div class="video-card-content">
-        <h3>${escapeHtml(video.title)}</h3>
+        <h3>${video.title}</h3>
         <time datetime="${escapeHtml(video.publishedAt)}">${formatDate(video.publishedAt)}</time>
       </div>
     </article>
