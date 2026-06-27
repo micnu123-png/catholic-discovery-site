@@ -354,13 +354,13 @@ async function fetchVideosFromYouTubeApi() {
   const endpoint = new URL("https://www.googleapis.com/youtube/v3/search");
 
   endpoint.search = new URLSearchParams({
-    key: API_KEY,
-    channelId: CHANNEL_ID,
-    part: "snippet",
-    order: "date",
-    type: "video",
-    maxResults: String(MAX_RESULTS)
-  });.to string
+  key: API_KEY,
+  channelId: CHANNEL_ID,
+  part: "snippet",
+  order: "date",
+  type: "video",
+  maxResults: String(MAX_RESULTS)
+}).toString();
 
   const response = await fetch(endpoint);
 
