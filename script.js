@@ -2,6 +2,20 @@
 
 // YouTube Data API v3 settings.
 // Replace API_KEY if you rotate your key in Google Cloud Console.
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 const CHANNEL_URL = "https://www.youtube.com/@CTF-q5l";
 const API_KEY = "AIzaSyAlaLf4j4lsRSXFeS0_K1olojfZfskEeEI";
 const CHANNEL_ID = "UCN13DiW7FaMrXmlyipTxIJA";
@@ -346,7 +360,7 @@ async function fetchVideosFromYouTubeApi() {
     order: "date",
     type: "video",
     maxResults: String(MAX_RESULTS)
-  });
+  });.to string
 
   const response = await fetch(endpoint);
 
