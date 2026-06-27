@@ -344,31 +344,27 @@ async function fetchVideosFromYouTubeApi() {
     order: "date",
     type: "video",
     maxResults: String(MAX_RESULTS)
-  }).toString();
+  });
 
   const response = await fetch(endpoint);
 
+  const data = await response.json();
+  console.log("YouTube API response:", data);
+
   if (!response.ok) {
-    throw new Error(`YouTube API returned ${response.status}.`);
+    throw new Error(data?.error?.message || `HTTP ${response.status}`);
   }
 
-  const data = await response.json();
-
   return (data.items || [])
-    .map((item) => {
-      const videoId = item.id?.videoId || "";
-      const snippet = item.snippet || {};
-
-      return {
-        videoId,
-        title: snippet.title || "Catholic Discovery video",
-        description: snippet.description || "",
-        publishedAt: snippet.publishedAt || "",
-        thumbnail: getBestThumbnail(snippet.thumbnails),
-        url: `https://www.youtube.com/watch?v=${videoId}`
-      };
-    })
-    .filter((video) => video.videoId);
+    .map(item => ({
+      videoId: item.id?.videoId,
+      title: item.snippet?.title,
+      description: item.snippet?.description,
+      publishedAt: item.snippet?.publishedAt,
+      thumbnail: getBestThumbnail(item.snippet?.thumbnails),
+      url: `https://www.youtube.com/watch?v=${item.id?.videoId}`
+    }))
+    .filter(v => v.videoId);
 }
 
 function renderFeaturedVideo(video) {
