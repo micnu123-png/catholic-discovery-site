@@ -2,7 +2,7 @@
 
 // YouTube Data API v3 settings.
 // Replace API_KEY if you rotate your key in Google Cloud Console.
-const API_KEY = "AIzaSyCJb5qtT830_hDgjJ2Sr4ZrbcmxDA6hDcA";
+const API_KEY = "AIzaSyAlaLf4j4lsRSXFeS0_K1olojfZfskEeEI";
 const CHANNEL_ID = "UCkDYIeGnavKtlGDuC08rE_g";
 const CHANNEL_URL = "https://www.youtube.com/@CTF-q5l";
 const MAX_RESULTS = 10;
@@ -16,6 +16,50 @@ const DAILY_PRAYERS = [
   "Jesus, present in the Eucharist, nourish our souls and help us love You more deeply in every moment of this day. Amen."
 ];
 
+const FALLBACK_POSTS = [
+  {
+    title: "Welcome to Catholic Discovery",
+    date: "2026-06-27",
+    body: "This posts area is ready for ministry updates, reflections, announcements, and prayer notes. Use manage_posts.py to add new posts to posts.json."
+  }
+];
+
+// Official readings source:
+// The site opens the date-specific USCCB page for the full approved text.
+// Add your own summaries, references, or permitted excerpts below.
+const READINGS_SOURCE_BASE_URL = "https://bible.usccb.org/bible/readings";
+
+// Add or update readings here. Use YYYY-MM-DD for a date-specific entry.
+// The "default" entry displays when today's date is not listed yet.
+const DAILY_READINGS = [
+  {
+    date: "default",
+    title: "Daily Catholic Readings",
+    readings: [
+      {
+        label: "First Reading",
+        reference: "Open official readings",
+        text: "Use the official readings link above for today's full approved Scripture text. Add your own short summary here if desired."
+      },
+      {
+        label: "Responsorial Psalm",
+        reference: "Open official readings",
+        text: "Use this card for the psalm response, reflection notes, or a brief summary you write yourself."
+      },
+      {
+        label: "Second Reading",
+        reference: "Sundays and solemnities",
+        text: "Use this card when a second reading is assigned. For weekdays, you can write Not assigned."
+      },
+      {
+        label: "Gospel",
+        reference: "Open official readings",
+        text: "Use the official readings link above for today's Gospel text. Add your own Gospel reflection here if desired."
+      }
+    ]
+  }
+];
+
 const elements = {
   header: document.querySelector("[data-header]"),
   menuToggle: document.querySelector("[data-menu-toggle]"),
@@ -25,6 +69,12 @@ const elements = {
   themeLabel: document.querySelector("[data-theme-label]"),
   currentYear: document.querySelector("[data-current-year]"),
   prayerText: document.querySelector("[data-prayer-text]"),
+  postsGrid: document.querySelector("[data-posts-grid]"),
+  postStatus: document.querySelector("[data-post-status]"),
+  readingDate: document.querySelector("[data-reading-date]"),
+  readingSource: document.querySelector("[data-reading-source]"),
+  readingTitle: document.querySelector("[data-reading-title]"),
+  readingsList: document.querySelector("[data-readings-list]"),
   featuredVideo: document.querySelector("[data-featured-video]"),
   videoGrid: document.querySelector("[data-video-grid]"),
   videoStatus: document.querySelector("[data-video-status]")
@@ -32,11 +82,13 @@ const elements = {
 
 document.addEventListener("DOMContentLoaded", () => {
   setCurrentYear();
+  displayDailyReadings();
   displayRandomPrayer();
   setupLogoFallback();
   setupThemeToggle();
   setupNavigation();
   setupRevealAnimations();
+  loadPosts();
   loadLatestVideos();
 });
 
@@ -46,6 +98,52 @@ function setCurrentYear() {
   }
 }
 
+function displayDailyReadings() {
+  if (!elements.readingDate || !elements.readingTitle || !elements.readingsList) return;
+
+  const todayKey = getLocalDateKey(new Date());
+  const officialReadingsUrl = getOfficialReadingsUrl(todayKey);
+  const readingSet = DAILY_READINGS.find((item) => item.date === todayKey)
+    || DAILY_READINGS.find((item) => item.date === "default");
+
+  if (elements.readingSource) {
+    elements.readingSource.href = officialReadingsUrl;
+    elements.readingSource.textContent = "Open today's official readings";
+  }
+
+  if (!readingSet) {
+    elements.readingDate.textContent = formatDate(todayKey);
+    elements.readingTitle.textContent = "Daily readings unavailable";
+    elements.readingsList.innerHTML = `
+      <article class="reading-card">
+        <h4>Readings</h4>
+        <strong>No readings found</strong>
+        <p>Add a default entry to DAILY_READINGS in script.js.</p>
+      </article>
+    `;
+    return;
+  }
+
+  elements.readingDate.textContent = readingSet.date === "default"
+    ? `Today: ${formatDate(todayKey)}`
+    : formatDate(readingSet.date);
+  elements.readingTitle.textContent = readingSet.title;
+  elements.readingsList.innerHTML = readingSet.readings.map((reading) => `
+    <article class="reading-card">
+      <h4>${escapeHtml(reading.label)}</h4>
+      <strong>${escapeHtml(reading.reference)}</strong>
+      <p>${escapeHtml(reading.text)}</p>
+    </article>
+  `).join("");
+}
+
+function getOfficialReadingsUrl(dateKey) {
+  const [year, month, day] = dateKey.split("-");
+  const shortYear = year.slice(2);
+
+  return `${READINGS_SOURCE_BASE_URL}/${month}${day}${shortYear}.cfm`;
+}
+
 function displayRandomPrayer() {
   if (!elements.prayerText) return;
 
@@ -53,13 +151,63 @@ function displayRandomPrayer() {
   elements.prayerText.textContent = DAILY_PRAYERS[randomIndex];
 }
 
+function getLocalDateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
 function setupLogoFallback() {
   document.querySelectorAll("[data-logo]").forEach((logo) => {
     logo.addEventListener("error", () => {
+      if (!logo.dataset.triedJpg) {
+        logo.dataset.triedJpg = "true";
+        logo.src = "logo.jpg";
+        return;
+      }
+
       const logoContainer = logo.closest(".logo-wrap, .hero-logo-wrap");
       if (logoContainer) logoContainer.classList.add("logo-missing");
     });
   });
+}
+
+async function loadPosts() {
+  if (!elements.postsGrid || !elements.postStatus) return;
+
+  try {
+    const response = await fetch(`posts.json?cache=${Date.now()}`);
+    if (!response.ok) throw new Error(`Posts file returned ${response.status}.`);
+
+    const posts = await response.json();
+    const cleanPosts = Array.isArray(posts) ? posts : posts.posts;
+
+    if (!Array.isArray(cleanPosts) || !cleanPosts.length) {
+      throw new Error("No posts were found.");
+    }
+
+    renderPosts(cleanPosts);
+    elements.postStatus.textContent = "";
+    elements.postStatus.classList.remove("error");
+  } catch (error) {
+    console.warn("Posts could not be loaded. Showing fallback post.", error);
+    renderPosts(FALLBACK_POSTS);
+    elements.postStatus.textContent = "Posts are showing from the built-in fallback. Add posts with manage_posts.py and upload posts.json.";
+  }
+}
+
+function renderPosts(posts) {
+  const sortedPosts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  elements.postsGrid.innerHTML = sortedPosts.map((post) => `
+    <article class="post-card">
+      <time datetime="${escapeHtml(post.date || "")}">${formatDate(post.date)}</time>
+      <h3>${escapeHtml(post.title || "Catholic Discovery post")}</h3>
+      <p>${escapeHtml(post.body || "")}</p>
+    </article>
+  `).join("");
 }
 
 function setupThemeToggle() {
