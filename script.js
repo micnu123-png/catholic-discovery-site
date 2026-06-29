@@ -2,6 +2,10 @@
 
 // YouTube Data API v3 settings.
 // Replace API_KEY if you rotate your key in Google Cloud Console.
+import {
+  query,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -17,14 +21,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const CHANNEL_URL = "https://www.youtube.com/@CTF-q5l";
-const API_KEY = "AIzaSyAlaLf4j4lsRSXFeS0_K1olojfZfskEeEI";
-const CHANNEL_ID = "UCN13DiW7FaMrXmlyipTxIJA";
-const MAX_RESULTS = 10;
 
-fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=10`)
-  .then(res => res.json())
-  .then(data => console.log(data))
-  .catch(err => console.error(err));
+  
 const DAILY_PRAYERS = [
   "Lord Jesus, guide us daily in faith, hope, and love. Open our hearts to Your Word and help us live as joyful witnesses of the Gospel. Amen.",
   "Heavenly Father, fill our homes with peace, our hearts with charity, and our lives with the light of Christ. Amen.",
@@ -194,7 +192,8 @@ function setupLogoFallback() {
 
 async function loadPosts() {
   try {
-    const snapshot = await getDocs(collection(db, "posts"));
+    const q = query(collection(db, "posts"), orderBy("date", "desc"));
+    const snapshot = await getDocs(q);
 
     const posts = [];
     snapshot.forEach(doc => {
@@ -202,10 +201,11 @@ async function loadPosts() {
     });
 
     if (!posts.length) {
-  renderPosts(FALLBACK_POSTS);
-  return;
-}
-renderPosts(posts);
+      renderPosts(FALLBACK_POSTS);
+      return;
+    }
+
+    renderPosts(posts);
 
   } catch (err) {
     console.error("Firebase error:", err);
@@ -335,38 +335,23 @@ function showLoadingState() {
 }
 
 async function fetchVideosFromYouTubeApi() {
-  const endpoint = new URL("https://www.googleapis.com/youtube/v3/search");
-
-  endpoint.search = new URLSearchParams({
-  key: API_KEY,
-  channelId: CHANNEL_ID,
-  part: "snippet",
-  order: "date",
-  type: "video",
-  maxResults: String(MAX_RESULTS)
-}).toString();
-
-  const response = await fetch(endpoint);
-
-  const data = await response.json();
-  console.log("YouTube API response:", data);
+  const response = await fetch("https://catholic-discovery-api.micnu123.workers.dev/");
 
   if (!response.ok) {
-    throw new Error(data?.error?.message || `HTTP ${response.status}`);
+    throw new Error(`HTTP ${response.status}`);
   }
 
-  return (data.items || [])
-    .map(item => ({
-      videoId: item.id?.videoId,
-      title: item.snippet?.title,
-      description: item.snippet?.description,
-      publishedAt: item.snippet?.publishedAt,
-      thumbnail: getBestThumbnail(item.snippet?.thumbnails),
-      url: `https://www.youtube.com/watch?v=${item.id?.videoId}`
-    }))
-    .filter(v => v.videoId);
-}
+  const videos = await response.json();
 
+  return videos.map(video => ({
+    videoId: video.id,
+    title: video.title,
+    description: video.description,
+    publishedAt: video.published,
+    thumbnail: video.thumbnail,
+    url: video.url
+  }));
+}
 function renderFeaturedVideo(video) {
   elements.featuredVideo.innerHTML = `
     <iframe
@@ -378,7 +363,7 @@ function renderFeaturedVideo(video) {
     </iframe>
     <div class="featured-info">
       <p class="card-label">Featured latest video</p>
-      <h3>${video.title}</h3>
+      <h3>${escapeHtml(video.title)}</h3>
       <p>${escapeHtml(trimText(video.description, 150))}</p>
       <p>${formatDate(video.publishedAt)}</p>
       <a class="text-link" href="${video.url}" target="_blank" rel="noopener">Watch on YouTube</a>
@@ -387,15 +372,15 @@ function renderFeaturedVideo(video) {
 }
 
 function renderVideoGrid(videos) {
-  elements.videoGrid.innerHTML = videos.map((video) => `
+  elements.videoGrid.innerHTML = videos.map(video => `
     <article class="video-card">
-      <a class="video-thumb" href="${video.url}" target="_blank" rel="noopener" aria-label="Watch ${escapeHtml(video.title)}">
+      <a class="video-thumb" href="${video.url}" target="_blank" rel="noopener">
         <img src="${video.thumbnail}" alt="${escapeHtml(video.title)}" loading="lazy">
         <span class="play-badge" aria-hidden="true"></span>
       </a>
       <div class="video-card-content">
-        <h3>${video.title}</h3>
-        <time datetime="${escapeHtml(video.publishedAt)}">${formatDate(video.publishedAt)}</time>
+        <h3>${escapeHtml(video.title)}</h3>
+        <time>${formatDate(video.publishedAt)}</time>
       </div>
     </article>
   `).join("");
@@ -403,35 +388,21 @@ function renderVideoGrid(videos) {
 
 function renderVideoError() {
   elements.featuredVideo.innerHTML = `
-    <div class="video-loader" aria-hidden="true"></div>
     <div class="featured-info">
-      <p class="card-label">Videos unavailable</p>
-      <h3>The latest videos could not be loaded right now.</h3>
-      <p>Please check the API key, channel ID, or network access, then try again.</p>
-      <a class="text-link" href="${CHANNEL_URL}" target="_blank" rel="noopener">Open Catholic Discovery on YouTube</a>
+      <h3>Videos unavailable</h3>
+      <p>Could not load latest videos right now.</p>
+      <a href="${CHANNEL_URL}" target="_blank" rel="noopener">Open YouTube Channel</a>
     </div>
   `;
 
   elements.videoGrid.innerHTML = "";
-  elements.videoStatus.textContent = "We could not reach YouTube at this moment. Please visit the channel directly.";
+  elements.videoStatus.textContent = "YouTube is currently unavailable.";
   elements.videoStatus.classList.add("error");
-}
-
-function getBestThumbnail(thumbnails = {}) {
-  return thumbnails.maxres?.url
-    || thumbnails.standard?.url
-    || thumbnails.high?.url
-    || thumbnails.medium?.url
-    || thumbnails.default?.url
-    || "logo.png";
 }
 
 function formatDate(dateValue) {
   const date = new Date(dateValue);
-
-  if (!dateValue || Number.isNaN(date.getTime())) {
-    return "Recent upload";
-  }
+  if (!dateValue || Number.isNaN(date.getTime())) return "Recent upload";
 
   return date.toLocaleDateString(undefined, {
     year: "numeric",
@@ -441,11 +412,8 @@ function formatDate(dateValue) {
 }
 
 function trimText(text, maxLength) {
-  if (!text) {
-    return "Watch the latest Catholic Discovery reflection on YouTube.";
-  }
-
-  return text.length > maxLength ? `${text.slice(0, maxLength).trim()}...` : text;
+  if (!text) return "";
+  return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 }
 
 function escapeHtml(value) {
@@ -458,16 +426,18 @@ function escapeHtml(value) {
 }
 function renderPosts(posts) {
   const sorted = [...posts].sort((a, b) =>
-    new Date(b.date) - new Date(a.date)
+    new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
   );
 
   if (!elements.postsGrid) return;
 
   elements.postsGrid.innerHTML = sorted.map(post => `
     <article class="post-card">
-      <time datetime="${post.date}">${post.date}</time>
-      <h3>${post.title}</h3>
-      <p>${post.body}</p>
+      <time datetime="${post.date}">
+        ${formatDate(post.date)}
+      </time>
+      <h3>${escapeHtml(post.title)}</h3>
+      <p>${escapeHtml(post.body)}</p>
     </article>
   `).join("");
 }
