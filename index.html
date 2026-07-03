@@ -224,6 +224,36 @@
     </section>
   </main>
 
+<section id="newsletter" class="newsletter">
+  <div class="container">
+    <h2>Subscribe to Our Newsletter</h2>
+
+    <input type="text" id="subscriberName" placeholder="Your Name (Optional)">
+    <input type="email" id="subscriberEmail" placeholder="Your Email Address" required>
+
+    <button id="subscribeBtn">Subscribe</button>
+
+    <p id="subscribeStatus"></p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <a class="footer-brand" href="#home">
+      <span class="logo-wrap small">
+        <img src="logo.png" alt="" data-logo>
+        <span class="logo-fallback">CD</span>
+      </span>
+      <span>Catholic Discovery</span>
+    </a>
+
+    <p>© <span data-current-year></span> Catholic Discovery. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<script type="module" src="script.js"></script>
+<script type="module" src="newsletter.js"></script>
+
   <footer class="site-footer">
     <div class="container footer-inner">
       <a class="footer-brand" href="#home">
@@ -241,16 +271,3 @@
 </body>
 </html>
 
-<script type="module" src="newsletter.js"></script>
-
-<section class="newsletter">
-  <h2>Subscribe to Our Newsletter</h2>
-
-  <input type="text" id="subscriberName" placeholder="Your name (optional)">
-
-  <input type="email" id="subscriberEmail" placeholder="Your email" required>
-
-  <button onclick="subscribe()">Subscribe</button>
-
-  <p id="subscribeStatus"></p>
-</section>
