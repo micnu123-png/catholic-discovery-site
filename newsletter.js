@@ -1,16 +1,10 @@
-"use strict";
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+// ================= FIREBASE CONFIG =================
 const firebaseConfig = {
-   apiKey: "AIzaSyCWQC1tU9HyyrQhNVt3t3Ep1rhtzYmobMQ",
+  apiKey: "AIzaSyCWQC1tU9HyyrQhNVt3t3Ep1rhtzYmobMQ",
   authDomain: "catholic-discovery-websi-af85b.firebaseapp.com",
   projectId: "catholic-discovery-websi-af85b",
   storageBucket: "catholic-discovery-websi-af85b.firebasestorage.app",
@@ -18,10 +12,12 @@ const firebaseConfig = {
   appId: "1:981649696506:web:06ecfceeee7fb90bb50b43",
 };
 
+// ================= INIT =================
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function subscribe() {
+// ================= SUBSCRIBE FUNCTION =================
+window.subscribe = async function () {
   const name = document.getElementById("subscriberName").value.trim();
   const email = document.getElementById("subscriberEmail").value.trim();
   const status = document.getElementById("subscribeStatus");
@@ -44,8 +40,6 @@ async function subscribe() {
 
   } catch (err) {
     console.error(err);
-    status.textContent = "Subscription failed. Please try again.";
+    status.textContent = "Subscription failed. Check Firebase rules.";
   }
-}
-
-document.getElementById("subscribeBtn").addEventListener("click", subscribe);
+};
