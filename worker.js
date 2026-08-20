@@ -3,7 +3,19 @@ export default {
 
     const url = new URL(request.url);
 
-    // Only intercept the homepage
+    /*
+     * Only control the homepage.
+     *
+     * Other files such as:
+     *
+     * /readings.html
+     * /style.css
+     * /script.js
+     * /logo.png
+     *
+     * continue working normally.
+     */
+
     if (
       request.method === "GET" &&
       (
@@ -17,17 +29,14 @@ export default {
         const updateMode =
           await getUpdateMode(env);
 
-        // TRUE = update page
-        // FALSE = normal website
-
-        const target =
+        const page =
           updateMode
             ? "/update.html"
             : "/index.html";
 
         return env.ASSETS.fetch(
           new Request(
-            new URL(target, url),
+            new URL(page, url),
             request
           )
         );
@@ -35,12 +44,14 @@ export default {
       } catch (error) {
 
         console.error(
-          "Firebase error:",
+          "Update mode check failed:",
           error
         );
 
-        // If Firebase fails,
-        // keep the normal website online.
+        /*
+         * Safety fallback:
+         * if Firebase fails, show the normal website.
+         */
 
         return env.ASSETS.fetch(
           new Request(
@@ -51,7 +62,10 @@ export default {
       }
     }
 
-    // Everything else works normally
+    /*
+     * Everything else is served normally.
+     */
+
     return env.ASSETS.fetch(request);
   }
 };
@@ -59,35 +73,28 @@ export default {
 
 async function getUpdateMode(env) {
 
-  const firestoreURL =
+  const url =
     `https://firestore.googleapis.com/v1/projects/` +
     `${encodeURIComponent(env.FIREBASE_PROJECT_ID)}` +
     `/databases/(default)/documents/` +
     `websiteSettings/main` +
     `?key=${encodeURIComponent(env.FIREBASE_WEB_API_KEY)}`;
 
-  const response = await fetch(
-    firestoreURL,
-    {
-      method: "GET",
-      headers: {
-        "Accept": "application/json"
-      },
-      cf: {
-        cacheTtl: 0,
-        cacheEverything: false
-      }
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Accept": "application/json"
     }
-  );
+  });
 
   if (!response.ok) {
+
     throw new Error(
-      `Firestore HTTP ${response.status}`
+      `Firestore returned HTTP ${response.status}`
     );
   }
 
-  const data =
-    await response.json();
+  const data = await response.json();
 
   return (
     data?.fields?.updateMode?.booleanValue === true
