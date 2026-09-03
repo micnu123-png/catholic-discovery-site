@@ -1,0 +1,15 @@
+{
+  "name": "faith-lantern",
+  "main": "worker.js",
+  "compatibility_date": "2026-08-20",
+
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS"
+  },
+
+  "vars": {
+    "FIREBASE_PROJECT_ID": "catholic-discovery-websi-af85b",
+    "FIREBASE_WEB_API_KEY": "AIzaSyCWQC1tU9HyyrQhNVt3t3Ep1rhtzYmobMQ"
+  }
+}
