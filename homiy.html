@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Daily Homily & Reflection | Faith Lantern</title>
+
+    <meta
+        name="description"
+        content="Daily Catholic Gospel reflection, liturgical celebration and prayer."
+    >
+
+    <link rel="stylesheet" href="homily.css">
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <header class="site-header">
+
+        <nav class="navbar">
+
+            <a href="index.html" class="brand">
+                <span class="brand-cross">✝</span>
+                <span>Faith Lantern</span>
+            </a>
+
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                aria-label="Open navigation"
+            >
+                ☰
+            </button>
+
+            <div class="nav-links" id="navLinks">
+
+                <a href="index.html">Home</a>
+                <a href="readings.html">Readings</a>
+                <a href="homily.html" class="active">Homily</a>
+                <a href="prayer.html">Prayer</a>
+                <a href="saint.html">Saint</a>
+                <a href="videos.html">Videos</a>
+
+                <button id="themeToggle" class="theme-button">
+                    🌙
+                </button>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="cross-icon">✝</div>
+
+            <p class="eyebrow">
+                FAITH LANTERN
+            </p>
+
+            <h1>
+                Daily Homily & Reflection
+            </h1>
+
+            <p>
+                Discover Christ every day through the Gospel,
+                prayer and reflection.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+        <!-- LOADING -->
+
+        <div id="loading" class="loading-card">
+
+            <div class="loader"></div>
+
+            <p>
+                Preparing today's reflection...
+            </p>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div id="error" class="error-card hidden">
+
+            <h2>
+                Unable to load today's readings
+            </h2>
+
+            <p id="errorMessage">
+                Please check your internet connection and try again.
+            </p>
+
+            <button
+                onclick="loadDailyContent()"
+                class="primary-button"
+            >
+                Try Again
+            </button>
+
+        </div>
+
+
+        <!-- CONTENT -->
+
+        <div id="content" class="hidden">
+
+            <!-- DATE -->
+
+            <section class="date-section">
+
+                <p class="today-label">
+                    TODAY'S LITURGY
+                </p>
+
+                <h2 id="currentDate">
+                    Loading...
+                </h2>
+
+                <p id="season">
+                    Loading...
+                </p>
+
+            </section>
+
+
+            <!-- CELEBRATION -->
+
+            <section class="celebration-card">
+
+                <div class="card-icon">
+                    ✝
+                </div>
+
+                <div>
+
+                    <span class="small-label">
+                        LITURGICAL CELEBRATION
+                    </span>
+
+                    <h2 id="celebrationName">
+                        Loading...
+                    </h2>
+
+                    <p id="celebrationType">
+                        Loading...
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- GOSPEL -->
+
+            <section class="gospel-card">
+
+                <div class="section-heading">
+
+                    <span class="gold-line"></span>
+
+                    <div>
+                        <span class="small-label">
+                            HOLY GOSPEL
+                        </span>
+
+                        <h2 id="gospelReference">
+                            Loading...
+                        </h2>
+                    </div>
+
+                </div>
+
+                <div class="gospel-message">
+
+                    <div class="quote-mark">
+                        “
+                    </div>
+
+                    <p id="gospelMessage">
+                        Today's Gospel calls us to open our hearts
+                        to Christ.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- READINGS -->
+
+            <section class="readings-grid">
+
+                <article class="reading-card">
+
+                    <span class="reading-number">
+                        I
+                    </span>
+
+                    <h3>
+                        First Reading
+                    </h3>
+
+                    <p id="firstReading">
+                        Loading...
+                    </p>
+
+                </article>
+
+
+                <article class="reading-card">
+
+                    <span class="reading-number">
+                        PS
+                    </span>
+
+                    <h3>
+                        Responsorial Psalm
+                    </h3>
+
+                    <p id="psalm">
+                        Loading...
+                    </p>
+
+                </article>
+
+
+                <article
+                    class="reading-card"
+                    id="secondReadingCard"
+                >
+
+                    <span class="reading-number">
+                        II
+                    </span>
+
+                    <h3>
+                        Second Reading
+                    </h3>
+
+                    <p id="secondReading">
+                        Loading...
+                    </p>
+
+                </article>
+
+            </section>
+
+
+            <!-- HOMILY -->
+
+            <section class="homily-card">
+
+                <div class="homily-header">
+
+                    <div class="homily-cross">
+                        ✝
+                    </div>
+
+                    <div>
+
+                        <span class="small-label">
+                            MEDITATION
+                        </span>
+
+                        <h2>
+                            Today's Reflection
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div id="homilyText" class="homily-text">
+                    Loading today's reflection...
+                </div>
+
+            </section>
+
+
+            <!-- PRAYER -->
+
+            <section class="prayer-card">
+
+                <div class="prayer-symbol">
+                    🙏
+                </div>
+
+                <span class="small-label">
+                    LET US PRAY
+                </span>
+
+                <h2>
+                    Prayer for Today
+                </h2>
+
+                <p id="prayerText">
+                    Loading...
+                </p>
+
+            </section>
+
+
+            <!-- ACTION -->
+
+            <section class="action-card">
+
+                <h2>
+                    Carry Christ With You
+                </h2>
+
+                <p>
+                    Take one message from today's Gospel
+                    and put it into practice.
+                </p>
+
+                <div class="action-buttons">
+
+                    <button
+                        id="listenButton"
+                        class="primary-button"
+                    >
+                        🔊 Listen
+                    </button>
+
+                    <button
+                        id="shareButton"
+                        class="secondary-button"
+                    >
+                        📤 Share
+                    </button>
+
+                    <button
+                        id="copyButton"
+                        class="secondary-button"
+                    >
+                        🔗 Copy Link
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- OFFICIAL SOURCE -->
+
+            <section class="source-card">
+
+                <p>
+                    Daily reading references are provided for
+                    devotional use.
+                </p>
+
+                <a
+                    id="usccbLink"
+                    href="https://bible.usccb.org/"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    View today's readings on USCCB →
+                </a>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-cross">
+            ✝
+        </div>
+
+        <h3>
+            Faith Lantern
+        </h3>
+
+        <p>
+            Discover Christ Every Day
+        </p>
+
+        <p class="copyright">
+            © <span id="year"></span> Faith Lantern
+        </p>
+
+    </footer>
+
+
+    <script src="homily.js"></script>
+
+</body>
+</html>
