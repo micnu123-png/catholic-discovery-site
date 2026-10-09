@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080706">
+
+  <title>404 — Page Not Found | Catholic Discovery</title>
+
+  <meta
+    name="description"
+    content="The page you are looking for could not be found. Continue discovering Christ with Catholic Discovery."
+  >
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body class="error-404">
+
+  <main class="error-page">
+
+    <a class="error-brand" href="./index.html" aria-label="Catholic Discovery home">
+      <img src="./logo.png" alt="">
+      <span>CATHOLIC DISCOVERY</span>
+    </a>
+
+    <div class="error-logo-scene"
+         role="img"
+         aria-label="Catholic Discovery spinning logo">
+
+      <div class="error-logo-3d">
+        <img class="error-logo-front" src="./logo.png" alt="">
+        <img class="error-logo-back" src="./logo.png" alt="" aria-hidden="true">
+      </div>
+    </div>
+
+    <p class="error-code">404</p>
+
+    <h1 class="error-title">This Page Has Gone Missing</h1>
+
+    <p class="error-description">
+      It looks like the page you are searching for cannot be found.
+      It may have moved, been removed, or never existed.
+      But don't worry — your journey of faith continues!
+    </p>
+
+    <blockquote class="error-verse">
+      “I am the way, and the truth, and the life.”
+      <cite>John 14:6</cite>
+    </blockquote>
+
+    <div class="error-actions">
+      <a class="error-btn error-btn-primary" href="./index.html">
+        Return Home
+      </a>
+
+      <button class="error-btn error-btn-secondary" type="button" onclick="goBack()">
+        Go Back
+      </button>
+    </div>
+
+    <footer class="error-footer">
+      <p>
+        Keep discovering Christ every day.<br>
+        <strong>Catholic Discovery</strong>
+      </p>
+
+      <p>&copy; <span id="error-year"></span> Catholic Discovery</p>
+    </footer>
+
+  </main>
+
+  <script>
+    document.getElementById("error-year").textContent =
+      new Date().getFullYear();
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "./index.html";
+      }
+    }
+  </script>
+
+</body>
+</html>
