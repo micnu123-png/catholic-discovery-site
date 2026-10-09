@@ -1,6 +1,6 @@
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyCWQC1tU9HyyrQhNVt3t3Ep1rhtzYmobMQ",
+ apiKey: "AIzaSyCWQC1tU9HyyrQhNVt3t3Ep1rhtzYmobMQ",
   authDomain: "catholic-discovery-websi-af85b.firebaseapp.com",
   projectId: "catholic-discovery-websi-af85b",
   storageBucket: "catholic-discovery-websi-af85b.firebasestorage.app",
