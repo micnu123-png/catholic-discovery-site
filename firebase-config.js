@@ -1,9 +1,9 @@
 
 export const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_WEB_API_KEY",
+  apiKey: "AIzaSyCWQC1tU9HyyrQhNVt3t3Ep1rhtzYmobMQ",
   authDomain: "catholic-discovery-websi-af85b.firebaseapp.com",
   projectId: "catholic-discovery-websi-af85b",
-  storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
-  appId: "YOUR_FIREBASE_WEB_APP_ID"
+  storageBucket: "catholic-discovery-websi-af85b.firebasestorage.app",
+  messagingSenderId: "981649696506",
+  appId: "1:981649696506:web:06ecfceeee7fb90bb50b43"
 };
