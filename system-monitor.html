@@ -4,17 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#080b0a">
   <title>System Monitor | Catholic Discovery</title>
-
   <style>
     :root {
       color-scheme: dark;
-      --bg: #060907;
-      --panel: #0c130e;
-      --border: #1b3d27;
-      --green: #39ff88;
-      --muted: #8aab94;
+      --bg: #080b0a;
+      --panel: #101613;
+      --border: #26372c;
+      --green: #63ff91;
+      --muted: #8a9c90;
       --red: #ff6969;
       --gold: #e9c46a;
     }
@@ -23,357 +22,346 @@
 
     body {
       margin: 0;
-      background: var(--bg);
-      color: var(--green);
-      font-family: Consolas, "Courier New", monospace;
       min-height: 100vh;
+      background: var(--bg);
+      color: #e6f1e9;
+      font-family: Consolas, "Courier New", monospace;
     }
 
     button, input { font: inherit; }
 
     button {
       cursor: pointer;
-      padding: 11px 15px;
-      border: 1px solid var(--green);
-      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: #18231b;
       color: var(--green);
-      background: #102016;
+      padding: 11px 15px;
+      border-radius: 7px;
     }
 
-    button:hover { background: #193522; }
+    button:hover { border-color: var(--green); }
     button:disabled { opacity: .5; cursor: wait; }
 
     input {
       width: 100%;
+      margin-top: 7px;
       padding: 12px;
-      color: var(--green);
-      background: #050806;
       border: 1px solid var(--border);
-      border-radius: 4px;
-      outline-color: var(--green);
+      border-radius: 7px;
+      background: #080d0a;
+      color: white;
+      outline: none;
     }
 
-    label {
-      display: block;
-      margin: 14px 0 7px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .hidden { display: none !important; }
-
-    .muted { color: var(--muted); }
-
-    .shell {
-      width: min(1100px, 94%);
-      margin: auto;
-    }
+    input:focus { border-color: var(--green); }
 
     header {
-      padding: 24px 0;
+      padding: 20px;
       border-bottom: 1px solid var(--border);
-    }
-
-    .top {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 15px;
-      flex-wrap: wrap;
     }
 
-    h1 {
-      margin: 0 0 8px;
-      font-size: clamp(22px, 4vw, 32px);
-      letter-spacing: 1px;
-    }
+    .brand { color: var(--green); font-size: 19px; font-weight: bold; }
+    .subtitle { color: var(--muted); font-size: 12px; margin-top: 5px; }
 
-    h2 {
-      margin: 0 0 15px;
-      font-size: 15px;
-    }
-
-    .brand { color: var(--green); }
-
-    .sub {
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    main { padding: 24px 0; }
-
-    .login-wrap {
-      min-height: 70vh;
-      display: grid;
-      place-items: center;
-    }
+    main { max-width: 1100px; margin: auto; padding: 24px 16px 50px; }
 
     .panel {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 7px;
+      border-radius: 12px;
       padding: 20px;
-      min-width: 0;
+      margin-bottom: 18px;
     }
 
-    .login {
-      width: min(420px, 100%);
-      box-shadow: 0 0 35px #12351b20;
-    }
+    .login { max-width: 420px; margin: 45px auto; }
+    h1 { font-size: 22px; margin-top: 0; }
+    h2 { font-size: 15px; color: var(--green); margin-top: 0; }
+    label { display: block; color: var(--muted); font-size: 12px; margin: 16px 0; }
 
-    .login h2 {
-      color: var(--green);
-      font-size: 19px;
-    }
-
-    .login button { width: 100%; margin-top: 18px; }
-
-    .message {
-      margin-top: 14px;
-      font-size: 12px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 17px; }
+    .message { color: var(--muted); font-size: 12px; line-height: 1.6; margin-top: 14px; }
     .error { color: var(--red); }
     .success { color: var(--green); }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 14px;
-      margin-bottom: 16px;
-    }
-
-    .metric-label {
-      font-size: 11px;
-      color: var(--muted);
-      text-transform: uppercase;
     }
 
     .metric {
-      margin-top: 12px;
-      font-size: 23px;
-      overflow-wrap: anywhere;
-    }
-
-    .online { color: var(--green); }
-    .warning { color: var(--gold); }
-    .offline { color: var(--red); }
-
-    #checks {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 10px;
-    }
-
-    .check {
-      padding: 13px;
-      background: #060a07;
+      background: #0a100c;
       border: 1px solid var(--border);
-      border-radius: 5px;
-      overflow-wrap: anywhere;
+      border-radius: 9px;
+      padding: 17px;
+      min-width: 0;
     }
 
-    .check-title { margin-bottom: 9px; }
-    .check-detail { color: var(--muted); font-size: 11px; line-height: 1.7; }
+    .metric-name { color: var(--muted); font-size: 12px; }
+    .metric-value { font-size: 20px; margin-top: 12px; overflow-wrap: anywhere; }
+    .metric-detail { color: var(--muted); font-size: 11px; margin-top: 8px; }
 
-    #logs {
-      height: 240px;
+    .status { color: var(--gold); }
+    .status.online { color: var(--green); }
+    .status.offline { color: var(--red); }
+
+    .log {
+      background: #070a08;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px;
+      min-height: 100px;
+      max-height: 300px;
       overflow: auto;
-      padding: 13px;
-      background: #030504;
-      border: 1px solid var(--border);
-      line-height: 1.7;
-      font-size: 12px;
+      white-space: pre-wrap;
       overflow-wrap: anywhere;
+      font-size: 12px;
+      line-height: 1.7;
     }
 
-    .log { white-space: pre-wrap; }
-    .log.error { color: var(--red); }
-    .log.warn { color: var(--gold); }
+    .hidden { display: none !important; }
+    footer { color: var(--muted); font-size: 11px; text-align: center; padding: 20px; }
+    a { color: var(--green); }
 
-    .actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    footer {
-      padding: 20px 0;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 11px;
+    @media (max-width: 500px) {
+      header { padding: 16px; }
+      main { padding: 16px 12px 35px; }
+      .panel { padding: 15px; }
     }
   </style>
 </head>
-
 <body>
   <header>
-    <div class="shell top">
-      <div>
-        <h1 class="brand">CATHOLIC DISCOVERY</h1>
-        <div class="sub">SYSTEM MONITOR // AUTHENTICATED CONSOLE</div>
-      </div>
-      <div id="connection" class="sub">AUTHENTICATION REQUIRED</div>
+    <div>
+      <div class="brand">CATHOLIC DISCOVERY // MONITOR</div>
+      <div class="subtitle">Website diagnostics console</div>
     </div>
+    <div id="connectionLabel" class="subtitle">AUTHENTICATION REQUIRED</div>
   </header>
 
-  <main class="shell">
-    <section id="loginSection" class="login-wrap">
-      <form id="loginForm" class="panel login">
-        <h2>ACCESS TERMINAL</h2>
-        <p class="muted">Sign in with your authorized Firebase account.</p>
+  <main>
+    <section id="loginPanel" class="panel login">
+      <h1>Administrator Login</h1>
+      <p class="message">Sign in with your authorized Firebase account to access the dashboard.</p>
 
-        <label for="email">EMAIL ADDRESS</label>
-        <input id="email" type="email" autocomplete="username"
-               placeholder="you@example.com" required>
-
-        <label for="password">PASSWORD</label>
-        <input id="password" type="password"
-               autocomplete="current-password"
-               placeholder="Your password" required>
-
-        <button id="loginButton" type="submit">SIGN IN</button>
-        <button id="resetButton" type="button">RESET PASSWORD</button>
-
-        <div id="loginMessage" class="message" role="status"></div>
+      <form id="loginForm">
+        <label>
+          Email address
+          <input id="email" type="email" autocomplete="username" required>
+        </label>
+        <label>
+          Password
+          <input id="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button id="loginButton" type="submit">Sign in</button>
       </form>
+
+      <div class="actions">
+        <button id="resetButton" type="button">Reset password</button>
+      </div>
+      <p id="loginMessage" class="message" role="status"></p>
     </section>
 
     <section id="dashboard" class="hidden">
-      <div class="top" style="margin-bottom:18px">
-        <div>
-          <h2>MONITORING DASHBOARD</h2>
-          <div id="signedInAs" class="sub"></div>
-        </div>
+      <div class="panel">
+        <h1>System Overview</h1>
+        <p class="message">Signed in as <span id="accountEmail"></span></p>
         <div class="actions">
-          <button id="runCheck">RUN CHECK</button>
-          <button id="logout">SIGN OUT</button>
+          <button id="checkButton" type="button">Run diagnostics</button>
+          <button id="logoutButton" type="button">Sign out</button>
         </div>
+        <p id="lastChecked" class="message">No diagnostic checks have run yet.</p>
       </div>
 
       <div class="grid">
-        <section class="panel">
-          <div class="metric-label">Website availability</div>
-          <div id="siteStatus" class="metric">WAITING</div>
-        </section>
-
-        <section class="panel">
-          <div class="metric-label">Page response</div>
-          <div id="pageTime" class="metric">-- ms</div>
-        </section>
-
-        <section class="panel">
-          <div class="metric-label">API response</div>
-          <div id="apiTime" class="metric">-- ms</div>
-        </section>
-
-        <section class="panel">
-          <div class="metric-label">Checks this session</div>
-          <div id="checkCount" class="metric">0</div>
-        </section>
+        <div class="metric">
+          <div class="metric-name">WEBSITE</div>
+          <div id="siteStatus" class="metric-value status">NOT CHECKED</div>
+          <div id="siteDetail" class="metric-detail">Homepage response</div>
+        </div>
+        <div class="metric">
+          <div class="metric-name">API /api/stats</div>
+          <div id="apiStatus" class="metric-value status">NOT CHECKED</div>
+          <div id="apiDetail" class="metric-detail">Endpoint response</div>
+        </div>
+        <div class="metric">
+          <div class="metric-name">LATEST RESPONSE TIME</div>
+          <div id="latency" class="metric-value">--</div>
+          <div class="metric-detail">Browser-measured request time</div>
+        </div>
+        <div class="metric">
+          <div class="metric-name">AUTOMATIC CHECKS</div>
+          <div class="metric-value status online">EVERY 60 SEC</div>
+          <div class="metric-detail">While the dashboard is open</div>
+        </div>
       </div>
 
-      <section class="panel" style="margin-bottom:16px">
-        <h2>SERVICE CHECKS</h2>
-        <div id="checks" class="muted">Waiting for checks...</div>
-      </section>
-
-      <section class="panel">
-        <div class="top" style="margin-bottom:14px">
-          <h2>EVENT LOG</h2>
-          <button id="clearLogs">CLEAR LOG</button>
+      <div class="panel" style="margin-top:18px">
+        <h2>Diagnostic Log</h2>
+        <div id="logs" class="log" role="log" aria-live="polite">[SYSTEM] Waiting for diagnostics...</div>
+        <div class="actions">
+          <button id="clearLogButton" type="button">Clear log</button>
         </div>
-        <div id="logs" aria-live="polite"></div>
-      </section>
+      </div>
+
+      <div class="panel">
+        <h2>Monitor Information</h2>
+        <p class="message">
+          Target: <a href="https://catholic-discovery-site.micnu123.workers.dev/"
+          target="_blank" rel="noopener noreferrer">Catholic Discovery website</a>
+        </p>
+        <p class="message">
+          This dashboard checks HTTP responses from the homepage and /api/stats.
+          A successful HTTP response does not guarantee every backend service is healthy.
+        </p>
+        <p class="message">
+          It does not inspect your server's CPU, RAM, database, or YouTube API status.
+          No passwords or Firebase tokens are written to the diagnostic log.
+        </p>
+      </div>
     </section>
   </main>
 
-  <footer class="shell">
-    AUTHENTICATED SESSION · REAL HTTP CHECKS · NO FABRICATED METRICS
-  </footer>
+  <footer>CATHOLIC DISCOVERY • PRIVATE ADMIN TOOL</footer>
 
   <script type="module">
+    import { firebaseConfig } from "./firebase-config.js";
     import { initializeApp } from
       "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-
     import {
       getAuth,
       signInWithEmailAndPassword,
       onAuthStateChanged,
       signOut,
       sendPasswordResetEmail
-    } from
-      "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+    } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 
-    // Replace these values with your Firebase Web App configuration.
-    const firebaseConfig = {
-      apiKey: "YOUR_FIREBASE_WEB_API_KEY",
-      authDomain: "YOUR_FIREBASE_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_FIREBASE_PROJECT_ID",
-      appId: "YOUR_FIREBASE_WEB_APP_ID"
-    };
+    const $ = (id) => document.getElementById(id);
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    const loginPanel = $("loginPanel");
+    const dashboard = $("dashboard");
+    const loginForm = $("loginForm");
+    const loginButton = $("loginButton");
+    const loginMessage = $("loginMessage");
+    const connectionLabel = $("connectionLabel");
 
-    const $ = id => document.getElementById(id);
+    const SITE_URL = "https://catholic-discovery-site.micnu123.workers.dev";
+    const CHECK_INTERVAL_MS = 60_000;
 
-    let checkCount = 0;
+    let auth;
+    let checkTimer = null;
     let checking = false;
-    let refreshTimer = null;
+    let currentUser = null;
 
-    function log(level, message) {
-      const row = document.createElement("div");
-      row.className = "log" +
-        (level === "ERROR" ? " error" :
-         level === "WARN" ? " warn" : "");
+    function showMessage(element, message, type = "") {
+      element.textContent = message;
+      element.className = "message " + type;
+    }
 
-      row.textContent =
-        `[${new Date().toLocaleTimeString()}] [${level}] ${message}`;
+    function log(message, type = "") {
+      const logs = $("logs");
+      const time = new Date().toLocaleTimeString();
+      const line = document.createElement("div");
+      line.textContent = `[${time}] ${message}`;
+      if (type) line.className = type;
+      logs.appendChild(line);
+      while (logs.children.length > 100) {
+        logs.removeChild(logs.firstChild);
+      }
+      logs.scrollTop = logs.scrollHeight;
+    }
 
-      $("logs").prepend(row);
+    function setStatus(id, state, detailId, detail) {
+      const element = $(id);
+      element.textContent = state;
+      element.className = "metric-value status";
+      if (state === "ONLINE") element.classList.add("online");
+      if (state === "OFFLINE" || state === "ERROR") {
+        element.classList.add("offline");
+      }
+      $(detailId).textContent = detail;
+    }
 
-      while ($("logs").children.length > 100) {
-        $("logs").lastElementChild.remove();
+    async function checkEndpoint(name, url, statusId, detailId) {
+      const start = performance.now();
+
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          cache: "no-store",
+          credentials: "omit",
+          redirect: "follow"
+        });
+
+        const elapsed = Math.round(performance.now() - start);
+        const ok = response.ok;
+
+        setStatus(
+          statusId,
+          ok ? "ONLINE" : "ERROR",
+          detailId,
+          `HTTP ${response.status} • ${elapsed} ms`
+        );
+
+        log(
+          `${name}: HTTP ${response.status} (${elapsed} ms)`,
+          ok ? "success" : "error"
+        );
+
+        return { ok, elapsed };
+      } catch (error) {
+        const elapsed = Math.round(performance.now() - start);
+        setStatus(statusId, "OFFLINE", detailId, "Request failed");
+        log(`${name}: request failed (${elapsed} ms)`, "error");
+        return { ok: false, elapsed };
       }
     }
 
-    function showMessage(message, isError = false) {
-      $("loginMessage").textContent = message;
-      $("loginMessage").className =
-        "message " + (isError ? "error" : "success");
-    }
+    async function refreshDiagnostics() {
+      if (!currentUser || checking) return;
 
-    function setSignedIn(user) {
-      $("loginSection").classList.toggle("hidden", !!user);
-      $("dashboard").classList.toggle("hidden", !user);
-      $("connection").textContent =
-        user ? "AUTHENTICATED" : "AUTHENTICATION REQUIRED";
-      $("signedInAs").textContent =
-        user ? "SIGNED IN AS " + user.email : "";
+      checking = true;
+      $("checkButton").disabled = true;
+      $("lastChecked").textContent = "Diagnostics running...";
+      log("Starting diagnostics...");
 
-      if (refreshTimer) {
-        clearInterval(refreshTimer);
-        refreshTimer = null;
-      }
+      try {
+        const results = await Promise.all([
+          checkEndpoint("Homepage", `${SITE_URL}/`, "siteStatus", "siteDetail"),
+          checkEndpoint("Stats API", `${SITE_URL}/api/stats`, "apiStatus", "apiDetail")
+        ]);
 
-      if (user) {
-        $("logs").replaceChildren();
-        log("INFO", "Firebase authentication confirmed.");
-        log("INFO", "Starting real website health checks.");
-        refresh();
-        refreshTimer = setInterval(refresh, 60000);
+        $("latency").textContent = `${Math.max(...results.map(r => r.elapsed))} ms`;
+        $("lastChecked").textContent =
+          `Last checked: ${new Date().toLocaleString()}`;
+        log("Diagnostics completed.");
+      } finally {
+        checking = false;
+        $("checkButton").disabled = false;
       }
     }
 
-    $("loginForm").addEventListener("submit", async event => {
+    function stopAutomaticChecks() {
+      if (checkTimer !== null) {
+        clearInterval(checkTimer);
+        checkTimer = null;
+      }
+    }
+
+    function startAutomaticChecks() {
+      stopAutomaticChecks();
+      checkTimer = setInterval(refreshDiagnostics, CHECK_INTERVAL_MS);
+    }
+
+    loginForm.addEventListener("submit", async (event) => {
       event.preventDefault();
-
-      $("loginButton").disabled = true;
-      showMessage("Authenticating with Firebase...");
+      loginButton.disabled = true;
+      showMessage(loginMessage, "Signing in...");
 
       try {
         await signInWithEmailAndPassword(
@@ -381,169 +369,102 @@
           $("email").value.trim(),
           $("password").value
         );
-
-        showMessage("Authentication successful.");
+        $("password").value = "";
+        showMessage(loginMessage, "");
       } catch (error) {
-        console.error("Firebase sign-in failed:", error.code);
+        // Avoid exposing detailed account information.
         showMessage(
-          "Sign-in failed. Check your credentials and Firebase Auth settings.",
-          true
+          loginMessage,
+          "Sign-in failed. Check your credentials and Firebase Authentication settings.",
+          "error"
         );
       } finally {
-        $("loginButton").disabled = false;
+        loginButton.disabled = false;
       }
     });
 
     $("resetButton").addEventListener("click", async () => {
       const email = $("email").value.trim();
-
       if (!email) {
-        showMessage("Enter your email address first.", true);
+        showMessage(loginMessage, "Enter your email address first.");
+        $("email").focus();
         return;
       }
 
       try {
         await sendPasswordResetEmail(auth, email);
-        showMessage("If the account is eligible, a reset email will be sent.");
-      } catch (error) {
-        console.error("Password reset failed:", error.code);
         showMessage(
-          "Unable to request a reset. Check the email and Firebase settings.",
-          true
+          loginMessage,
+          "If this account is registered, a password reset email may arrive shortly.",
+          "success"
         );
-      }
-    });
-
-    $("logout").addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        log("INFO", "Signed out.");
       } catch {
-        log("ERROR", "Sign-out failed.");
+        showMessage(
+          loginMessage,
+          "Could not request a reset. Check your email and Firebase settings.",
+          "error"
+        );
       }
     });
 
-    onAuthStateChanged(auth, user => {
-      setSignedIn(user);
+    $("logoutButton").addEventListener("click", async () => {
+      await signOut(auth);
     });
 
-    function renderCheck(name, result) {
-      const card = document.createElement("div");
-      card.className = "check";
+    $("checkButton").addEventListener("click", refreshDiagnostics);
 
-      const title = document.createElement("div");
-      title.className = "check-title";
-      title.textContent = name;
-
-      const status = document.createElement("div");
-      status.className = result.ok ? "online" : "offline";
-      status.textContent = result.ok ? "PASS" : "FAIL";
-
-      const detail = document.createElement("div");
-      detail.className = "check-detail";
-      detail.textContent = [
-        result.status ? "HTTP " + result.status : "",
-        Number.isFinite(result.ms) ? result.ms + " ms" : "",
-        result.note || ""
-      ].filter(Boolean).join(" · ");
-
-      card.append(title, status, detail);
-      $("checks").append(card);
-    }
-
-    async function checkUrl(name, url) {
-      const start = performance.now();
-
-      try {
-        const response = await fetch(url, {
-          method: "GET",
-          cache: "no-store",
-          credentials: "same-origin"
-        });
-
-        const ms = Math.round(performance.now() - start);
-
-        try {
-          await response.body?.cancel();
-        } catch {}
-
-        return {
-          name,
-          ok: response.ok,
-          status: response.status,
-          ms
-        };
-      } catch {
-        return {
-          name,
-          ok: false,
-          ms: Math.round(performance.now() - start),
-          note: "Network or access error"
-        };
-      }
-    }
-
-    async function refresh() {
-      if (checking || !auth.currentUser) return;
-
-      checking = true;
-      $("runCheck").disabled = true;
-      checkCount++;
-
-      try {
-        // These are public same-origin URLs. This checks reachability,
-        // not private server internals or complete backend health.
-        const [home, stats] = await Promise.all([
-          checkUrl("Homepage", "/"),
-          checkUrl("Visitor statistics API", "/api/stats")
-        ]);
-
-        $("checks").replaceChildren();
-        renderCheck(home.name, home);
-        renderCheck(stats.name, stats);
-
-        $("siteStatus").textContent =
-          home.ok ? "ONLINE" : "UNREACHABLE";
-
-        $("siteStatus").className =
-          "metric " + (home.ok ? "online" : "offline");
-
-        $("pageTime").textContent = home.ms + " ms";
-        $("apiTime").textContent = stats.ms + " ms";
-        $("checkCount").textContent = checkCount;
-
-        log(
-          home.ok ? "INFO" : "ERROR",
-          `Homepage: ${home.ok ? "HTTP " + home.status : "unreachable"} (${home.ms} ms)`
-        );
-
-        log(
-          stats.ok ? "INFO" : "WARN",
-          `Stats API: ${stats.ok ? "HTTP " + stats.status : "unavailable"} (${stats.ms} ms)`
-        );
-      } finally {
-        checking = false;
-        $("runCheck").disabled = false;
-      }
-    }
-
-    $("runCheck").addEventListener("click", refresh);
-
-    $("clearLogs").addEventListener("click", () => {
+    $("clearLogButton").addEventListener("click", () => {
       $("logs").replaceChildren();
-      log("INFO", "Visible log cleared.");
+      log("Log cleared.");
     });
 
-    // Display initialization errors without exposing configuration values.
-    if (
-      firebaseConfig.apiKey.startsWith("YOUR_") ||
-      firebaseConfig.projectId.startsWith("YOUR_") ||
-      firebaseConfig.appId.startsWith("YOUR_")
-    ) {
+    try {
+      if (
+        !firebaseConfig ||
+        !firebaseConfig.apiKey ||
+        firebaseConfig.apiKey === "YOUR_FIREBASE_WEB_API_KEY" ||
+        !firebaseConfig.projectId ||
+        firebaseConfig.projectId === "YOUR_FIREBASE_PROJECT_ID" ||
+        !firebaseConfig.appId ||
+        firebaseConfig.appId === "YOUR_FIREBASE_WEB_APP_ID"
+      ) {
+        throw new Error("Firebase configuration placeholders have not been replaced.");
+      }
+
+      const app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+
+      onAuthStateChanged(auth, (user) => {
+        currentUser = user;
+
+        if (user) {
+          loginPanel.classList.add("hidden");
+          dashboard.classList.remove("hidden");
+          $("accountEmail").textContent = user.email || "Authenticated account";
+          connectionLabel.textContent = "AUTHENTICATED";
+          connectionLabel.className = "subtitle success";
+          log("Authenticated session established.", "success");
+          refreshDiagnostics();
+          startAutomaticChecks();
+        } else {
+          stopAutomaticChecks();
+          dashboard.classList.add("hidden");
+          loginPanel.classList.remove("hidden");
+          $("accountEmail").textContent = "";
+          connectionLabel.textContent = "AUTHENTICATION REQUIRED";
+          connectionLabel.className = "subtitle";
+        }
+      });
+    } catch (error) {
+      loginButton.disabled = true;
       showMessage(
-        "Setup required: replace the Firebase configuration placeholders in this file.",
-        true
+        loginMessage,
+        "Firebase setup error. Check firebase-config.js and the browser console.",
+        "error"
       );
+      connectionLabel.textContent = "CONFIGURATION ERROR";
+      connectionLabel.className = "subtitle error";
+      console.error("Monitor initialization failed:", error);
     }
   </script>
 </body>
