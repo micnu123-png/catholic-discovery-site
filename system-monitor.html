@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>System Monitor | Catholic Discovery</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #060907;
+      --panel: #0c130e;
+      --border: #1b3d27;
+      --green: #39ff88;
+      --muted: #8aab94;
+      --red: #ff6969;
+      --gold: #e9c46a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--green);
+      font-family: Consolas, "Courier New", monospace;
+      min-height: 100vh;
+    }
+
+    button, input { font: inherit; }
+
+    button {
+      cursor: pointer;
+      padding: 11px 15px;
+      border: 1px solid var(--green);
+      border-radius: 4px;
+      color: var(--green);
+      background: #102016;
+    }
+
+    button:hover { background: #193522; }
+    button:disabled { opacity: .5; cursor: wait; }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      color: var(--green);
+      background: #050806;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline-color: var(--green);
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden { display: none !important; }
+
+    .muted { color: var(--muted); }
+
+    .shell {
+      width: min(1100px, 94%);
+      margin: auto;
+    }
+
+    header {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(22px, 4vw, 32px);
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      margin: 0 0 15px;
+      font-size: 15px;
+    }
+
+    .brand { color: var(--green); }
+
+    .sub {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    main { padding: 24px 0; }
+
+    .login-wrap {
+      min-height: 70vh;
+      display: grid;
+      place-items: center;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 20px;
+      min-width: 0;
+    }
+
+    .login {
+      width: min(420px, 100%);
+      box-shadow: 0 0 35px #12351b20;
+    }
+
+    .login h2 {
+      color: var(--green);
+      font-size: 19px;
+    }
+
+    .login button { width: 100%; margin-top: 18px; }
+
+    .message {
+      margin-top: 14px;
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .error { color: var(--red); }
+    .success { color: var(--green); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .metric {
+      margin-top: 12px;
+      font-size: 23px;
+      overflow-wrap: anywhere;
+    }
+
+    .online { color: var(--green); }
+    .warning { color: var(--gold); }
+    .offline { color: var(--red); }
+
+    #checks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+
+    .check {
+      padding: 13px;
+      background: #060a07;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      overflow-wrap: anywhere;
+    }
+
+    .check-title { margin-bottom: 9px; }
+    .check-detail { color: var(--muted); font-size: 11px; line-height: 1.7; }
+
+    #logs {
+      height: 240px;
+      overflow: auto;
+      padding: 13px;
+      background: #030504;
+      border: 1px solid var(--border);
+      line-height: 1.7;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .log { white-space: pre-wrap; }
+    .log.error { color: var(--red); }
+    .log.warn { color: var(--gold); }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    footer {
+      padding: 20px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="shell top">
+      <div>
+        <h1 class="brand">CATHOLIC DISCOVERY</h1>
+        <div class="sub">SYSTEM MONITOR // AUTHENTICATED CONSOLE</div>
+      </div>
+      <div id="connection" class="sub">AUTHENTICATION REQUIRED</div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section id="loginSection" class="login-wrap">
+      <form id="loginForm" class="panel login">
+        <h2>ACCESS TERMINAL</h2>
+        <p class="muted">Sign in with your authorized Firebase account.</p>
+
+        <label for="email">EMAIL ADDRESS</label>
+        <input id="email" type="email" autocomplete="username"
+               placeholder="you@example.com" required>
+
+        <label for="password">PASSWORD</label>
+        <input id="password" type="password"
+               autocomplete="current-password"
+               placeholder="Your password" required>
+
+        <button id="loginButton" type="submit">SIGN IN</button>
+        <button id="resetButton" type="button">RESET PASSWORD</button>
+
+        <div id="loginMessage" class="message" role="status"></div>
+      </form>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <div class="top" style="margin-bottom:18px">
+        <div>
+          <h2>MONITORING DASHBOARD</h2>
+          <div id="signedInAs" class="sub"></div>
+        </div>
+        <div class="actions">
+          <button id="runCheck">RUN CHECK</button>
+          <button id="logout">SIGN OUT</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <section class="panel">
+          <div class="metric-label">Website availability</div>
+          <div id="siteStatus" class="metric">WAITING</div>
+        </section>
+
+        <section class="panel">
+          <div class="metric-label">Page response</div>
+          <div id="pageTime" class="metric">-- ms</div>
+        </section>
+
+        <section class="panel">
+          <div class="metric-label">API response</div>
+          <div id="apiTime" class="metric">-- ms</div>
+        </section>
+
+        <section class="panel">
+          <div class="metric-label">Checks this session</div>
+          <div id="checkCount" class="metric">0</div>
+        </section>
+      </div>
+
+      <section class="panel" style="margin-bottom:16px">
+        <h2>SERVICE CHECKS</h2>
+        <div id="checks" class="muted">Waiting for checks...</div>
+      </section>
+
+      <section class="panel">
+        <div class="top" style="margin-bottom:14px">
+          <h2>EVENT LOG</h2>
+          <button id="clearLogs">CLEAR LOG</button>
+        </div>
+        <div id="logs" aria-live="polite"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="shell">
+    AUTHENTICATED SESSION · REAL HTTP CHECKS · NO FABRICATED METRICS
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut,
+      sendPasswordResetEmail
+    } from
+      "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+
+    // Replace these values with your Firebase Web App configuration.
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_WEB_API_KEY",
+      authDomain: "YOUR_FIREBASE_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_FIREBASE_PROJECT_ID",
+      appId: "YOUR_FIREBASE_WEB_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const $ = id => document.getElementById(id);
+
+    let checkCount = 0;
+    let checking = false;
+    let refreshTimer = null;
+
+    function log(level, message) {
+      const row = document.createElement("div");
+      row.className = "log" +
+        (level === "ERROR" ? " error" :
+         level === "WARN" ? " warn" : "");
+
+      row.textContent =
+        `[${new Date().toLocaleTimeString()}] [${level}] ${message}`;
+
+      $("logs").prepend(row);
+
+      while ($("logs").children.length > 100) {
+        $("logs").lastElementChild.remove();
+      }
+    }
+
+    function showMessage(message, isError = false) {
+      $("loginMessage").textContent = message;
+      $("loginMessage").className =
+        "message " + (isError ? "error" : "success");
+    }
+
+    function setSignedIn(user) {
+      $("loginSection").classList.toggle("hidden", !!user);
+      $("dashboard").classList.toggle("hidden", !user);
+      $("connection").textContent =
+        user ? "AUTHENTICATED" : "AUTHENTICATION REQUIRED";
+      $("signedInAs").textContent =
+        user ? "SIGNED IN AS " + user.email : "";
+
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+        refreshTimer = null;
+      }
+
+      if (user) {
+        $("logs").replaceChildren();
+        log("INFO", "Firebase authentication confirmed.");
+        log("INFO", "Starting real website health checks.");
+        refresh();
+        refreshTimer = setInterval(refresh, 60000);
+      }
+    }
+
+    $("loginForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      $("loginButton").disabled = true;
+      showMessage("Authenticating with Firebase...");
+
+      try {
+        await signInWithEmailAndPassword(
+          auth,
+          $("email").value.trim(),
+          $("password").value
+        );
+
+        showMessage("Authentication successful.");
+      } catch (error) {
+        console.error("Firebase sign-in failed:", error.code);
+        showMessage(
+          "Sign-in failed. Check your credentials and Firebase Auth settings.",
+          true
+        );
+      } finally {
+        $("loginButton").disabled = false;
+      }
+    });
+
+    $("resetButton").addEventListener("click", async () => {
+      const email = $("email").value.trim();
+
+      if (!email) {
+        showMessage("Enter your email address first.", true);
+        return;
+      }
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showMessage("If the account is eligible, a reset email will be sent.");
+      } catch (error) {
+        console.error("Password reset failed:", error.code);
+        showMessage(
+          "Unable to request a reset. Check the email and Firebase settings.",
+          true
+        );
+      }
+    });
+
+    $("logout").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        log("INFO", "Signed out.");
+      } catch {
+        log("ERROR", "Sign-out failed.");
+      }
+    });
+
+    onAuthStateChanged(auth, user => {
+      setSignedIn(user);
+    });
+
+    function renderCheck(name, result) {
+      const card = document.createElement("div");
+      card.className = "check";
+
+      const title = document.createElement("div");
+      title.className = "check-title";
+      title.textContent = name;
+
+      const status = document.createElement("div");
+      status.className = result.ok ? "online" : "offline";
+      status.textContent = result.ok ? "PASS" : "FAIL";
+
+      const detail = document.createElement("div");
+      detail.className = "check-detail";
+      detail.textContent = [
+        result.status ? "HTTP " + result.status : "",
+        Number.isFinite(result.ms) ? result.ms + " ms" : "",
+        result.note || ""
+      ].filter(Boolean).join(" · ");
+
+      card.append(title, status, detail);
+      $("checks").append(card);
+    }
+
+    async function checkUrl(name, url) {
+      const start = performance.now();
+
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          cache: "no-store",
+          credentials: "same-origin"
+        });
+
+        const ms = Math.round(performance.now() - start);
+
+        try {
+          await response.body?.cancel();
+        } catch {}
+
+        return {
+          name,
+          ok: response.ok,
+          status: response.status,
+          ms
+        };
+      } catch {
+        return {
+          name,
+          ok: false,
+          ms: Math.round(performance.now() - start),
+          note: "Network or access error"
+        };
+      }
+    }
+
+    async function refresh() {
+      if (checking || !auth.currentUser) return;
+
+      checking = true;
+      $("runCheck").disabled = true;
+      checkCount++;
+
+      try {
+        // These are public same-origin URLs. This checks reachability,
+        // not private server internals or complete backend health.
+        const [home, stats] = await Promise.all([
+          checkUrl("Homepage", "/"),
+          checkUrl("Visitor statistics API", "/api/stats")
+        ]);
+
+        $("checks").replaceChildren();
+        renderCheck(home.name, home);
+        renderCheck(stats.name, stats);
+
+        $("siteStatus").textContent =
+          home.ok ? "ONLINE" : "UNREACHABLE";
+
+        $("siteStatus").className =
+          "metric " + (home.ok ? "online" : "offline");
+
+        $("pageTime").textContent = home.ms + " ms";
+        $("apiTime").textContent = stats.ms + " ms";
+        $("checkCount").textContent = checkCount;
+
+        log(
+          home.ok ? "INFO" : "ERROR",
+          `Homepage: ${home.ok ? "HTTP " + home.status : "unreachable"} (${home.ms} ms)`
+        );
+
+        log(
+          stats.ok ? "INFO" : "WARN",
+          `Stats API: ${stats.ok ? "HTTP " + stats.status : "unavailable"} (${stats.ms} ms)`
+        );
+      } finally {
+        checking = false;
+        $("runCheck").disabled = false;
+      }
+    }
+
+    $("runCheck").addEventListener("click", refresh);
+
+    $("clearLogs").addEventListener("click", () => {
+      $("logs").replaceChildren();
+      log("INFO", "Visible log cleared.");
+    });
+
+    // Display initialization errors without exposing configuration values.
+    if (
+      firebaseConfig.apiKey.startsWith("YOUR_") ||
+      firebaseConfig.projectId.startsWith("YOUR_") ||
+      firebaseConfig.appId.startsWith("YOUR_")
+    ) {
+      showMessage(
+        "Setup required: replace the Firebase configuration placeholders in this file.",
+        true
+      );
+    }
+  </script>
+</body>
+</html>
