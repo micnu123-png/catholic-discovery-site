@@ -1,0 +1,1416 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description" content="Discover upcoming Catholic Discovery online events, including Nine Lessons and Carols, Christmas Scripture readings, carols, prayer, and worship.">
+  <meta name="theme-color" content="#7b1113">
+
+  <meta property="og:title" content="Upcoming Events | Catholic Discovery">
+  <meta property="og:description" content="Join Catholic Discovery online for Nine Lessons and Carols on 11 December 2026.">
+  <meta property="og:type" content="website">
+
+  <title>Upcoming Events | Catholic Discovery</title>
+
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* =====================================
+       CATHOLIC DISCOVERY EVENTS PAGE
+       Burgundy, gold and ivory theme
+       ===================================== */
+
+    :root {
+      --event-burgundy: #7b1113;
+      --event-deep: #430b17;
+      --event-gold: #d6ad60;
+      --event-ivory: #fffaf2;
+      --event-text: #38272b;
+      --event-muted: #77686a;
+      --event-border: #eaded4;
+      --event-white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    body {
+      margin: 0;
+      color: var(--event-text);
+      background: var(--event-ivory);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .events-container {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* Navigation */
+
+    .events-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(123, 17, 19, 0.1);
+      background: rgba(255, 250, 242, 0.96);
+      backdrop-filter: blur(14px);
+    }
+
+    .events-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-height: 78px;
+    }
+
+    .events-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--event-burgundy);
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .events-brand img {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    .events-nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .events-nav-links a {
+      color: #554347;
+      font-size: 0.91rem;
+      font-weight: 650;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .events-nav-links a:hover,
+    .events-nav-links a[aria-current="page"] {
+      color: var(--event-burgundy);
+    }
+
+    .events-nav-links .events-nav-cta {
+      padding: 10px 17px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--event-burgundy);
+    }
+
+    .events-nav-links .events-nav-cta:hover {
+      color: #fff;
+      background: var(--event-deep);
+    }
+
+    /* Hero */
+
+    .events-hero {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: 88px 20px 84px;
+      color: white;
+      text-align: center;
+      background:
+        radial-gradient(
+          circle at 15% 15%,
+          rgba(214, 173, 96, 0.19),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 85% 80%,
+          rgba(214, 173, 96, 0.13),
+          transparent 30%
+        ),
+        linear-gradient(135deg, #3d0915, #791b2b 58%, #4c101d);
+    }
+
+    .events-hero::before,
+    .events-hero::after {
+      position: absolute;
+      z-index: -1;
+      width: 300px;
+      height: 300px;
+      border: 1px solid rgba(214, 173, 96, 0.19);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    .events-hero::before {
+      top: -170px;
+      left: -100px;
+    }
+
+    .events-hero::after {
+      right: -120px;
+      bottom: -190px;
+      width: 420px;
+      height: 420px;
+    }
+
+    .events-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin: 0 0 18px;
+      color: var(--event-gold);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+
+    .events-hero h1 {
+      max-width: 850px;
+      margin: 0 auto 20px;
+      color: #fffaf2;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.5rem, 6vw, 4.8rem);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -1.3px;
+    }
+
+    .events-hero h1 span {
+      display: block;
+      margin-top: 8px;
+      color: var(--event-gold);
+    }
+
+    .events-hero-description {
+      max-width: 670px;
+      margin: 0 auto;
+      color: rgba(255, 250, 242, 0.86);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      line-height: 1.9;
+    }
+
+    .events-hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 13px;
+      margin-top: 30px;
+    }
+
+    .events-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 49px;
+      padding: 13px 22px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font: inherit;
+      font-size: 0.94rem;
+      font-weight: 750;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .events-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .events-button-gold {
+      color: var(--event-deep);
+      background: var(--event-gold);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .events-button-gold:hover {
+      background: #ebc979;
+    }
+
+    .events-button-outline {
+      border-color: rgba(255, 250, 242, 0.5);
+      color: white;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .events-button-outline:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Main content */
+
+    .events-main {
+      padding: 68px 0 80px;
+    }
+
+    .events-section-heading {
+      max-width: 720px;
+      margin: 0 auto 34px;
+      text-align: center;
+    }
+
+    .events-section-heading .events-eyebrow {
+      margin-bottom: 10px;
+      color: var(--event-burgundy);
+    }
+
+    .events-section-heading h2 {
+      margin: 0 0 12px;
+      color: var(--event-deep);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem, 4vw, 2.9rem);
+      line-height: 1.2;
+    }
+
+    .events-section-heading p {
+      margin: 0;
+      color: var(--event-muted);
+      line-height: 1.85;
+    }
+
+    /* Featured event */
+
+    .featured-event {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      overflow: hidden;
+      border: 1px solid var(--event-border);
+      border-radius: 25px;
+      background: white;
+      box-shadow: 0 20px 55px rgba(67, 11, 23, 0.08);
+    }
+
+    .event-artwork {
+      position: relative;
+      display: flex;
+      min-height: 420px;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 35px;
+      color: white;
+      text-align: center;
+      background:
+        radial-gradient(
+          ellipse at center,
+          rgba(214, 173, 96, 0.22),
+          transparent 56%
+        ),
+        linear-gradient(150deg, #701523, #390b17);
+    }
+
+    .event-artwork::before {
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(214, 173, 96, 0.4);
+      border-radius: 17px;
+      content: "";
+      pointer-events: none;
+    }
+
+    .event-artwork-content {
+      position: relative;
+      max-width: 390px;
+    }
+
+    .event-artwork-cross {
+      margin-bottom: 15px;
+      color: var(--event-gold);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 4rem;
+      line-height: 1.1;
+    }
+
+    .event-artwork-kicker {
+      margin: 0 0 12px;
+      color: var(--event-gold);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 2.3px;
+      text-transform: uppercase;
+    }
+
+    .event-artwork h2 {
+      margin: 0;
+      color: #fffaf2;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.16;
+    }
+
+    .event-artwork-divider {
+      width: 65px;
+      height: 2px;
+      margin: 23px auto;
+      background: var(--event-gold);
+    }
+
+    .event-artwork-caption {
+      margin: 0;
+      color: rgba(255, 250, 242, 0.84);
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+    }
+
+    .event-details {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: clamp(25px, 4vw, 43px);
+    }
+
+    .event-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 19px;
+      padding: 8px 12px;
+      border: 1px solid #ead9b1;
+      border-radius: 999px;
+      color: #77531b;
+      background: #fff8e7;
+      font-size: 0.77rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+    .event-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #bf8a2e;
+    }
+
+    .event-details h3 {
+      margin: 0 0 13px;
+      color: var(--event-deep);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      line-height: 1.2;
+    }
+
+    .event-summary {
+      margin: 0 0 23px;
+      color: var(--event-muted);
+      font-size: 0.97rem;
+      line-height: 1.85;
+    }
+
+    .event-facts {
+      display: grid;
+      width: 100%;
+      gap: 15px;
+      margin-bottom: 27px;
+    }
+
+    .event-fact {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+    }
+
+    .event-fact-icon {
+      display: grid;
+      flex: 0 0 40px;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 12px;
+      color: var(--event-burgundy);
+      background: #f8eee9;
+      font-size: 1.15rem;
+    }
+
+    .event-fact strong {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--event-deep);
+      font-size: 0.9rem;
+    }
+
+    .event-fact span {
+      display: block;
+      color: var(--event-muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .event-details .events-button {
+      width: 100%;
+    }
+
+    .event-small-note {
+      margin: 13px 0 0;
+      color: #897a7d;
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+
+    /* Countdown */
+
+    .countdown-section {
+      margin-top: 48px;
+      padding: clamp(25px, 5vw, 42px);
+      border: 1px solid rgba(214, 173, 96, 0.35);
+      border-radius: 24px;
+      background: linear-gradient(135deg, #fffdf9, #f7eee5);
+      text-align: center;
+    }
+
+    .countdown-section h2 {
+      margin: 0 0 8px;
+      color: var(--event-deep);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.7rem, 4vw, 2.3rem);
+      line-height: 1.25;
+    }
+
+    .countdown-intro {
+      margin: 0 0 26px;
+      color: var(--event-muted);
+      font-size: 0.94rem;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .countdown-unit {
+      padding: 20px 10px;
+      border: 1px solid #eadbd0;
+      border-radius: 17px;
+      background: white;
+    }
+
+    .countdown-number {
+      display: block;
+      color: var(--event-burgundy);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 850;
+      line-height: 1.2;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .countdown-label {
+      display: block;
+      margin-top: 7px;
+      color: var(--event-muted);
+      font-size: 0.78rem;
+      font-weight: 750;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .countdown-message {
+      margin: 22px 0 0;
+      color: var(--event-burgundy);
+      font-size: 0.94rem;
+      font-weight: 750;
+    }
+
+    /* Livestream */
+
+    .livestream-section {
+      padding-top: 76px;
+      scroll-margin-top: 90px;
+    }
+
+    .livestream-card {
+      overflow: hidden;
+      border: 1px solid var(--event-border);
+      border-radius: 24px;
+      background: white;
+      box-shadow: 0 15px 42px rgba(67, 11, 23, 0.06);
+    }
+
+    .livestream-heading {
+      padding: 30px 25px 25px;
+      text-align: center;
+    }
+
+    .livestream-heading .events-eyebrow {
+      margin-bottom: 8px;
+      color: var(--event-burgundy);
+    }
+
+    .livestream-heading h2 {
+      margin: 0 0 10px;
+      color: var(--event-deep);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      line-height: 1.2;
+    }
+
+    .livestream-heading p {
+      max-width: 660px;
+      margin: 0 auto;
+      color: var(--event-muted);
+      line-height: 1.8;
+    }
+
+    .livestream-screen {
+      position: relative;
+      display: grid;
+      min-height: 250px;
+      aspect-ratio: 16 / 9;
+      place-items: center;
+      overflow: hidden;
+      padding: 25px;
+      color: white;
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(214, 173, 96, 0.12),
+          transparent 45%
+        ),
+        linear-gradient(145deg, #310914, #651421);
+    }
+
+    .livestream-screen iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .stream-placeholder {
+      max-width: 520px;
+      text-align: center;
+    }
+
+    .stream-play-icon {
+      display: grid;
+      width: 72px;
+      height: 72px;
+      place-items: center;
+      margin: 0 auto 18px;
+      border: 1px solid rgba(214, 173, 96, 0.65);
+      border-radius: 50%;
+      color: var(--event-gold);
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 1.8rem;
+    }
+
+    .stream-placeholder h3 {
+      margin: 0 0 10px;
+      color: white;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.25;
+    }
+
+    .stream-placeholder p {
+      margin: 0;
+      color: rgba(255, 250, 242, 0.8);
+      font-size: 0.93rem;
+      line-height: 1.8;
+    }
+
+    .livestream-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding: 22px 25px;
+    }
+
+    .livestream-footer p {
+      margin: 0;
+      color: var(--event-muted);
+      font-size: 0.85rem;
+    }
+
+    .livestream-footer .events-button {
+      min-height: 43px;
+      padding: 10px 17px;
+      color: white;
+      background: var(--event-burgundy);
+    }
+
+    .livestream-footer .events-button:hover {
+      background: var(--event-deep);
+    }
+
+    /* Programme */
+
+    .programme-section {
+      padding-top: 76px;
+    }
+
+    .programme-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .programme-card {
+      padding: 25px;
+      border: 1px solid var(--event-border);
+      border-radius: 19px;
+      background: white;
+      box-shadow: 0 8px 25px rgba(67, 11, 23, 0.035);
+    }
+
+    .programme-number {
+      display: inline-grid;
+      width: 43px;
+      height: 43px;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 13px;
+      color: #74521c;
+      background: #fbf1d9;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .programme-card h3 {
+      margin: 0 0 9px;
+      color: var(--event-deep);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.3rem;
+      line-height: 1.3;
+    }
+
+    .programme-card p {
+      margin: 0;
+      color: var(--event-muted);
+      font-size: 0.91rem;
+      line-height: 1.8;
+    }
+
+    /* Call to action */
+
+    .events-cta {
+      margin-top: 76px;
+      padding: clamp(30px, 5vw, 50px);
+      border-radius: 24px;
+      color: white;
+      background: linear-gradient(125deg, #761522, #430b17);
+      text-align: center;
+    }
+
+    .events-cta .events-eyebrow {
+      margin-bottom: 10px;
+    }
+
+    .events-cta h2 {
+      margin: 0 0 12px;
+      color: #fffaf2;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      line-height: 1.2;
+    }
+
+    .events-cta p {
+      max-width: 650px;
+      margin: 0 auto 25px;
+      color: rgba(255, 250, 242, 0.83);
+      line-height: 1.8;
+    }
+
+    /* Footer */
+
+    .events-footer {
+      padding: 28px 0;
+      border-top: 1px solid var(--event-border);
+      background: #fffdf9;
+    }
+
+    .events-footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .events-footer-brand {
+      color: var(--event-burgundy);
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .events-footer p {
+      margin: 0;
+      color: var(--event-muted);
+      font-size: 0.83rem;
+    }
+
+    .events-footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .events-footer-links a {
+      color: var(--event-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+
+    .events-footer-links a:hover {
+      color: var(--event-burgundy);
+    }
+
+    /* Accessibility */
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--event-gold);
+      outline-offset: 4px;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 12px;
+      z-index: 200;
+      padding: 10px 15px;
+      border-radius: 8px;
+      color: white;
+      background: var(--event-burgundy);
+    }
+
+    .skip-link:focus {
+      top: 12px;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 850px) {
+      .events-nav {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        padding-top: 13px;
+        padding-bottom: 14px;
+      }
+
+      .events-nav-links {
+        justify-content: flex-start;
+        gap: 12px 19px;
+      }
+
+      .featured-event {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .event-artwork {
+        min-height: 340px;
+      }
+
+      .programme-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .events-container {
+        width: min(100% - 30px, 1120px);
+      }
+
+      .events-nav-links {
+        gap: 9px 14px;
+      }
+
+      .events-nav-links a {
+        font-size: 0.82rem;
+      }
+
+      .events-nav-links .events-nav-cta {
+        padding: 7px 12px;
+      }
+
+      .events-hero {
+        padding: 65px 17px;
+      }
+
+      .events-hero h1 {
+        letter-spacing: -0.6px;
+      }
+
+      .events-hero-actions {
+        flex-direction: column;
+      }
+
+      .events-hero-actions .events-button {
+        width: 100%;
+        max-width: 320px;
+      }
+
+      .events-main {
+        padding-top: 45px;
+        padding-bottom: 55px;
+      }
+
+      .event-artwork {
+        min-height: 300px;
+        padding: 27px;
+      }
+
+      .event-details {
+        padding: 24px 20px;
+      }
+
+      .countdown-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 11px;
+      }
+
+      .countdown-unit {
+        padding: 17px 8px;
+      }
+
+      .livestream-section,
+      .programme-section {
+        padding-top: 55px;
+      }
+
+      .livestream-screen {
+        min-height: 260px;
+        aspect-ratio: auto;
+      }
+
+      .livestream-footer {
+        align-items: stretch;
+        flex-direction: column;
+        padding: 20px;
+      }
+
+      .livestream-footer .events-button {
+        width: 100%;
+      }
+
+      .programme-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .events-footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- Navigation -->
+  <header class="events-header">
+    <nav class="events-nav events-container" aria-label="Main navigation">
+      <a class="events-brand" href="index.html" aria-label="Catholic Discovery home">
+        <img
+          src="logo.png"
+          alt=""
+          onerror="this.style.display='none'"
+        >
+        <span>Catholic Discovery</span>
+      </a>
+
+      <div class="events-nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#videos">Videos</a>
+        <a href="readings.html">Readings</a>
+        <a href="homily.html">Homily</a>
+        <a href="index.html#posts">Posts</a>
+        <a href="#featured-event" aria-current="page">Events</a>
+        <a class="events-nav-cta" href="#livestream">Watch Online</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="events-hero">
+    <p class="events-eyebrow">✦ Catholic Discovery Presents ✦</p>
+
+    <h1>
+      Upcoming Events
+      <span>Nine Lessons and Carols</span>
+    </h1>
+
+    <p class="events-hero-description">
+      Prepare your heart for Christmas through the story of salvation,
+      Scripture readings, beautiful carols, prayer, and reflection.
+      Join us online as we celebrate the birth of our Lord Jesus Christ.
+    </p>
+
+    <div class="events-hero-actions">
+      <a class="events-button events-button-gold" href="#featured-event">
+        Explore the Event <span aria-hidden="true">↓</span>
+      </a>
+
+      <a class="events-button events-button-outline" href="#livestream">
+        <span aria-hidden="true">▶</span> Livestream Information
+      </a>
+    </div>
+  </section>
+
+  <main id="main">
+    <div class="events-main">
+      <div class="events-container">
+
+        <!-- Featured event -->
+        <section id="featured-event" aria-labelledby="featured-title">
+          <div class="events-section-heading">
+            <p class="events-eyebrow">Save the Date</p>
+            <h2>A Christmas Celebration of Scripture and Song</h2>
+            <p>
+              Join the Catholic Discovery online community for an evening
+              of biblical readings, Christmas carols, and reflection on
+              the coming of Jesus Christ.
+            </p>
+          </div>
+
+          <article class="featured-event">
+            <div class="event-artwork">
+              <div class="event-artwork-content">
+                <div class="event-artwork-cross" aria-hidden="true">✝</div>
+
+                <p class="event-artwork-kicker">
+                  The Christmas Season
+                </p>
+
+                <h2 id="featured-title">
+                  Nine Lessons<br>
+                  and Carols
+                </h2>
+
+                <div class="event-artwork-divider"></div>
+
+                <p class="event-artwork-caption">
+                  SCRIPTURE · SONG · PRAYER · HOPE
+                </p>
+              </div>
+            </div>
+
+            <div class="event-details">
+              <span class="event-status">
+                <span class="event-status-dot"></span>
+                Upcoming Online Event
+              </span>
+
+              <h3>Nine Lessons and Carols 2026</h3>
+
+              <p class="event-summary">
+                Journey through the story of God's promise of salvation,
+                from the beginning of Scripture to the birth of Jesus.
+                Listen, pray, sing along, and prepare for Christmas with
+                Catholic Discovery.
+              </p>
+
+              <div class="event-facts">
+                <div class="event-fact">
+                  <div class="event-fact-icon" aria-hidden="true">▦</div>
+                  <div>
+                    <strong>Date</strong>
+                    <span>Friday, 11 December 2026</span>
+                  </div>
+                </div>
+
+                <div class="event-fact">
+                  <div class="event-fact-icon" aria-hidden="true">◷</div>
+                  <div>
+                    <strong>Starting Time</strong>
+                    <span>6:00 PM Ghana time (GMT / UTC+0)</span>
+                  </div>
+                </div>
+
+                <div class="event-fact">
+                  <div class="event-fact-icon" aria-hidden="true">▶</div>
+                  <div>
+                    <strong>Location</strong>
+                    <span>Online on YouTube — no physical gathering</span>
+                  </div>
+                </div>
+
+                <div class="event-fact">
+                  <div class="event-fact-icon" aria-hidden="true">♡</div>
+                  <div>
+                    <strong>Everyone Is Welcome</strong>
+                    <span>Join us from anywhere with an internet connection.</span>
+                  </div>
+                </div>
+              </div>
+
+              <a
+                class="events-button events-button-gold"
+                href="#livestream"
+              >
+                View Livestream Details <span aria-hidden="true">→</span>
+              </a>
+
+              <p class="event-small-note">
+                VIEW DETAILS
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <!-- Countdown -->
+        <section class="countdown-section" aria-labelledby="countdown-title">
+          <h2 id="countdown-title">Counting Down to Christmas Carols</h2>
+
+          <p class="countdown-intro">
+            Get ready to celebrate the story of Christ's coming.
+          </p>
+
+          <div
+            class="countdown-grid"
+            id="eventCountdown"
+            role="timer"
+            aria-label="Countdown to Nine Lessons and Carols"
+          >
+            <div class="countdown-unit">
+              <span class="countdown-number" id="countdownDays">--</span>
+              <span class="countdown-label">Days</span>
+            </div>
+
+            <div class="countdown-unit">
+              <span class="countdown-number" id="countdownHours">--</span>
+              <span class="countdown-label">Hours</span>
+            </div>
+
+            <div class="countdown-unit">
+              <span class="countdown-number" id="countdownMinutes">--</span>
+              <span class="countdown-label">Minutes</span>
+            </div>
+
+            <div class="countdown-unit">
+              <span class="countdown-number" id="countdownSeconds">--</span>
+              <span class="countdown-label">Seconds</span>
+            </div>
+          </div>
+
+          <p
+            class="countdown-message"
+            id="countdownMessage"
+            aria-live="polite"
+          >
+            Preparing the countdown...
+          </p>
+        </section>
+
+        <!-- Livestream -->
+        <section
+          class="livestream-section"
+          id="livestream"
+          aria-labelledby="livestream-title"
+        >
+          <div class="events-section-heading">
+            <p class="events-eyebrow">Watch From Anywhere</p>
+            <h2>Join Us on YouTube</h2>
+            <p>
+              You will be able to watch the celebration here once the
+              livestream has been connected.
+            </p>
+          </div>
+
+          <div class="livestream-card">
+            <div class="livestream-heading">
+              <p class="events-eyebrow">Catholic Discovery Online</p>
+              <h2 id="livestream-title">Nine Lessons and Carols — Live</h2>
+              <p>
+                Keep this page bookmarked and return when the event begins.
+                We will connect the YouTube player as soon as the stream
+                is scheduled.
+              </p>
+            </div>
+
+            <div class="livestream-screen" id="livestreamScreen">
+              <div class="stream-placeholder" id="streamPlaceholder">
+                <div class="stream-play-icon" aria-hidden="true">▶</div>
+
+                <h3>The Livestream Is Coming Soon</h3>
+
+                <p>
+                  Our YouTube livestream has not been connected yet.
+                  Please visit again closer to the event, or subscribe
+                  to the Catholic Discovery channel for updates.
+                </p>
+              </div>
+            </div>
+
+            <div class="livestream-footer">
+              <p id="streamFooterNote">
+                Scheduled for 11 December 2026 at 6:00 PM GMT.
+              </p>
+
+              <a
+                class="events-button"
+                href="https://www.youtube.com/@CTF-q5l?sub_confirmation=1"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Subscribe on YouTube <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Programme overview -->
+        <section
+          class="programme-section"
+          aria-labelledby="programme-title"
+        >
+          <div class="events-section-heading">
+            <p class="events-eyebrow">An Evening of Faith</p>
+            <h2 id="programme-title">What to Expect</h2>
+            <p>
+              The traditional service of Nine Lessons and Carols tells the
+              story of God's plan of salvation through Scripture and song.
+              The final programme will be announced closer to the event.
+            </p>
+          </div>
+
+          <div class="programme-grid">
+            <article class="programme-card">
+              <span class="programme-number">01</span>
+              <h3>The Promise</h3>
+              <p>
+                Reflect on the biblical story of creation, humanity's
+                fall, and God's promise to send a Saviour.
+              </p>
+            </article>
+
+            <article class="programme-card">
+              <span class="programme-number">02</span>
+              <h3>The Prophecies</h3>
+              <p>
+                Hear Scripture passages that point toward the coming
+                Messiah and the hope of redemption.
+              </p>
+            </article>
+
+            <article class="programme-card">
+              <span class="programme-number">03</span>
+              <h3>The Nativity</h3>
+              <p>
+                Celebrate the birth of Jesus Christ through the Gospel
+                story, Christmas carols, and prayer.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Final call to action -->
+        <section class="events-cta">
+          <p class="events-eyebrow">Discover Christ. Grow in Faith.</p>
+
+          <h2>Let Us Prepare Our Hearts for Christmas</h2>
+
+          <p>
+            Invite your family and friends to join you online.
+            Let the Word of God and the joy of Christmas draw us
+            closer to Christ.
+          </p>
+
+          <a
+            class="events-button events-button-gold"
+            href="https://www.youtube.com/@CTF-q5l?sub_confirmation=1"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Subscribe for Updates <span aria-hidden="true">→</span>
+          </a>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="events-footer">
+    <div class="events-container events-footer-inner">
+      <a class="events-footer-brand" href="index.html">
+        Catholic Discovery
+      </a>
+
+      <p>
+        © <span id="currentYear"></span> Catholic Discovery.
+        All Rights Reserved.
+      </p>
+
+      <div class="events-footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#videos">Videos</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* =====================================
+       EVENT SETTINGS
+       ===================================== */
+
+    // 6:00 PM on 11 December 2026 in Ghana.
+    // Ghana uses GMT / UTC+0.
+    const EVENT_DATE = new Date("2026-12-11T18:00:00Z");
+
+    /*
+      When your YouTube livestream is ready, put its VIDEO ID below.
+
+      Example:
+      YouTube URL: https://www.youtube.com/watch?v=ABC123xyz
+      Video ID:    ABC123xyz
+
+      For a scheduled livestream, use the video ID of the
+      scheduled YouTube livestream, not the whole URL.
+
+      Leave it empty until you have the correct livestream.
+    */
+    const YOUTUBE_VIDEO_ID = "f6L5F17Eu8Y";
+
+    /* =====================================
+       COUNTDOWN
+       ===================================== */
+
+    const daysElement = document.getElementById("countdownDays");
+    const hoursElement = document.getElementById("countdownHours");
+    const minutesElement = document.getElementById("countdownMinutes");
+    const secondsElement = document.getElementById("countdownSeconds");
+    const countdownMessage = document.getElementById("countdownMessage");
+
+    function updateCountdown() {
+      const now = Date.now();
+      const difference = EVENT_DATE.getTime() - now;
+
+      if (difference <= 0) {
+        daysElement.textContent = "00";
+        hoursElement.textContent = "00";
+        minutesElement.textContent = "00";
+        secondsElement.textContent = "00";
+
+        if (difference > -60 * 60 * 1000) {
+          countdownMessage.textContent =
+            "The scheduled event time has arrived! Check the livestream section below.";
+        } else {
+          countdownMessage.textContent =
+            "The scheduled event time has passed. Check the YouTube channel for any replay or updates.";
+        }
+
+        return;
+      }
+
+      const totalSeconds = Math.floor(difference / 1000);
+
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      daysElement.textContent = String(days).padStart(2, "0");
+      hoursElement.textContent = String(hours).padStart(2, "0");
+      minutesElement.textContent = String(minutes).padStart(2, "0");
+      secondsElement.textContent = String(seconds).padStart(2, "0");
+
+      countdownMessage.textContent =
+        "We look forward to welcoming you online!";
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    /* =====================================
+       YOUTUBE LIVESTREAM
+       ===================================== */
+
+    const livestreamScreen = document.getElementById("livestreamScreen");
+    const streamPlaceholder = document.getElementById("streamPlaceholder");
+    const streamFooterNote = document.getElementById("streamFooterNote");
+
+    /*
+      Embed only a valid YouTube video ID.
+      The livestream area remains a coming-soon message
+      while YOUTUBE_VIDEO_ID is empty.
+    */
+
+    const validVideoId = /^[a-zA-Z0-9_-]{11}$/.test(YOUTUBE_VIDEO_ID);
+
+    if (validVideoId) {
+      const iframe = document.createElement("iframe");
+
+      iframe.src =
+        "https://www.youtube-nocookie.com/embed/" +
+        encodeURIComponent(YOUTUBE_VIDEO_ID);
+
+      iframe.title = "Catholic Discovery Nine Lessons and Carols livestream";
+      iframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+
+      streamPlaceholder.remove();
+      livestreamScreen.appendChild(iframe);
+
+      streamFooterNote.textContent =
+        "YouTube player connected. If the stream is not live yet, check back at the scheduled time.";
+    }
+
+    /* Current year in footer */
+    document.getElementById("currentYear").textContent =
+      new Date().getFullYear();
+  </script>
+</body>
+</html>

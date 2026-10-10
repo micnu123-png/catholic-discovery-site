@@ -1,0 +1,632 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#7b1113">
+  <title>Event Editor | Catholic Discovery</title>
+  <style>
+    :root {
+      --bg: #faf7f1;
+      --panel: #ffffff;
+      --burgundy: #7b1113;
+      --burgundy-dark: #4e080a;
+      --gold: #d6ad60;
+      --gold-light: #f8edcf;
+      --text: #302321;
+      --muted: #806e69;
+      --border: #eadfd6;
+      --green: #26734d;
+      --red: #b42318;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { opacity: .55; cursor: wait; }
+
+    header {
+      background: linear-gradient(120deg, var(--burgundy-dark), var(--burgundy));
+      color: white;
+      padding: 21px max(20px, calc((100% - 1150px) / 2));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      border-bottom: 3px solid var(--gold);
+    }
+
+    .brand { font-weight: 800; letter-spacing: 1.2px; }
+    .subtitle { font-size: 12px; color: #f0d9d3; margin-top: 5px; }
+    .connection { font-size: 12px; color: var(--gold-light); }
+
+    main { max-width: 1150px; margin: auto; padding: 30px 18px 60px; }
+    .login { max-width: 440px; margin: 55px auto; }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 23px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 24px #4e080a0a;
+      min-width: 0;
+    }
+
+    h1 { font-size: 25px; margin: 0 0 10px; color: var(--burgundy); }
+    h2 { font-size: 17px; color: var(--burgundy); margin: 0 0 17px; }
+    p { line-height: 1.65; }
+    .muted { color: var(--muted); font-size: 13px; }
+    label { display: block; font-size: 13px; font-weight: 650; margin: 15px 0; }
+
+    input, textarea, select {
+      width: 100%;
+      display: block;
+      margin-top: 7px;
+      border: 1px solid var(--border);
+      background: #fffdfa;
+      color: var(--text);
+      border-radius: 9px;
+      padding: 12px 13px;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px #d6ad6024;
+    }
+
+    textarea { min-height: 110px; resize: vertical; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 18px; }
+    .full { grid-column: 1 / -1; }
+
+    .btn {
+      border: 1px solid var(--burgundy);
+      background: var(--burgundy);
+      color: white;
+      border-radius: 9px;
+      padding: 11px 15px;
+      font-weight: 700;
+    }
+
+    .btn:hover { background: var(--burgundy-dark); }
+    .btn.secondary { background: white; color: var(--burgundy); }
+    .btn.gold { background: var(--gold-light); color: var(--burgundy-dark); border-color: var(--gold); }
+    .btn.danger { background: white; color: var(--red); border-color: #e8b8b3; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 18px; }
+    .hidden { display: none !important; }
+
+    .notice { font-size: 13px; margin-top: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+    .error { color: var(--red); }
+    .success { color: var(--green); }
+
+    .top-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 20px; align-items: start; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px 0; }
+    .stat { padding: 17px; border: 1px solid var(--border); border-radius: 12px; background: #fffdfa; }
+    .stat strong { display: block; font-size: 24px; color: var(--burgundy); margin-top: 8px; }
+    .stat span { font-size: 12px; color: var(--muted); }
+
+    .item { border: 1px solid var(--border); padding: 15px; border-radius: 12px; margin-top: 12px; }
+    .item h3 { margin: 0 0 7px; font-size: 16px; overflow-wrap: anywhere; }
+    .item-meta { color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .pill { display: inline-block; font-size: 11px; padding: 4px 8px; border-radius: 30px; background: var(--gold-light); color: var(--burgundy); margin: 0 5px 7px 0; }
+    .pill.published { background: #e4f5e9; color: var(--green); }
+    .poster-preview { display: block; width: 100%; max-height: 230px; object-fit: contain; background: #f5eee7; border-radius: 9px; margin-top: 12px; }
+    footer { text-align: center; padding: 25px; color: var(--muted); font-size: 12px; }
+
+    @media (max-width: 780px) {
+      .top-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      main { padding: 18px 12px 40px; }
+      .panel { padding: 16px; }
+      .grid { grid-template-columns: 1fr; }
+      .full { grid-column: auto; }
+      h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="brand">CATHOLIC DISCOVERY</div>
+      <div class="subtitle">Events & Announcements Manager</div>
+    </div>
+    <div id="connection" class="connection">Checking Firebase setup…</div>
+  </header>
+
+  <main>
+    <section id="loginPanel" class="panel login">
+      <h1>Administrator Login</h1>
+      <p class="muted">Sign in with your authorized Firebase account to manage events and announcements.</p>
+      <form id="loginForm">
+        <label>Email address
+          <input id="email" type="email" autocomplete="username" required>
+        </label>
+        <label>Password
+          <input id="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button class="btn" id="loginBtn" type="submit">Sign in securely</button>
+      </form>
+      <div class="actions">
+        <button class="btn secondary" id="resetBtn" type="button">Reset password</button>
+      </div>
+      <p id="loginMessage" class="notice" role="status"></p>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <div class="panel">
+        <h1>Events & Announcements</h1>
+        <p class="muted">Signed in as <strong id="accountEmail"></strong></p>
+        <div class="actions">
+          <button class="btn" id="newEventBtn" type="button">+ New event</button>
+          <button class="btn gold" id="newAnnouncementBtn" type="button">+ New announcement</button>
+          <button class="btn secondary" id="refreshBtn" type="button">Refresh list</button>
+          <button class="btn danger" id="logoutBtn" type="button">Sign out</button>
+        </div>
+        <p id="dashboardMessage" class="notice" role="status"></p>
+        <div class="stats">
+          <div class="stat"><span>Total items</span><strong id="totalCount">0</strong></div>
+          <div class="stat"><span>Published</span><strong id="publishedCount">0</strong></div>
+          <div class="stat"><span>Drafts</span><strong id="draftCount">0</strong></div>
+        </div>
+      </div>
+
+      <div class="top-grid">
+        <section class="panel" id="editorPanel">
+          <h2 id="formHeading">Create an event</h2>
+          <form id="itemForm">
+            <input type="hidden" id="itemId">
+            <input type="hidden" id="itemType" value="event">
+
+            <label>Type
+              <select id="typeSelect">
+                <option value="event">Upcoming event</option>
+                <option value="announcement">Announcement</option>
+              </select>
+            </label>
+
+            <label>Title / heading
+              <input id="title" maxlength="160" required placeholder="Nine Lessons and Carols 2026">
+            </label>
+
+            <label>Description / announcement message
+              <textarea id="description" maxlength="5000" required placeholder="Write the details for your visitors…"></textarea>
+            </label>
+
+            <div class="grid" id="eventFields">
+              <label>Date
+                <input id="eventDate" type="date">
+              </label>
+              <label>Start time
+                <input id="eventTime" type="time">
+              </label>
+              <label>Venue / platform
+                <input id="venue" maxlength="250" placeholder="Online on YouTube">
+              </label>
+              <label>Time zone
+                <select id="timezone">
+                  <option value="Africa/Accra">Ghana time (GMT)</option>
+                  <option value="UTC">UTC</option>
+                  <option value="Africa/Lagos">West Africa Time</option>
+                </select>
+              </label>
+              <label class="full">YouTube livestream URL
+                <input id="youtubeUrl" type="url" placeholder="https://www.youtube.com/live/...">
+              </label>
+            </div>
+
+            <label>Poster image URL
+              <input id="posterUrl" type="url" placeholder="https://...">
+            </label>
+            <p class="muted">Enter a publicly accessible image URL. The editor stores the URL, not the image file itself.</p>
+
+            <label>Website button link (optional)
+              <input id="buttonUrl" type="url" placeholder="https://...">
+            </label>
+            <label>Button text (optional)
+              <input id="buttonText" maxlength="60" placeholder="Watch live">
+            </label>
+
+            <label>
+              <input id="published" type="checkbox" style="width:auto;display:inline-block;margin-right:8px">
+              Publish this item on the public website
+            </label>
+
+            <div class="actions">
+              <button class="btn" id="saveBtn" type="submit">Save item</button>
+              <button class="btn secondary" id="clearBtn" type="button">Clear form</button>
+            </div>
+            <p id="formMessage" class="notice" role="status"></p>
+          </form>
+        </section>
+
+        <section class="panel">
+          <h2>Manage your content</h2>
+          <label>Filter items
+            <select id="filterType">
+              <option value="all">Events and announcements</option>
+              <option value="event">Events only</option>
+              <option value="announcement">Announcements only</option>
+            </select>
+          </label>
+          <div id="itemsList">
+            <p class="muted">Sign in and load your items.</p>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer>© Catholic Discovery • Private administrator tool</footer>
+
+  <script type="module">
+    import { firebaseConfig } from "./firebase-config.js";
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import {
+      getAuth, signInWithEmailAndPassword, onAuthStateChanged,
+      signOut, sendPasswordResetEmail
+    } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+    import {
+      getFirestore, collection, addDoc, getDocs, doc, updateDoc,
+      deleteDoc, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+    const $ = id => document.getElementById(id);
+    const SITE_URL = "https://catholic-discovery-site.micnu123.workers.dev/";
+
+    let auth;
+    let db;
+    let currentUser = null;
+    let items = [];
+    let saving = false;
+
+    function message(id, text, type = "") {
+      $(id).textContent = text;
+      $(id).className = "notice " + type;
+    }
+
+    function safeUrl(value) {
+      if (!value) return "";
+      try {
+        const u = new URL(value);
+        return ["https:", "http:"].includes(u.protocol) ? u.href : "";
+      } catch {
+        return "";
+      }
+    }
+
+    function clearForm() {
+      $("itemForm").reset();
+      $("itemId").value = "";
+      $("itemType").value = $("typeSelect").value;
+      $("formHeading").textContent =
+        $("typeSelect").value === "event" ? "Create an event" : "Create an announcement";
+      $("published").checked = false;
+      $("eventFields").classList.toggle("hidden", $("typeSelect").value !== "event");
+      message("formMessage", "");
+      $("saveBtn").textContent = "Save item";
+    }
+
+    function startNew(type) {
+      $("typeSelect").value = type;
+      clearForm();
+      $("editorPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function editItem(item) {
+      $("itemId").value = item.id;
+      $("itemType").value = item.type || "event";
+      $("typeSelect").value = item.type || "event";
+      $("title").value = item.title || "";
+      $("description").value = item.description || "";
+      $("eventDate").value = item.eventDate || "";
+      $("eventTime").value = item.eventTime || "";
+      $("venue").value = item.venue || "";
+      $("timezone").value = item.timezone || "Africa/Accra";
+      $("youtubeUrl").value = item.youtubeUrl || "";
+      $("posterUrl").value = item.posterUrl || "";
+      $("buttonUrl").value = item.buttonUrl || "";
+      $("buttonText").value = item.buttonText || "";
+      $("published").checked = item.published === true;
+      $("eventFields").classList.toggle("hidden", item.type !== "event");
+      $("formHeading").textContent = "Edit " + (item.type === "event" ? "event" : "announcement");
+      $("saveBtn").textContent = "Update item";
+      message("formMessage", "Editing: " + item.title);
+      $("editorPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    async function loadItems() {
+      if (!currentUser) return;
+      $("itemsList").textContent = "Loading items…";
+      try {
+        const snapshot = await getDocs(collection(db, "cd_content"));
+        items = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        items.sort((a, b) => {
+          const da = a.eventDate || "";
+          const dbDate = b.eventDate || "";
+          return da.localeCompare(dbDate);
+        });
+        renderItems();
+        message("dashboardMessage", "Content loaded successfully.", "success");
+      } catch (error) {
+        console.error(error);
+        $("itemsList").textContent =
+          "Could not load content. Check your Firestore database and security rules.";
+        message("dashboardMessage", "Loading failed. Verify that your account is authorized and Firestore rules are configured.", "error");
+      }
+    }
+
+    function renderItems() {
+      const filter = $("filterType").value;
+      const shown = items.filter(item => filter === "all" || item.type === filter);
+      $("totalCount").textContent = items.length;
+      $("publishedCount").textContent = items.filter(x => x.published === true).length;
+      $("draftCount").textContent = items.filter(x => x.published !== true).length;
+      const list = $("itemsList");
+      list.replaceChildren();
+
+      if (!shown.length) {
+        const p = document.createElement("p");
+        p.className = "muted";
+        p.textContent = "No items yet. Create your first event or announcement.";
+        list.append(p);
+        return;
+      }
+
+      for (const item of shown) {
+        const card = document.createElement("article");
+        card.className = "item";
+
+        const pill = document.createElement("span");
+        pill.className = "pill";
+        pill.textContent = item.type === "event" ? "EVENT" : "ANNOUNCEMENT";
+        card.append(pill);
+
+        const status = document.createElement("span");
+        status.className = "pill " + (item.published ? "published" : "");
+        status.textContent = item.published ? "PUBLISHED" : "DRAFT";
+        card.append(status);
+
+        const h = document.createElement("h3");
+        h.textContent = item.title || "Untitled";
+        card.append(h);
+
+        const meta = document.createElement("div");
+        meta.className = "item-meta";
+        meta.textContent = item.type === "event"
+          ? `${item.eventDate || "Date not set"} · ${item.eventTime || "Time not set"} · ${item.venue || "Venue not set"}`
+          : "Announcement";
+        card.append(meta);
+
+        if (item.posterUrl && safeUrl(item.posterUrl)) {
+          const img = document.createElement("img");
+          img.className = "poster-preview";
+          img.src = safeUrl(item.posterUrl);
+          img.alt = "Poster for " + (item.title || "content");
+          img.loading = "lazy";
+          card.append(img);
+        }
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const edit = document.createElement("button");
+        edit.className = "btn secondary";
+        edit.textContent = "Edit";
+        edit.addEventListener("click", () => editItem(item));
+        actions.append(edit);
+
+        const toggle = document.createElement("button");
+        toggle.className = "btn gold";
+        toggle.textContent = item.published ? "Unpublish" : "Publish";
+        toggle.addEventListener("click", () => togglePublished(item));
+        actions.append(toggle);
+
+        const del = document.createElement("button");
+        del.className = "btn danger";
+        del.textContent = "Delete";
+        del.addEventListener("click", () => removeItem(item));
+        actions.append(del);
+
+        card.append(actions);
+        list.append(card);
+      }
+    }
+
+    async function togglePublished(item) {
+      if (!currentUser) return;
+      try {
+        await updateDoc(doc(db, "cd_content", item.id), {
+          published: !item.published,
+          updatedAt: serverTimestamp()
+        });
+        message("dashboardMessage", item.published ? "Item unpublished." : "Item published.", "success");
+        await loadItems();
+      } catch (error) {
+        console.error(error);
+        message("dashboardMessage", "Could not update publication status. Check Firestore rules.", "error");
+      }
+    }
+
+    async function removeItem(item) {
+      if (!currentUser || !confirm(`Delete "${item.title}" permanently?`)) return;
+      try {
+        await deleteDoc(doc(db, "cd_content", item.id));
+        message("dashboardMessage", "Item deleted.", "success");
+        if ($("itemId").value === item.id) clearForm();
+        await loadItems();
+      } catch (error) {
+        console.error(error);
+        message("dashboardMessage", "Delete failed. Check Firestore rules.", "error");
+      }
+    }
+
+    $("loginForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      $("loginBtn").disabled = true;
+      message("loginMessage", "Signing in…");
+      try {
+        await signInWithEmailAndPassword(auth, $("email").value.trim(), $("password").value);
+        $("password").value = "";
+        message("loginMessage", "");
+      } catch (error) {
+        message("loginMessage", "Sign-in failed. Check your credentials and Firebase Authentication settings.", "error");
+      } finally {
+        $("loginBtn").disabled = false;
+      }
+    });
+
+    $("resetBtn").addEventListener("click", async () => {
+      const email = $("email").value.trim();
+      if (!email) {
+        message("loginMessage", "Enter your email address first.");
+        $("email").focus();
+        return;
+      }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        message("loginMessage", "If the account is registered, a password reset email may arrive shortly.", "success");
+      } catch {
+        message("loginMessage", "Could not send the reset email. Check Firebase settings.", "error");
+      }
+    });
+
+    $("logoutBtn").addEventListener("click", () => signOut(auth));
+    $("refreshBtn").addEventListener("click", loadItems);
+    $("newEventBtn").addEventListener("click", () => startNew("event"));
+    $("newAnnouncementBtn").addEventListener("click", () => startNew("announcement"));
+    $("clearBtn").addEventListener("click", clearForm);
+    $("filterType").addEventListener("change", renderItems);
+
+    $("typeSelect").addEventListener("change", () => {
+      $("itemType").value = $("typeSelect").value;
+      $("eventFields").classList.toggle("hidden", $("typeSelect").value !== "event");
+      if (!$("itemId").value) {
+        $("formHeading").textContent =
+          $("typeSelect").value === "event" ? "Create an event" : "Create an announcement";
+      }
+    });
+
+    $("itemForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!currentUser || saving) return;
+
+      const type = $("typeSelect").value;
+      const title = $("title").value.trim();
+      const description = $("description").value.trim();
+      const posterUrl = safeUrl($("posterUrl").value.trim());
+      const buttonUrl = safeUrl($("buttonUrl").value.trim());
+      const youtubeUrl = safeUrl($("youtubeUrl").value.trim());
+
+      if (!title || !description) {
+        message("formMessage", "Enter a title and description.", "error");
+        return;
+      }
+      if ($("posterUrl").value.trim() && !posterUrl) {
+        message("formMessage", "Poster URL must be a valid HTTP or HTTPS URL.", "error");
+        return;
+      }
+      if ($("buttonUrl").value.trim() && !buttonUrl) {
+        message("formMessage", "Button URL must be a valid HTTP or HTTPS URL.", "error");
+        return;
+      }
+      if ($("youtubeUrl").value.trim() && !youtubeUrl) {
+        message("formMessage", "YouTube URL must be a valid HTTP or HTTPS URL.", "error");
+        return;
+      }
+
+      const data = {
+        type,
+        title,
+        description,
+        eventDate: type === "event" ? $("eventDate").value : "",
+        eventTime: type === "event" ? $("eventTime").value : "",
+        venue: type === "event" ? $("venue").value.trim() : "",
+        timezone: type === "event" ? $("timezone").value : "",
+        youtubeUrl: type === "event" ? youtubeUrl : "",
+        posterUrl,
+        buttonUrl,
+        buttonText: $("buttonText").value.trim(),
+        published: $("published").checked,
+        updatedAt: serverTimestamp(),
+        updatedBy: currentUser.uid
+      };
+
+      if (type === "event" && (!data.eventDate || !data.eventTime)) {
+        message("formMessage", "Please choose the event date and start time.", "error");
+        return;
+      }
+
+      saving = true;
+      $("saveBtn").disabled = true;
+      message("formMessage", "Saving…");
+
+      try {
+        const id = $("itemId").value;
+        if (id) {
+          await updateDoc(doc(db, "cd_content", id), data);
+          message("formMessage", "Item updated successfully.", "success");
+        } else {
+          await addDoc(collection(db, "cd_content"), {
+            ...data,
+            createdAt: serverTimestamp(),
+            createdBy: currentUser.uid
+          });
+          message("formMessage", "Item created successfully.", "success");
+        }
+        clearForm();
+        await loadItems();
+      } catch (error) {
+        console.error(error);
+        message("formMessage", "Save failed. Check Firestore setup and administrator security rules.", "error");
+      } finally {
+        saving = false;
+        $("saveBtn").disabled = false;
+      }
+    });
+
+    try {
+      if (!firebaseConfig?.apiKey || !firebaseConfig?.projectId || !firebaseConfig?.appId) {
+        throw new Error("Firebase configuration is incomplete.");
+      }
+      const app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+      $("connection").textContent = "FIREBASE CONFIGURED";
+
+      onAuthStateChanged(auth, user => {
+        currentUser = user;
+        $("loginPanel").classList.toggle("hidden", !!user);
+        $("dashboard").classList.toggle("hidden", !user);
+        $("connection").textContent = user ? "SIGNED IN" : "LOGIN REQUIRED";
+
+        if (user) {
+          $("accountEmail").textContent = user.email || "Authenticated account";
+          loadItems();
+        } else {
+          items = [];
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      $("connection").textContent = "SETUP ERROR";
+      message("loginMessage", "Firebase setup error. Check firebase-config.js and the browser console.", "error");
+    }
+  </script>
+</body>
+</html>
