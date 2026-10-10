@@ -1240,3 +1240,544 @@ body.error-404 {
 body.error-404 h1 {
   color: #f6d17a !important;
 }
+
+
+/* ==========================================
+   CATHOLIC DISCOVERY — GROWING TOGETHER
+   Modern statistics section
+   ========================================== */
+
+.stats-section {
+  position: relative;
+  padding: 58px 20px;
+  overflow: hidden;
+}
+
+.stats-section .stats-card {
+  position: relative;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 42px);
+  overflow: hidden;
+  border: 1px solid rgba(123, 17, 19, 0.14);
+  border-radius: 26px;
+  background: linear-gradient(145deg, #fffdf9 0%, #f8efe5 100%);
+  box-shadow: 0 18px 50px rgba(62, 22, 24, 0.09);
+}
+
+/* Header area: cross, text and live indicator */
+.stats-section .stats-intro {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(123, 17, 19, 0.12);
+}
+
+.stats-section .stats-cross {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  flex-shrink: 0;
+  border: 1px solid rgba(214, 173, 96, 0.65);
+  border-radius: 20px;
+  color: #f3d58e;
+  background: linear-gradient(145deg, #851b25, #4c101d);
+  box-shadow: 0 9px 22px rgba(76, 16, 29, 0.18);
+  font-size: 2.1rem;
+}
+
+/* Ensure Catholic Discovery is visible */
+.stats-section .stats-intro .eyebrow {
+  display: block;
+  margin: 0 0 8px;
+  color: #8b2430;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  opacity: 1;
+}
+
+.stats-section .stats-intro h2 {
+  margin: 0 0 10px;
+  color: #4c101d;
+  font-size: clamp(1.8rem, 3.8vw, 2.65rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.7px;
+}
+
+.stats-section .stats-intro > div:nth-child(2) > p:last-child {
+  max-width: 570px;
+  margin: 0;
+  color: #68585a;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.stats-section .stats-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: start;
+  padding: 8px 12px;
+  border: 1px solid #dce9d9;
+  border-radius: 999px;
+  color: #32683d;
+  background: #f1f8ef;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.stats-section .stats-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #39974b;
+  box-shadow: 0 0 0 4px rgba(57, 151, 75, 0.12);
+}
+
+/* Statistics cards */
+.stats-section .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.stats-section .stat-item {
+  min-width: 0;
+  padding: 25px;
+  border: 1px solid #eee1d8;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 7px 22px rgba(76, 16, 29, 0.045);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stats-section .stat-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 32px rgba(76, 16, 29, 0.10);
+}
+
+.stats-section .stat-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.stats-section .stat-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  font-size: 1.2rem;
+}
+
+.stats-section .youtube-icon {
+  color: #a51f2c;
+  background: #fff0ef;
+}
+
+.stats-section .visitor-icon {
+  color: #80601e;
+  background: #fbf3dc;
+}
+
+.stats-section .stat-label {
+  color: #77676a;
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+
+.stats-section .stat-number {
+  margin-bottom: 4px;
+  color: #791b2b;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-weight: 850;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+
+.stats-section .stat-name {
+  color: #4c101d;
+  font-size: 1rem;
+  font-weight: 750;
+}
+
+.stats-section .stat-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 23px;
+  padding-top: 15px;
+  border-top: 1px solid #f0e8e3;
+  color: #837477;
+  font-size: 0.82rem;
+}
+
+.stats-section .stat-arrow {
+  color: #9a6e2e;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.stats-section .stats-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+  color: #7b2933;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+
+/* ==========================================
+   CATHOLIC DISCOVERY — EMAIL SUBSCRIPTION
+   Modern newsletter card and input fields
+   ========================================== */
+
+.newsletter {
+  position: relative;
+  padding: 76px 20px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #f8efe5 0%, #fffaf4 52%, #f3e6d8 100%);
+}
+
+.newsletter .container {
+  width: 100%;
+  max-width: 1000px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.newsletter .newsletter-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: start;
+  gap: 28px;
+  padding: clamp(24px, 5vw, 48px);
+  border: 1px solid rgba(123, 17, 19, 0.13);
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 22px 60px rgba(76, 16, 29, 0.10);
+}
+
+/* Decorative cross */
+.newsletter .newsletter-icon {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border: 1px solid rgba(214, 173, 96, 0.7);
+  border-radius: 22px;
+  color: #f5d88f;
+  background: linear-gradient(145deg, #861c28, #4c101d);
+  box-shadow: 0 10px 24px rgba(76, 16, 29, 0.17);
+  font-size: 2.5rem;
+}
+
+.newsletter .newsletter-content {
+  min-width: 0;
+}
+
+.newsletter .newsletter-content > .eyebrow {
+  margin: 0 0 9px;
+  color: #8a2631;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  opacity: 1;
+}
+
+.newsletter .newsletter-content h2 {
+  margin: 0 0 14px;
+  color: #4c101d;
+  font-size: clamp(1.8rem, 4vw, 2.65rem);
+  font-weight: 850;
+  line-height: 1.18;
+  letter-spacing: -0.7px;
+}
+
+.newsletter .newsletter-description {
+  max-width: 650px;
+  margin: 0;
+  color: #716366;
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+/* Form and fields */
+.newsletter .newsletter-form {
+  display: block;
+  width: 100%;
+  margin-top: 28px;
+}
+
+.newsletter .newsletter-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+  gap: 18px;
+}
+
+.newsletter .newsletter-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 9px;
+}
+
+.newsletter .newsletter-field label {
+  display: block;
+  color: #4c101d;
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.newsletter .newsletter-field input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 56px;
+  margin: 0;
+  padding: 0 16px;
+  border: 1.5px solid #e5d8d6;
+  border-radius: 13px;
+  outline: none;
+  color: #33262a;
+  background: #fffdfb;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: normal;
+  box-shadow: 0 2px 5px rgba(76, 16, 29, 0.025);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.newsletter .newsletter-field input::placeholder {
+  color: #a09294;
+  opacity: 1;
+}
+
+.newsletter .newsletter-field input:hover {
+  border-color: #c9a9a7;
+}
+
+.newsletter .newsletter-field input:focus {
+  border-color: #8b2430;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(123, 17, 19, 0.10);
+}
+
+/* Subscribe button */
+.newsletter .newsletter-button {
+  display: flex;
+  grid-column: 1 / -1;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  margin: 2px 0 0;
+  padding: 14px 22px;
+  border: 1px solid #791b2b;
+  border-radius: 13px;
+  color: #ffffff;
+  background: linear-gradient(120deg, #851b28, #4c101d);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 750;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(76, 16, 29, 0.17);
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.newsletter .newsletter-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 12px 26px rgba(76, 16, 29, 0.23);
+}
+
+.newsletter .newsletter-button:focus-visible {
+  outline: 3px solid #d6ad60;
+  outline-offset: 4px;
+}
+
+.newsletter .newsletter-button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+  transform: none;
+}
+
+.newsletter .newsletter-arrow {
+  font-size: 1.3rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.newsletter .newsletter-button:hover .newsletter-arrow {
+  transform: translateX(4px);
+}
+
+/* Privacy note and subscription status */
+.newsletter .newsletter-note {
+  margin: 17px 0 0;
+  color: #827477;
+  font-size: 0.84rem;
+  line-height: 1.7;
+}
+
+.newsletter .newsletter-status {
+  margin: 10px 0 0;
+  color: #4c101d;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.newsletter .newsletter-status:empty {
+  display: none;
+}
+
+
+/* ==========================================
+   RESPONSIVE DESIGN — TABLETS AND PHONES
+   ========================================== */
+
+@media (max-width: 700px) {
+  .stats-section {
+    padding: 38px 16px;
+  }
+
+  .stats-section .stats-card {
+    padding: 23px 18px;
+    border-radius: 21px;
+  }
+
+  .stats-section .stats-intro {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 15px;
+    margin-bottom: 23px;
+    padding-bottom: 22px;
+  }
+
+  .stats-section .stats-cross {
+    width: 52px;
+    height: 52px;
+    border-radius: 15px;
+    font-size: 1.7rem;
+  }
+
+  .stats-section .stats-live {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .stats-section .stats-grid {
+    gap: 12px;
+  }
+
+  .stats-section .stat-item {
+    padding: 17px 14px;
+    border-radius: 16px;
+  }
+
+  .stats-section .stat-top {
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .stats-section .stat-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+  }
+
+  .stats-section .stat-label {
+    font-size: 0.75rem;
+  }
+
+  .stats-section .stat-footer {
+    align-items: flex-start;
+    margin-top: 17px;
+    padding-top: 12px;
+    font-size: 0.75rem;
+  }
+
+  .newsletter {
+    padding: 45px 16px;
+  }
+
+  .newsletter .newsletter-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    padding: 27px 21px;
+    border-radius: 22px;
+  }
+
+  .newsletter .newsletter-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 17px;
+    font-size: 2rem;
+  }
+
+  .newsletter .newsletter-fields {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .newsletter .newsletter-button {
+    grid-column: 1;
+    margin-top: 3px;
+  }
+}
+
+@media (max-width: 380px) {
+  .stats-section .stats-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stats-section .stats-intro h2 {
+    font-size: 1.7rem;
+  }
+
+  .stats-section .stats-bottom {
+    font-size: 0.78rem;
+  }
+}
+
+/* Respect reduced-motion accessibility preferences */
+@media (prefers-reduced-motion: reduce) {
+  .stats-section .stat-item,
+  .newsletter .newsletter-field input,
+  .newsletter .newsletter-button,
+  .newsletter .newsletter-arrow {
+    transition: none;
+  }
+
+  .stats-section .stat-item:hover,
+  .newsletter .newsletter-button:hover {
+    transform: none;
+  }
+}
