@@ -1,19 +1,24 @@
+
 "use strict";
 
-// YouTube Data API v3 settings.
-// Replace API_KEY if you rotate your key in Google Cloud Console.
-import {
-  query,
-  orderBy
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+// Catholic Discovery — Main Website Script
+// Firebase Firestore, YouTube videos, website statistics,
+// daily readings, prayer, navigation, and theme settings.
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 import {
   getFirestore,
   collection,
   getDocs,
-  addDoc,
-  serverTimestamp
+  query,
+  where,
+  orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// --------------------------------------------------
+// FIREBASE CONFIGURATION
+// --------------------------------------------------
 
 const firebaseConfig = {
   apiKey: "AIzaSyCWQC1tU9HyyrQhNVt3t3Ep1rhtzYmobMQ",
@@ -26,34 +31,58 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const CHANNEL_URL = "https://www.youtube.com/@CTF-q5l";
-const CHANNEL_ID = "UCC2-EIXX2LSYInLPSR3kxPQ";
 
-  
+// --------------------------------------------------
+// WEBSITE SETTINGS
+// --------------------------------------------------
+
+const CHANNEL_URL = "https://www.youtube.com/@CTF-q5l";
+
+const API_BASE_URL =
+  "https://catholic-discovery-api.micnu123.workers.dev";
+
+// --------------------------------------------------
+// DAILY PRAYERS
+// --------------------------------------------------
+
 const DAILY_PRAYERS = [
   "Lord Jesus, guide us daily in faith, hope, and love. Open our hearts to Your Word and help us live as joyful witnesses of the Gospel. Amen.",
+
   "Heavenly Father, fill our homes with peace, our hearts with charity, and our lives with the light of Christ. Amen.",
+
   "Holy Spirit, teach us to listen, strengthen us in prayer, and lead us closer to Jesus each day. Amen.",
+
   "Blessed Mother Mary, pray for us and help us say yes to God with humble and faithful hearts. Amen.",
+
   "Lord, make us instruments of Your peace. Where there is doubt, bring faith; where there is sadness, bring hope; where there is darkness, bring Your light. Amen.",
+
   "Jesus, present in the Eucharist, nourish our souls and help us love You more deeply in every moment of this day. Amen."
 ];
+
+// --------------------------------------------------
+// FALLBACK POSTS
+// Displayed if Firestore has no published posts
+// or cannot be reached.
+// --------------------------------------------------
 
 const FALLBACK_POSTS = [
   {
     title: "Welcome to Catholic Discovery",
     date: "2026-06-27",
-    body: "This posts area is ready for ministry updates, reflections, announcements, and prayer notes. "
+    body: "Welcome to Catholic Discovery. Explore Catholic reflections, ministry updates, announcements, and prayers to help you grow in faith."
   }
 ];
 
-// Official readings source:
-// The site opens the date-specific USCCB page for the full approved text.
-// Add your own summaries, references, or permitted excerpts below.
-const READINGS_SOURCE_BASE_URL = "https://bible.usccb.org/bible/readings";
+// --------------------------------------------------
+// DAILY READINGS
+// Add date-specific entries using YYYY-MM-DD.
+// The default entry is shown when today's date
+// has no matching entry.
+// --------------------------------------------------
 
-// Add or update readings here. Use YYYY-MM-DD for a date-specific entry.
-// The "default" entry displays when today's date is not listed yet.
+const READINGS_SOURCE_BASE_URL =
+  "https://bible.usccb.org/bible/readings";
+
 const DAILY_READINGS = [
   {
     date: "default",
@@ -61,106 +90,146 @@ const DAILY_READINGS = [
     readings: [
       {
         label: "First Reading",
-        reference: "Loading...",
-        text: "Loading.."
+        reference: "Visit the official readings",
+        text: "Read and reflect on the Word of God."
       },
       {
         label: "Responsorial Psalm",
-        reference: "Loading..",
-        text: "Loading.."
+        reference: "Visit the official readings",
+        text: "Pray with the Psalms."
       },
       {
         label: "Second Reading",
-        reference: "Loading...",
-        text: "Loading..."
+        reference: "Visit the official readings",
+        text: "Explore the appointed Scripture reading."
       },
       {
         label: "Gospel",
-        reference: "Loading...",
-        text: "Loading..."
+        reference: "Visit the official readings",
+        text: "Reflect on the Gospel of Jesus Christ."
       }
     ]
   }
 ];
 
+// --------------------------------------------------
+// HTML ELEMENTS
+// --------------------------------------------------
+
 const elements = {
   header: document.querySelector("[data-header]"),
   menuToggle: document.querySelector("[data-menu-toggle]"),
   navLinks: document.querySelector("[data-nav-links]"),
+
   themeToggle: document.querySelector("[data-theme-toggle]"),
   themeIcon: document.querySelector("[data-theme-icon]"),
   themeLabel: document.querySelector("[data-theme-label]"),
+
   currentYear: document.querySelector("[data-current-year]"),
   prayerText: document.querySelector("[data-prayer-text]"),
+
   postsGrid: document.querySelector("[data-posts-grid]"),
   postStatus: document.querySelector("[data-post-status]"),
+
   readingDate: document.querySelector("[data-reading-date]"),
   readingSource: document.querySelector("[data-reading-source]"),
   readingTitle: document.querySelector("[data-reading-title]"),
   readingsList: document.querySelector("[data-readings-list]"),
+
   featuredVideo: document.querySelector("[data-featured-video]"),
   videoGrid: document.querySelector("[data-video-grid]"),
   videoStatus: document.querySelector("[data-video-status]")
 };
 
+// --------------------------------------------------
+// INITIALIZE WEBSITE
+// --------------------------------------------------
+
 document.addEventListener("DOMContentLoaded", () => {
   setCurrentYear();
   displayDailyReadings();
   displayRandomPrayer();
+
   setupLogoFallback();
   setupThemeToggle();
   setupNavigation();
   setupRevealAnimations();
+
   loadPosts();
   loadLatestVideos();
-
-
   loadWebsiteStats();
 });
 
+// --------------------------------------------------
+// CURRENT YEAR
+// --------------------------------------------------
+
 function setCurrentYear() {
   if (elements.currentYear) {
-    elements.currentYear.textContent = new Date().getFullYear();
+    elements.currentYear.textContent =
+      new Date().getFullYear();
   }
 }
 
+// --------------------------------------------------
+// DAILY READINGS
+// --------------------------------------------------
+
 function displayDailyReadings() {
-  if (!elements.readingDate || !elements.readingTitle || !elements.readingsList) return;
-
-  const todayKey = getLocalDateKey(new Date());
-  const officialReadingsUrl = getOfficialReadingsUrl(todayKey);
-  const readingSet = DAILY_READINGS.find((item) => item.date === todayKey)
-    || DAILY_READINGS.find((item) => item.date === "default");
-
-  if (elements.readingSource) {
-    elements.readingSource.href = officialReadingsUrl;
-    elements.readingSource.textContent = "Open today's official readings";
-  }
-
-  if (!readingSet) {
-    elements.readingDate.textContent = formatDate(todayKey);
-    elements.readingTitle.textContent = "Daily readings unavailable";
-    elements.readingsList.innerHTML = `
-      <article class="reading-card">
-        <h4>Readings</h4>
-        <strong>No readings found</strong>
-        <p>Add a default entry to DAILY_READINGS in script.js.</p>
-      </article>
-    `;
+  if (
+    !elements.readingDate ||
+    !elements.readingTitle ||
+    !elements.readingsList
+  ) {
     return;
   }
 
-  elements.readingDate.textContent = readingSet.date === "default"
-    ? `Today: ${formatDate(todayKey)}`
-    : formatDate(readingSet.date);
-  elements.readingTitle.textContent = readingSet.title;
-  elements.readingsList.innerHTML = readingSet.readings.map((reading) => `
-    <article class="reading-card">
-      <h4>${escapeHtml(reading.label)}</h4>
-      <strong>${escapeHtml(reading.reference)}</strong>
-      <p>${escapeHtml(reading.text)}</p>
-    </article>
-  `).join("");
+  const todayKey = getLocalDateKey(new Date());
+  const officialReadingsUrl =
+    getOfficialReadingsUrl(todayKey);
+
+  const readingSet =
+    DAILY_READINGS.find(item => item.date === todayKey) ||
+    DAILY_READINGS.find(item => item.date === "default");
+
+  if (elements.readingSource) {
+    elements.readingSource.href = officialReadingsUrl;
+    elements.readingSource.textContent =
+      "Open today's official readings";
+
+    elements.readingSource.target = "_blank";
+    elements.readingSource.rel = "noopener noreferrer";
+  }
+
+  if (!readingSet) {
+    elements.readingDate.textContent =
+      formatDate(todayKey);
+
+    elements.readingTitle.textContent =
+      "Daily readings unavailable";
+
+    elements.readingsList.textContent =
+      "No readings are available right now.";
+
+    return;
+  }
+
+  elements.readingDate.textContent =
+    readingSet.date === "default"
+      ? `Today: ${formatDate(todayKey)}`
+      : formatDate(readingSet.date);
+
+  elements.readingTitle.textContent =
+    readingSet.title;
+
+  elements.readingsList.innerHTML =
+    readingSet.readings.map(reading => `
+      <article class="reading-card">
+        <h4>${escapeHtml(reading.label)}</h4>
+        <strong>${escapeHtml(reading.reference)}</strong>
+        <p>${escapeHtml(reading.text)}</p>
+      </article>
+    `).join("");
 }
 
 function getOfficialReadingsUrl(dateKey) {
@@ -168,13 +237,6 @@ function getOfficialReadingsUrl(dateKey) {
   const shortYear = year.slice(2);
 
   return `${READINGS_SOURCE_BASE_URL}/${month}${day}${shortYear}.cfm`;
-}
-
-function displayRandomPrayer() {
-  if (!elements.prayerText) return;
-
-  const randomIndex = Math.floor(Math.random() * DAILY_PRAYERS.length);
-  elements.prayerText.textContent = DAILY_PRAYERS[randomIndex];
 }
 
 function getLocalDateKey(date) {
@@ -185,8 +247,27 @@ function getLocalDateKey(date) {
   return `${year}-${month}-${day}`;
 }
 
+// --------------------------------------------------
+// RANDOM PRAYER
+// --------------------------------------------------
+
+function displayRandomPrayer() {
+  if (!elements.prayerText) return;
+
+  const randomIndex = Math.floor(
+    Math.random() * DAILY_PRAYERS.length
+  );
+
+  elements.prayerText.textContent =
+    DAILY_PRAYERS[randomIndex];
+}
+
+// --------------------------------------------------
+// LOGO FALLBACK
+// --------------------------------------------------
+
 function setupLogoFallback() {
-  document.querySelectorAll("[data-logo]").forEach((logo) => {
+  document.querySelectorAll("[data-logo]").forEach(logo => {
     logo.addEventListener("error", () => {
       if (!logo.dataset.triedJpg) {
         logo.dataset.triedJpg = "true";
@@ -194,17 +275,33 @@ function setupLogoFallback() {
         return;
       }
 
-      const logoContainer = logo.closest(".logo-wrap, .hero-logo-wrap");
-      if (logoContainer) logoContainer.classList.add("logo-missing");
+      const container = logo.closest(
+        ".logo-wrap, .hero-logo-wrap"
+      );
+
+      if (container) {
+        container.classList.add("logo-missing");
+      }
     });
   });
 }
 
+// --------------------------------------------------
+// LOAD PUBLISHED POSTS FROM FIRESTORE
+// --------------------------------------------------
 
 async function loadPosts() {
   if (!elements.postsGrid) return;
 
+  if (elements.postStatus) {
+    elements.postStatus.textContent =
+      "Loading published posts...";
+  }
+
   try {
+    // IMPORTANT:
+    // Public Firestore rules only permit reading
+    // documents whose status is "published".
     const postsQuery = query(
       collection(db, "posts"),
       where("status", "==", "published"),
@@ -213,48 +310,120 @@ async function loadPosts() {
 
     const snapshot = await getDocs(postsQuery);
 
-    const posts = [];
-
-    snapshot.forEach((document) => {
-      posts.push({
-        id: document.id,
-        ...document.data()
-      });
-    });
+    const posts = snapshot.docs.map(document => ({
+      id: document.id,
+      ...document.data()
+    }));
 
     if (posts.length === 0) {
       renderPosts(FALLBACK_POSTS);
+
+      if (elements.postStatus) {
+        elements.postStatus.textContent =
+          "No published posts yet.";
+      }
+
       return;
     }
 
     renderPosts(posts);
 
+    if (elements.postStatus) {
+      elements.postStatus.textContent = "";
+    }
+
   } catch (error) {
-    console.error("Failed to load published posts:", error);
+    console.error(
+      "Failed to load published posts from Firestore:",
+      error
+    );
+
     renderPosts(FALLBACK_POSTS);
+
+    if (elements.postStatus) {
+      elements.postStatus.textContent =
+        "Unable to load posts right now. Showing sample content.";
+    }
   }
 }
 
+// --------------------------------------------------
+// RENDER POSTS
+// --------------------------------------------------
 
-    renderPosts(posts);
+function renderPosts(posts) {
+  if (!elements.postsGrid) return;
 
-  } catch (err) {
-    console.error("Firebase error:", err);
-    renderPosts(FALLBACK_POSTS);
-  }
+  const sortedPosts = [...posts].sort((a, b) => {
+    return getDateMilliseconds(b.date) -
+      getDateMilliseconds(a.date);
+  });
+
+  elements.postsGrid.innerHTML = sortedPosts.map(post => {
+    const title = post.title || "Untitled post";
+
+    // Supports either "body" or "content" as the
+    // main text field in Firestore.
+    const body = post.body || post.content || post.excerpt || "";
+
+    const dateValue = getDateValue(post.date);
+    const dateTime = getDateTimeAttribute(dateValue);
+
+    return `
+      <article class="post-card">
+        <time datetime="${escapeHtml(dateTime)}">
+          ${escapeHtml(formatDate(dateValue))}
+        </time>
+
+        <h3>${escapeHtml(title)}</h3>
+
+        <p>${escapeHtml(body)}</p>
+      </article>
+    `;
+  }).join("");
 }
+
+// --------------------------------------------------
+// THEME TOGGLE
+// --------------------------------------------------
+
 function setupThemeToggle() {
   if (!elements.themeToggle) return;
 
-  const savedTheme = localStorage.getItem("catholic-discovery-theme");
-  const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-  const startingTheme = savedTheme || (prefersLight ? "light" : "dark");
+  let savedTheme = null;
+
+  try {
+    savedTheme = localStorage.getItem(
+      "catholic-discovery-theme"
+    );
+  } catch (error) {
+    console.warn("Could not read saved theme:", error);
+  }
+
+  const prefersLight =
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: light)").matches;
+
+  const startingTheme =
+    savedTheme || (prefersLight ? "light" : "dark");
 
   applyTheme(startingTheme);
 
   elements.themeToggle.addEventListener("click", () => {
-    const nextTheme = document.documentElement.dataset.theme === "light" ? "dark" : "light";
-    localStorage.setItem("catholic-discovery-theme", nextTheme);
+    const nextTheme =
+      document.documentElement.dataset.theme === "light"
+        ? "dark"
+        : "light";
+
+    try {
+      localStorage.setItem(
+        "catholic-discovery-theme",
+        nextTheme
+      );
+    } catch (error) {
+      console.warn("Could not save theme:", error);
+    }
+
     applyTheme(nextTheme);
   });
 }
@@ -262,29 +431,63 @@ function setupThemeToggle() {
 function applyTheme(theme) {
   const isLight = theme === "light";
 
-  document.documentElement.dataset.theme = theme;
+  document.documentElement.dataset.theme =
+    isLight ? "light" : "dark";
 
-  if (elements.themeIcon) elements.themeIcon.textContent = isLight ? "Sun" : "Moon";
-  if (elements.themeLabel) elements.themeLabel.textContent = isLight ? "Light" : "Dark";
+  if (elements.themeIcon) {
+    elements.themeIcon.textContent =
+      isLight ? "Sun" : "Moon";
+  }
+
+  if (elements.themeLabel) {
+    elements.themeLabel.textContent =
+      isLight ? "Light" : "Dark";
+  }
+
+  if (elements.themeToggle) {
+    elements.themeToggle.setAttribute(
+      "aria-label",
+      `Switch to ${isLight ? "dark" : "light"} theme`
+    );
+  }
 }
+
+// --------------------------------------------------
+// NAVIGATION
+// --------------------------------------------------
 
 function setupNavigation() {
   if (elements.header) {
     window.addEventListener("scroll", () => {
-      elements.header.classList.toggle("is-scrolled", window.scrollY > 8);
+      elements.header.classList.toggle(
+        "is-scrolled",
+        window.scrollY > 8
+      );
     }, { passive: true });
   }
 
   if (elements.menuToggle && elements.navLinks) {
     elements.menuToggle.addEventListener("click", () => {
-      const isOpen = elements.navLinks.classList.toggle("is-open");
+      const isOpen =
+        elements.navLinks.classList.toggle("is-open");
 
-      elements.menuToggle.setAttribute("aria-expanded", String(isOpen));
-      elements.menuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
-      document.body.classList.toggle("menu-open", isOpen);
+      elements.menuToggle.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+
+      elements.menuToggle.setAttribute(
+        "aria-label",
+        isOpen ? "Close menu" : "Open menu"
+      );
+
+      document.body.classList.toggle(
+        "menu-open",
+        isOpen
+      );
     });
 
-    elements.navLinks.querySelectorAll("a").forEach((link) => {
+    elements.navLinks.querySelectorAll("a").forEach(link => {
       link.addEventListener("click", closeMobileMenu);
     });
   }
@@ -294,30 +497,53 @@ function closeMobileMenu() {
   if (!elements.menuToggle || !elements.navLinks) return;
 
   elements.navLinks.classList.remove("is-open");
-  elements.menuToggle.setAttribute("aria-expanded", "false");
-  elements.menuToggle.setAttribute("aria-label", "Open menu");
+
+  elements.menuToggle.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+
+  elements.menuToggle.setAttribute(
+    "aria-label",
+    "Open menu"
+  );
+
   document.body.classList.remove("menu-open");
 }
 
+// --------------------------------------------------
+// REVEAL ANIMATIONS
+// --------------------------------------------------
+
 function setupRevealAnimations() {
-  const revealItems = document.querySelectorAll(".reveal");
+  const revealItems =
+    document.querySelectorAll(".reveal");
 
   if (!("IntersectionObserver" in window)) {
-    revealItems.forEach((item) => item.classList.add("is-visible"));
+    revealItems.forEach(item => {
+      item.classList.add("is-visible");
+    });
+
     return;
   }
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add("is-visible");
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.14 });
+  }, {
+    threshold: 0.14
+  });
 
-  revealItems.forEach((item) => observer.observe(item));
+  revealItems.forEach(item => observer.observe(item));
 }
+
+// --------------------------------------------------
+// WEBSITE STATISTICS
+// --------------------------------------------------
 
 async function loadWebsiteStats() {
   const subscriberElement =
@@ -326,13 +552,11 @@ async function loadWebsiteStats() {
   const visitorElement =
     document.getElementById("visitorCount");
 
-  if (!subscriberElement || !visitorElement) {
-    return;
-  }
+  if (!subscriberElement || !visitorElement) return;
 
   try {
     const response = await fetch(
-      "https://catholic-discovery-api.micnu123.workers.dev/api/stats",
+      `${API_BASE_URL}/api/stats`,
       {
         cache: "no-store"
       }
@@ -350,11 +574,11 @@ async function loadWebsiteStats() {
       subscriberElement.textContent = "N/A";
     } else {
       subscriberElement.textContent =
-        Number(data.subscriberCount).toLocaleString();
+        Number(data.subscriberCount || 0).toLocaleString();
     }
 
     visitorElement.textContent =
-      Number(data.visitorCount).toLocaleString();
+      Number(data.visitorCount || 0).toLocaleString();
 
   } catch (error) {
     console.error("Statistics error:", error);
@@ -364,8 +588,18 @@ async function loadWebsiteStats() {
   }
 }
 
+// --------------------------------------------------
+// YOUTUBE VIDEOS
+// --------------------------------------------------
+
 async function loadLatestVideos() {
-  if (!elements.featuredVideo || !elements.videoGrid || !elements.videoStatus) return;
+  if (
+    !elements.featuredVideo ||
+    !elements.videoGrid ||
+    !elements.videoStatus
+  ) {
+    return;
+  }
 
   showLoadingState();
 
@@ -373,13 +607,15 @@ async function loadLatestVideos() {
     const videos = await fetchVideosFromYouTubeApi();
 
     if (!videos.length) {
-      throw new Error("No videos were returned by YouTube.");
+      throw new Error("No videos were returned by the API.");
     }
 
     renderFeaturedVideo(videos[0]);
     renderVideoGrid(videos.slice(1, 10));
+
     elements.videoStatus.textContent = "";
     elements.videoStatus.classList.remove("error");
+
   } catch (error) {
     console.warn("YouTube API failed:", error);
     renderVideoError();
@@ -387,11 +623,14 @@ async function loadLatestVideos() {
 }
 
 function showLoadingState() {
-  elements.videoStatus.textContent = "Loading latest videos...";
+  elements.videoStatus.textContent =
+    "Loading latest videos...";
+
   elements.videoStatus.classList.remove("error");
 
   elements.featuredVideo.innerHTML = `
     <div class="video-loader" aria-hidden="true"></div>
+
     <div class="featured-info">
       <p class="card-label">Loading</p>
       <h3>Connecting to YouTube...</h3>
@@ -399,50 +638,72 @@ function showLoadingState() {
     </div>
   `;
 
-  elements.videoGrid.innerHTML = Array.from({ length: 9 }, () => `
-    <article class="video-card" aria-hidden="true">
-      <div class="video-loader"></div>
-      <div class="video-card-content">
-        <h3>Loading video...</h3>
-        <time>One moment</time>
-      </div>
-    </article>
-  `).join("");
+  elements.videoGrid.innerHTML =
+    Array.from({ length: 9 }, () => `
+      <article class="video-card" aria-hidden="true">
+        <div class="video-loader"></div>
+
+        <div class="video-card-content">
+          <h3>Loading video...</h3>
+          <time>One moment</time>
+        </div>
+      </article>
+    `).join("");
 }
 
 async function fetchVideosFromYouTubeApi() {
-  const response = await fetch("https://catholic-discovery-api.micnu123.workers.dev/");
+  const response = await fetch(API_BASE_URL + "/", {
+    cache: "no-store"
+  });
 
   if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
+    throw new Error(`YouTube API returned HTTP ${response.status}`);
   }
 
-  const videos = await response.json();
+  const data = await response.json();
 
-  return videos.map(video => ({
+  if (!Array.isArray(data)) {
+    throw new Error("The video API did not return a list.");
+  }
+
+  return data.map(video => ({
     videoId: video.id,
-    title: video.title,
-    description: video.description,
-    publishedAt: video.published,
-    thumbnail: video.thumbnail,
-    url: video.url
-  }));
+    title: video.title || "Catholic Discovery video",
+    description: video.description || "",
+    publishedAt: video.published || "",
+    thumbnail: video.thumbnail || "",
+    url: video.url || (
+      "https://www.youtube.com/watch?v=" +
+      encodeURIComponent(video.id || "")
+    )
+  })).filter(video => video.videoId);
 }
+
 function renderFeaturedVideo(video) {
+  const videoId = encodeURIComponent(video.videoId);
+
   elements.featuredVideo.innerHTML = `
     <iframe
       title="${escapeHtml(video.title)}"
-      src="https://www.youtube.com/embed/${video.videoId}"
+      src="https://www.youtube.com/embed/${videoId}"
       loading="lazy"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen>
     </iframe>
+
     <div class="featured-info">
       <p class="card-label">Featured latest video</p>
       <h3>${escapeHtml(video.title)}</h3>
       <p>${escapeHtml(trimText(video.description, 150))}</p>
-      <p>${formatDate(video.publishedAt)}</p>
-      <a class="text-link" href="${video.url}" target="_blank" rel="noopener">Watch on YouTube</a>
+      <p>${escapeHtml(formatDate(video.publishedAt))}</p>
+
+      <a
+        class="text-link"
+        href="${escapeHtml(video.url)}"
+        target="_blank"
+        rel="noopener noreferrer">
+        Watch on YouTube
+      </a>
     </div>
   `;
 }
@@ -450,13 +711,23 @@ function renderFeaturedVideo(video) {
 function renderVideoGrid(videos) {
   elements.videoGrid.innerHTML = videos.map(video => `
     <article class="video-card">
-      <a class="video-thumb" href="${video.url}" target="_blank" rel="noopener">
-        <img src="${video.thumbnail}" alt="${escapeHtml(video.title)}" loading="lazy">
+      <a
+        class="video-thumb"
+        href="${escapeHtml(video.url)}"
+        target="_blank"
+        rel="noopener noreferrer">
+
+        <img
+          src="${escapeHtml(video.thumbnail)}"
+          alt="${escapeHtml(video.title)}"
+          loading="lazy">
+
         <span class="play-badge" aria-hidden="true"></span>
       </a>
+
       <div class="video-card-content">
         <h3>${escapeHtml(video.title)}</h3>
-        <time>${formatDate(video.publishedAt)}</time>
+        <time>${escapeHtml(formatDate(video.publishedAt))}</time>
       </div>
     </article>
   `).join("");
@@ -466,19 +737,83 @@ function renderVideoError() {
   elements.featuredVideo.innerHTML = `
     <div class="featured-info">
       <h3>Videos unavailable</h3>
-      <p>Could not load latest videos right now.</p>
-      <a href="${CHANNEL_URL}" target="_blank" rel="noopener">Open YouTube Channel</a>
+      <p>Could not load the latest videos right now.</p>
+
+      <a
+        href="${CHANNEL_URL}"
+        target="_blank"
+        rel="noopener noreferrer">
+        Open YouTube Channel
+      </a>
     </div>
   `;
 
   elements.videoGrid.innerHTML = "";
-  elements.videoStatus.textContent = "YouTube is currently unavailable.";
+
+  elements.videoStatus.textContent =
+    "YouTube is currently unavailable.";
+
   elements.videoStatus.classList.add("error");
 }
 
+// --------------------------------------------------
+// DATE HELPERS
+// Supports strings, JavaScript Dates, and Firestore
+// Timestamp objects.
+// --------------------------------------------------
+
+function getDateValue(value) {
+  if (!value) return "";
+
+  if (typeof value.toDate === "function") {
+    return value.toDate();
+  }
+
+  return value;
+}
+
+function getDateMilliseconds(value) {
+  const dateValue = getDateValue(value);
+
+  if (dateValue instanceof Date) {
+    return dateValue.getTime();
+  }
+
+  const timestamp = new Date(dateValue).getTime();
+
+  return Number.isNaN(timestamp) ? 0 : timestamp;
+}
+
+function getDateTimeAttribute(value) {
+  if (!value) return "";
+
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime())
+      ? ""
+      : value.toISOString();
+  }
+
+  const date = new Date(value);
+
+  return Number.isNaN(date.getTime())
+    ? String(value)
+    : date.toISOString();
+}
+
 function formatDate(dateValue) {
-  const date = new Date(dateValue);
-  if (!dateValue || Number.isNaN(date.getTime())) return "Recent upload";
+  const value = getDateValue(dateValue);
+
+  if (!value) return "Date unavailable";
+
+  const date = value instanceof Date
+    ? value
+    : new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return typeof value === "string"
+      ? value
+      : "Date unavailable";
+  }
 
   return date.toLocaleDateString(undefined, {
     year: "numeric",
@@ -487,33 +822,25 @@ function formatDate(dateValue) {
   });
 }
 
+// --------------------------------------------------
+// TEXT HELPERS
+// --------------------------------------------------
+
 function trimText(text, maxLength) {
   if (!text) return "";
-  return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+
+  const value = String(text);
+
+  return value.length > maxLength
+    ? value.slice(0, maxLength) + "..."
+    : value;
 }
 
 function escapeHtml(value) {
-  return String(value)
+  return String(value ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
-}
-function renderPosts(posts) {
-  const sorted = [...posts].sort((a, b) =>
-    new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
-  );
-
-  if (!elements.postsGrid) return;
-
-  elements.postsGrid.innerHTML = sorted.map(post => `
-    <article class="post-card">
-      <time datetime="${post.date}">
-        ${formatDate(post.date)}
-      </time>
-      <h3>${escapeHtml(post.title)}</h3>
-      <p>${escapeHtml(post.body)}</p>
-    </article>
-  `).join("");
 }
