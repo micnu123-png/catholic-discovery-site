@@ -200,20 +200,41 @@ function setupLogoFallback() {
   });
 }
 
+
 async function loadPosts() {
+  if (!elements.postsGrid) return;
+
   try {
-    const q = query(collection(db, "posts"), orderBy("date", "desc"));
-    const snapshot = await getDocs(q);
+    const postsQuery = query(
+      collection(db, "posts"),
+      where("status", "==", "published"),
+      orderBy("date", "desc")
+    );
+
+    const snapshot = await getDocs(postsQuery);
 
     const posts = [];
-    snapshot.forEach(doc => {
-      posts.push(doc.data());
+
+    snapshot.forEach((document) => {
+      posts.push({
+        id: document.id,
+        ...document.data()
+      });
     });
 
-    if (!posts.length) {
+    if (posts.length === 0) {
       renderPosts(FALLBACK_POSTS);
       return;
     }
+
+    renderPosts(posts);
+
+  } catch (error) {
+    console.error("Failed to load published posts:", error);
+    renderPosts(FALLBACK_POSTS);
+  }
+}
+
 
     renderPosts(posts);
 
