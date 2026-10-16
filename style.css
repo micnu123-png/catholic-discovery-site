@@ -1855,3 +1855,49 @@ body.error-404 h1 {
     padding: 35px 15px;
   }
 }
+.ownership-badge {
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 5px 9px;
+  border: 1px solid rgba(233, 199, 119, 0.35);
+  border-radius: 20px;
+  color: #f5dfaa;
+  font: 700 0.72rem Arial, sans-serif;
+}
+
+.ownership-badge.catholic-discovery {
+  background: rgba(83, 135, 94, 0.18);
+  border-color: #79b88a;
+  color: #b6edc2;
+}
+
+.ownership-badge.ai-generated {
+  background: rgba(102, 87, 160, 0.2);
+  border-color: #a99ae8;
+  color: #d0c6ff;
+}
+
+.ownership-badge.third-party {
+  background: rgba(233, 199, 119, 0.1);
+}
+
+.music-card .ownership-details,
+.music-card .attribution {
+  min-height: 0;
+  margin: 0 0 10px;
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+}
+
+.source-link {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: #e9c777;
+  font: 0.82rem Arial, sans-serif;
+  text-decoration: underline;
+}
+
+.music-card .button {
+  margin-top: 8px;
+}
+
