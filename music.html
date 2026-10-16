@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#510d16">
+  <meta name="description" content="Listen, pray and reflect with Catholic Discovery Music — sacred hymns, Gregorian chant and Catholic worship music.">
+  <title>Catholic Discovery Music</title>
+
+  <style>
+    :root {
+      --burgundy: #510d16;
+      --burgundy-light: #781b28;
+      --gold: #e9c777;
+      --cream: #fff8e9;
+      --muted: #c9b9b5;
+      --panel: #29171b;
+      --border: rgba(233, 199, 119, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background: #160e10;
+      color: var(--cream);
+      line-height: 1.6;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .navbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 7%;
+      background: rgba(81, 13, 22, 0.96);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      color: var(--gold);
+      font-size: 1.15rem;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-family: Arial, sans-serif;
+      font-size: .9rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .hero {
+      padding: 78px 7% 68px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at top, #78212b 0%, transparent 65%),
+        linear-gradient(135deg, #510d16, #211014);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cross {
+      color: var(--gold);
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    .eyebrow {
+      margin: 20px 0 8px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font: 700 .72rem Arial, sans-serif;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      line-height: 1.1;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: 20px auto 28px;
+      color: #eadbd7;
+      font-size: 1.05rem;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 22px;
+      border: 1px solid var(--gold);
+      border-radius: 5px;
+      background: var(--gold);
+      color: #321116;
+      font: 700 .9rem Arial, sans-serif;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background: #f6dfa7;
+    }
+
+    .button.secondary {
+      color: var(--cream);
+      background: transparent;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 42px 6% 70px;
+    }
+
+    .section-heading {
+      margin-bottom: 22px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    .section-heading p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: .9rem;
+    }
+
+    .search {
+      width: 100%;
+      margin: 0 0 28px;
+      padding: 14px 16px;
+      color: var(--cream);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: var(--gold);
+    }
+
+    .music-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 18px;
+    }
+
+    .music-card {
+      padding: 20px;
+      background: linear-gradient(145deg, #302024, #211518);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .music-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--gold);
+    }
+
+    .art {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 16 / 9;
+      margin-bottom: 16px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #681722, #29141b);
+      color: var(--gold);
+      font-size: 2.5rem;
+    }
+
+    .music-card h3 {
+      margin: 0 0 4px;
+      font-size: 1.2rem;
+    }
+
+    .music-card p {
+      min-height: 42px;
+      margin: 0 0 14px;
+      color: var(--muted);
+      font: .85rem/1.5 Arial, sans-serif;
+    }
+
+    .music-card .button {
+      width: 100%;
+    }
+
+    .empty {
+      display: none;
+      padding: 24px 0;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .player {
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      padding: 15px 6%;
+      background: rgba(35, 18, 22, .97);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .player-inner {
+      max-width: 1080px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .now-playing {
+      min-width: 0;
+    }
+
+    .now-playing strong {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .now-playing span {
+      color: var(--muted);
+      font: .8rem Arial, sans-serif;
+    }
+
+    audio {
+      width: 100%;
+      height: 38px;
+      margin-top: 6px;
+    }
+
+    .player-message {
+      color: var(--muted);
+      font: .8rem Arial, sans-serif;
+    }
+
+    .footer {
+      padding: 28px 6% 100px;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      font: .85rem Arial, sans-serif;
+    }
+
+    .footer a {
+      color: var(--gold);
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        gap: 14px;
+      }
+
+      .hero {
+        padding: 56px 6%;
+      }
+
+      .player-inner {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      .player {
+        padding: 12px 5%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="navbar">
+    <a class="brand" href="/">✝ Catholic Discovery</a>
+
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/homily">Homilies</a>
+      <a href="/music.html" aria-current="page">Music</a>
+      <a href="https://www.youtube.com/@CTF-q5l"
+         target="_blank" rel="noopener noreferrer">YouTube</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="cross" aria-hidden="true">✝</div>
+    <div class="eyebrow">Faith • Prayer • Worship</div>
+    <h1>Catholic Discovery<br>Music</h1>
+    <p>
+      Let sacred music lead you into prayer. Discover hymns, Gregorian
+      chant, Marian songs and peaceful music for reflection.
+    </p>
+    <a class="button" href="#library">Explore the Music Library</a>
+  </section>
+
+  <main id="library">
+    <div class="section-heading">
+      <h2>The Music Library</h2>
+      <p>Choose a track to listen. More music can be added as your library grows.</p>
+    </div>
+
+    <input
+      class="search"
+      id="search"
+      type="search"
+      placeholder="Search sacred music..."
+      aria-label="Search music"
+    >
+
+    <div class="music-grid" id="music-grid"></div>
+
+    <p class="empty" id="empty">
+      No matching music found. Try another search.
+    </p>
+  </main>
+
+  <section class="player" aria-label="Music player">
+    <div class="player-inner">
+      <div class="now-playing">
+        <strong id="track-title">Welcome to Catholic Discovery Music</strong>
+        <span id="track-artist">Select a track from the library</span>
+        <audio id="audio" controls preload="metadata">
+          Your browser does not support audio playback.
+        </audio>
+        <div class="player-message" id="player-message" aria-live="polite">
+          Your listening journey starts here.
+        </div>
+      </div>
+
+      <button class="button secondary" id="stop" type="button">
+        Stop
+      </button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>“Sing to the Lord a new song.” — Psalm 96:1</p>
+    <p>© <span id="year"></span> Catholic Discovery</p>
+    <p><a href="/">Return to the main website</a></p>
+  </footer>
+
+<script>
+  /*
+    CATHOLIC DISCOVERY MUSIC LIBRARY
+
+    Ownership values:
+    catholic-discovery = owned/produced by Catholic Discovery
+    ai-generated       = AI-generated; verify applicable rights
+    third-party        = owned by another person/organization
+
+    Only make ownership claims you can substantiate.
+  */
+
+  const tracks = [
+    {
+      title: "Agnus Dei",
+      artist: "Add the recording artist",
+      category: "Sacred Music",
+      ownership: "third-party",
+      owner: "Enter the verified owner",
+      attribution: "Add the required credit or licence information.",
+      sourceUrl: "",
+      file: "agnus-dei.mp3"
+    },
+    {
+      title: "Catholic Discovery Worship",
+      artist: "Catholic Discovery",
+      category: "Worship",
+      ownership: "catholic-discovery",
+      owner: "Catholic Discovery",
+      attribution: "Original Catholic Discovery production.",
+      sourceUrl: "",
+      file: "catholic-discovery-worship.mp3"
+    },
+    {
+      title: "AI Sacred Instrumental",
+      artist: "AI-assisted production",
+      category: "Prayer and Reflection",
+      ownership: "ai-generated",
+      owner: "AI-generated; rights not independently verified",
+      attribution: "Created with AI assistance. Check the tool's terms and any applicable rights.",
+      sourceUrl: "",
+      file: "peaceful-prayer.mp3"
+    },
+    {
+      title: "Gregorian Chant",
+      artist: "Enter the choir or recording artist",
+      category: "Gregorian Chant",
+      ownership: "third-party",
+      owner: "Enter the verified recording owner",
+      attribution: "Credit the original source and follow its licence requirements.",
+      sourceUrl: "",
+      file: "gregorian-chant.mp3"
+    }
+  ];
+
+  const grid = document.getElementById("music-grid");
+  const search = document.getElementById("search");
+  const audio = document.getElementById("audio");
+  const title = document.getElementById("track-title");
+  const artist = document.getElementById("track-artist");
+  const message = document.getElementById("player-message");
+  const empty = document.getElementById("empty");
+
+  document.getElementById("year").textContent =
+    new Date().getFullYear();
+
+  const ownershipLabels = {
+    "catholic-discovery": "Catholic Discovery",
+    "ai-generated": "AI-generated",
+    "third-party": "Third-party recording"
+  };
+
+  function createElement(tag, className, text) {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (text !== undefined) element.textContent = text;
+    return element;
+  }
+
+  function renderTracks(query = "") {
+    const filtered = tracks.filter(track =>
+      [
+        track.title,
+        track.artist,
+        track.category,
+        track.owner,
+        ownershipLabels[track.ownership]
+      ].join(" ").toLowerCase().includes(query.toLowerCase())
+    );
+
+    grid.replaceChildren();
+
+    filtered.forEach(track => {
+      const card = createElement("article", "music-card");
+
+      const art = createElement("div", "art", "♫");
+      art.setAttribute("aria-hidden", "true");
+
+      const heading = createElement("h3", "", track.title);
+      const description = createElement(
+        "p", "", `${track.category} · ${track.artist}`
+      );
+
+      const badge = createElement(
+        "span",
+        "ownership-badge " + track.ownership,
+        ownershipLabels[track.ownership] || "Ownership information unavailable"
+      );
+
+      const owner = createElement("p", "ownership-details",
+        "Owner/rights holder: " + track.owner);
+
+      const credit = createElement("p", "attribution",
+        track.attribution);
+
+      const button = createElement("button", "button", "▶ Listen");
+      button.type = "button";
+      button.addEventListener("click", () => playTrack(track));
+
+      card.append(art, heading, description, badge, owner, credit);
+
+      if (track.sourceUrl) {
+        try {
+          const source = new URL(track.sourceUrl);
+          if (source.protocol === "https:" || source.protocol === "http:") {
+            const link = createElement("a", "source-link", "View original source");
+            link.href = source.href;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            card.appendChild(link);
+          }
+        } catch (_) {
+          // Ignore invalid source URLs.
+        }
+      }
+
+      card.appendChild(button);
+      grid.appendChild(card);
+    });
+
+    empty.style.display = filtered.length ? "none" : "block";
+  }
+
+  async function playTrack(track) {
+    title.textContent = track.title;
+    artist.textContent =
+      `${track.artist} · ${ownershipLabels[track.ownership]}`;
+    message.textContent = "Loading audio…";
+
+    audio.src = "/music/" + encodeURIComponent(track.file);
+    audio.load();
+
+    try {
+      await audio.play();
+      message.textContent = "Now playing.";
+    } catch (_) {
+      message.textContent =
+        "Unable to play this file. Check the filename and music folder.";
+    }
+  }
+
+  audio.addEventListener("error", () => {
+    message.textContent =
+      "Audio unavailable. Confirm that the file exists in /music/.";
+  });
+
+  audio.addEventListener("playing", () => {
+    message.textContent = "Now playing.";
+  });
+
+  audio.addEventListener("pause", () => {
+    if (audio.currentTime > 0 && !audio.ended) {
+      message.textContent = "Playback paused.";
+    }
+  });
+
+  search.addEventListener("input", () => renderTracks(search.value));
+
+  document.getElementById("stop").addEventListener("click", () => {
+    audio.pause();
+    audio.currentTime = 0;
+    message.textContent = "Playback stopped.";
+  });
+
+  renderTracks();
+</script>
+</body>
+</html>
