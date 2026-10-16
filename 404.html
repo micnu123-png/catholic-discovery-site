@@ -19,6 +19,28 @@
 
   <main class="error-page">
 
+    
+<div class="error-music">
+  <audio id="agnus-dei" loop preload="metadata">
+    <source src="/agnus-dei.mp3" type="audio/mpeg">
+    Your browser does not support audio playback.
+  </audio>
+
+  <button
+    id="music-toggle"
+    class="error-btn error-btn-secondary"
+    type="button"
+    aria-pressed="false"
+  >
+    Play Agnus Dei
+  </button>
+
+  <p id="music-status" aria-live="polite">
+    Sacred music · Agnus Dei
+  </p>
+</div>
+
+
     <a class="error-brand" href="./index.html" aria-label="Catholic Discovery home">
       <img src="./logo.png" alt="">
       <span>CATHOLIC DISCOVERY</span>
