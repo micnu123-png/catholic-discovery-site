@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#510d16">
-  <meta name="description" content="Listen, pray and reflect with Catholic Discovery Music — sacred hymns, Gregorian chant and Catholic worship music.">
+  <meta name="description" content="Listen, pray and reflect with Catholic Discovery Music. Discover Catholic hymns, Gregorian chant, Marian music and sacred worship.">
   <title>Catholic Discovery Music</title>
 
   <style>
@@ -15,12 +16,13 @@
       --cream: #fff8e9;
       --muted: #c9b9b5;
       --panel: #29171b;
-      --border: rgba(233, 199, 119, 0.2);
+      --border: rgba(233, 199, 119, .2);
+      --success: #a9d9a9;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -30,17 +32,14 @@
       line-height: 1.6;
     }
 
-    button, input {
-      font: inherit;
-    }
+    button, input { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
 
-    button, a {
-      -webkit-tap-highlight-color: transparent;
-    }
+    a { color: inherit; text-decoration: none; }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
     }
 
     .navbar {
@@ -50,7 +49,7 @@
       justify-content: space-between;
       gap: 20px;
       padding: 16px 7%;
-      background: rgba(81, 13, 22, 0.96);
+      background: rgba(81, 13, 22, .96);
       border-bottom: 1px solid var(--border);
     }
 
@@ -68,9 +67,7 @@
       font-size: .9rem;
     }
 
-    .nav-links a:hover {
-      color: var(--gold);
-    }
+    .nav-links a:hover { color: var(--gold); }
 
     .hero {
       padding: 78px 7% 68px;
@@ -110,22 +107,31 @@
 
     .button {
       display: inline-block;
-      padding: 12px 22px;
+      padding: 12px 18px;
       border: 1px solid var(--gold);
       border-radius: 5px;
       background: var(--gold);
       color: #321116;
       font: 700 .9rem Arial, sans-serif;
+      text-align: center;
       cursor: pointer;
+      transition: background .2s, transform .2s;
     }
 
     .button:hover {
       background: #f6dfa7;
+      transform: translateY(-1px);
     }
 
     .button.secondary {
       color: var(--cream);
       background: transparent;
+    }
+
+    .button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none;
     }
 
     main {
@@ -134,9 +140,12 @@
       padding: 42px 6% 70px;
     }
 
-    .section-heading {
-      margin-bottom: 22px;
+    .section {
+      margin-bottom: 52px;
+      scroll-margin-top: 24px;
     }
+
+    .section-heading { margin-bottom: 22px; }
 
     .section-heading h2 {
       margin: 0;
@@ -146,24 +155,21 @@
     .section-heading p {
       margin: 6px 0 0;
       color: var(--muted);
-      font-family: Arial, sans-serif;
-      font-size: .9rem;
+      font: .9rem/1.6 Arial, sans-serif;
     }
 
     .search {
       width: 100%;
-      margin: 0 0 28px;
+      min-width: 0;
+      margin: 0 0 22px;
       padding: 14px 16px;
       color: var(--cream);
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 7px;
-      outline: none;
     }
 
-    .search:focus {
-      border-color: var(--gold);
-    }
+    .search:focus { border-color: var(--gold); }
 
     .music-grid {
       display: grid;
@@ -172,6 +178,7 @@
     }
 
     .music-card {
+      min-width: 0;
       padding: 20px;
       background: linear-gradient(145deg, #302024, #211518);
       border: 1px solid var(--border);
@@ -196,20 +203,99 @@
     }
 
     .music-card h3 {
-      margin: 0 0 4px;
+      margin: 0 0 5px;
       font-size: 1.2rem;
+      overflow-wrap: anywhere;
     }
 
     .music-card p {
-      min-height: 42px;
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       color: var(--muted);
       font: .85rem/1.5 Arial, sans-serif;
+      overflow-wrap: anywhere;
     }
 
-    .music-card .button {
-      width: 100%;
+    .music-card .button { width: 100%; }
+
+    .ownership-badge, .apple-badge {
+      display: inline-block;
+      margin: 0 0 12px;
+      padding: 5px 9px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--gold);
+      font: .72rem Arial, sans-serif;
     }
+
+    .ownership-details, .attribution {
+      font-size: .78rem !important;
+    }
+
+    .source-link, .apple-link {
+      display: block;
+      margin: 0 0 12px;
+      color: var(--gold);
+      font: .82rem/1.5 Arial, sans-serif;
+      text-decoration: underline;
+      overflow-wrap: anywhere;
+    }
+
+    .apple-discovery {
+      padding-top: 30px;
+      border-top: 1px solid var(--border);
+    }
+
+    .apple-search-form {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .apple-search-form .search {
+      flex: 1;
+      margin: 0;
+    }
+
+    .apple-search-form .button { white-space: nowrap; }
+
+    .apple-artwork {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      margin-bottom: 14px;
+      border-radius: 7px;
+      background: var(--panel);
+    }
+
+    .apple-result .track-album {
+      min-height: 0;
+      margin-bottom: 12px;
+    }
+
+    .apple-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .apple-actions .button { width: 100%; }
+
+    .apple-actions audio {
+      width: 100%;
+      height: 36px;
+    }
+
+    .status {
+      min-height: 24px;
+      margin: 14px 0;
+      color: var(--muted);
+      font: .85rem/1.6 Arial, sans-serif;
+    }
+
+    .status.error { color: #ffb5b5; }
+    .status.success { color: var(--success); }
 
     .empty {
       display: none;
@@ -237,9 +323,7 @@
       align-items: center;
     }
 
-    .now-playing {
-      min-width: 0;
-    }
+    .now-playing { min-width: 0; }
 
     .now-playing strong {
       display: block;
@@ -253,13 +337,15 @@
       font: .8rem Arial, sans-serif;
     }
 
-    audio {
+    #audio {
+      display: block;
       width: 100%;
       height: 38px;
       margin-top: 6px;
     }
 
     .player-message {
+      margin-top: 6px;
       color: var(--muted);
       font: .8rem Arial, sans-serif;
     }
@@ -272,9 +358,7 @@
       font: .85rem Arial, sans-serif;
     }
 
-    .footer a {
-      color: var(--gold);
-    }
+    .footer a { color: var(--gold); }
 
     @media (max-width: 600px) {
       .navbar {
@@ -282,21 +366,29 @@
         flex-direction: column;
       }
 
-      .nav-links {
-        gap: 14px;
-      }
+      .nav-links { gap: 14px; }
 
-      .hero {
-        padding: 56px 6%;
-      }
+      .hero { padding: 56px 6%; }
+
+      .apple-search-form { flex-direction: column; }
+
+      .apple-search-form .button { width: 100%; }
 
       .player-inner {
         grid-template-columns: 1fr;
         gap: 6px;
       }
 
-      .player {
-        padding: 12px 5%;
+      .player-inner > .button { width: 100%; }
+
+      .player { padding: 12px 5%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
       }
     }
   </style>
@@ -317,34 +409,78 @@
 
   <section class="hero">
     <div class="cross" aria-hidden="true">✝</div>
-    <div class="eyebrow">Faith • Prayer • Worship</div>
+    <div class="eyebrow">Faith · Prayer · Worship</div>
     <h1>Catholic Discovery<br>Music</h1>
     <p>
       Let sacred music lead you into prayer. Discover hymns, Gregorian
       chant, Marian songs and peaceful music for reflection.
     </p>
-    <a class="button" href="#library">Explore the Music Library</a>
+    <a class="button" href="#apple-discovery">Discover Music</a>
   </section>
 
   <main id="library">
-    <div class="section-heading">
-      <h2>The Music Library</h2>
-      <p>Choose a track to listen. More music can be added as your library grows.</p>
-    </div>
+    <section class="section" aria-labelledby="local-heading">
+      <div class="section-heading">
+        <h2 id="local-heading">Our Music Library</h2>
+        <p>
+          Listen to audio recordings hosted by Catholic Discovery.
+          Available tracks depend on the MP3 files you have uploaded.
+        </p>
+      </div>
 
-    <input
-      class="search"
-      id="search"
-      type="search"
-      placeholder="Search sacred music..."
-      aria-label="Search music"
-    >
+      <input
+        class="search"
+        id="search"
+        type="search"
+        placeholder="Search your music library..."
+        aria-label="Search local music"
+      >
 
-    <div class="music-grid" id="music-grid"></div>
+      <div class="music-grid" id="music-grid"></div>
 
-    <p class="empty" id="empty">
-      No matching music found. Try another search.
-    </p>
+      <p class="empty" id="empty">
+        No matching music found. Try another search.
+      </p>
+    </section>
+
+    <section class="section apple-discovery" id="apple-discovery"
+             aria-labelledby="apple-heading">
+      <div class="section-heading">
+        <h2 id="apple-heading">Discover Catholic Music</h2>
+        <p>
+          Search Apple's music catalogue for sacred hymns, Gregorian
+          chant, Marian hymns, Catholic songs and Christian worship.
+          Preview availability depends on the track.
+        </p>
+      </div>
+
+      <form id="apple-search-form" class="apple-search-form">
+        <input
+          id="apple-search-input"
+          class="search"
+          type="search"
+          placeholder="Search Catholic hymns, Gregorian chant..."
+          aria-label="Search Apple's music catalogue"
+          value="Catholic hymns"
+          required
+        >
+        <button class="button" id="apple-search-button" type="submit">
+          Search Music
+        </button>
+      </form>
+
+      <p id="apple-status" class="status" role="status" aria-live="polite">
+        Preparing music search...
+      </p>
+
+      <div class="music-grid" id="apple-results"></div>
+
+      <p class="status">
+        Apple catalogue results and short previews are supplied by Apple.
+        Preview clips are not full-length songs. Use the Apple Music or
+        iTunes link to explore the full track. Availability varies by country.
+      </p>
+    </section>
   </main>
 
   <section class="player" aria-label="Music player">
@@ -360,9 +496,7 @@
         </div>
       </div>
 
-      <button class="button secondary" id="stop" type="button">
-        Stop
-      </button>
+      <button class="button secondary" id="stop" type="button">Stop</button>
     </div>
   </section>
 
@@ -374,36 +508,36 @@
 
 <script>
   /*
-    CATHOLIC DISCOVERY MUSIC LIBRARY
-
-    Ownership values:
-    catholic-discovery = owned/produced by Catholic Discovery
-    ai-generated       = AI-generated; verify applicable rights
-    third-party        = owned by another person/organization
-
-    Only make ownership claims you can substantiate.
-  */
+   * CATHOLIC DISCOVERY MUSIC
+   *
+   * Local MP3s:
+   * Upload only recordings you own or are authorized to host.
+   *
+   * Apple Search:
+   * Uses Apple's public iTunes Search API through JSONP.
+   * It may provide promotional preview clips, not full songs.
+   */
 
   const tracks = [
-
-{
-  title: "Agnus Dei (Lamb of God)",
-  artist: "Catholic Discovery",
-  category: "Catholic Hymns",
-  ownership: "third-party",
-  owner: "Recording rights holder to be confirmed",
-  attribution: "A sacred Catholic prayer used during the Mass. The traditional Latin text asks the Lamb of God to have mercy on us and grant us peace. Recording artist, arrangement and audio rights must be verified before publication.",
-  sourceUrl: "",
-  file: "agnus-dei.mp3"
-},
-
+    {
+      title: "Agnus Dei (Lamb of God)",
+      artist: "Recording artist to be confirmed",
+      category: "Catholic Hymns",
+      ownership: "third-party",
+      owner: "Recording rights holder to be confirmed",
+      attribution:
+        "The Agnus Dei is a traditional Catholic prayer. Verify the composition, arrangement, performance and recording rights before hosting audio.",
+      sourceUrl: "",
+      file: "agnus-dei.mp3"
+    },
     {
       title: "Catholic Discovery Worship",
       artist: "Catholic Discovery",
       category: "Worship",
       ownership: "catholic-discovery",
       owner: "Catholic Discovery",
-      attribution: "Original Catholic Discovery production.",
+      attribution:
+        "Original Catholic Discovery production, provided the underlying music and recording rights are held by Catholic Discovery.",
       sourceUrl: "",
       file: "catholic-discovery-worship.mp3"
     },
@@ -412,18 +546,20 @@
       artist: "AI-assisted production",
       category: "Prayer and Reflection",
       ownership: "ai-generated",
-      owner: "AI-generated; rights not independently verified",
-      attribution: "Created with AI assistance. Check the tool's terms and any applicable rights.",
+      owner: "AI-generated; rights to be verified",
+      attribution:
+        "Created with AI assistance. Check the AI tool's terms and verify rights before publishing.",
       sourceUrl: "",
       file: "peaceful-prayer.mp3"
     },
     {
       title: "Gregorian Chant",
-      artist: "Enter the choir or recording artist",
+      artist: "Recording artist to be confirmed",
       category: "Gregorian Chant",
       ownership: "third-party",
-      owner: "Enter the verified recording owner",
-      attribution: "Credit the original source and follow its licence requirements.",
+      owner: "Recording rights holder to be confirmed",
+      attribution:
+        "Verify the recording source, performer, arrangement and applicable licence before publishing.",
       sourceUrl: "",
       file: "gregorian-chant.mp3"
     }
@@ -454,21 +590,23 @@
   }
 
   function renderTracks(query = "") {
+    const normalizedQuery = query.trim().toLowerCase();
+
     const filtered = tracks.filter(track =>
       [
         track.title,
         track.artist,
         track.category,
         track.owner,
-        ownershipLabels[track.ownership]
-      ].join(" ").toLowerCase().includes(query.toLowerCase())
+        track.attribution,
+        ownershipLabels[track.ownership] || ""
+      ].join(" ").toLowerCase().includes(normalizedQuery)
     );
 
     grid.replaceChildren();
 
     filtered.forEach(track => {
       const card = createElement("article", "music-card");
-
       const art = createElement("div", "art", "♫");
       art.setAttribute("aria-hidden", "true");
 
@@ -479,19 +617,17 @@
 
       const badge = createElement(
         "span",
-        "ownership-badge " + track.ownership,
-        ownershipLabels[track.ownership] || "Ownership information unavailable"
+        "ownership-badge",
+        ownershipLabels[track.ownership] || "Rights information unavailable"
       );
 
-      const owner = createElement("p", "ownership-details",
-        "Owner/rights holder: " + track.owner);
+      const owner = createElement(
+        "p",
+        "ownership-details",
+        "Owner/rights holder: " + track.owner
+      );
 
-      const credit = createElement("p", "attribution",
-        track.attribution);
-
-      const button = createElement("button", "button", "▶ Listen");
-      button.type = "button";
-      button.addEventListener("click", () => playTrack(track));
+      const credit = createElement("p", "attribution", track.attribution);
 
       card.append(art, heading, description, badge, owner, credit);
 
@@ -499,7 +635,9 @@
         try {
           const source = new URL(track.sourceUrl);
           if (source.protocol === "https:" || source.protocol === "http:") {
-            const link = createElement("a", "source-link", "View original source");
+            const link = createElement(
+              "a", "source-link", "View original source"
+            );
             link.href = source.href;
             link.target = "_blank";
             link.rel = "noopener noreferrer";
@@ -510,6 +648,10 @@
         }
       }
 
+      const button = createElement("button", "button", "▶ Listen");
+      button.type = "button";
+      button.addEventListener("click", () => playLocalTrack(track));
+
       card.appendChild(button);
       grid.appendChild(card);
     });
@@ -517,27 +659,27 @@
     empty.style.display = filtered.length ? "none" : "block";
   }
 
-  async function playTrack(track) {
+  async function playLocalTrack(track) {
     title.textContent = track.title;
     artist.textContent =
-      `${track.artist} · ${ownershipLabels[track.ownership]}`;
-    message.textContent = "Loading audio…";
+      `${track.artist} · ${ownershipLabels[track.ownership] || "Music"}`;
+    message.textContent = "Loading audio...";
 
-    audio.src = "/music/" + encodeURIComponent(track.file);
+    audio.src = "/music/" + track.file.split("/").map(encodeURIComponent).join("/");
     audio.load();
 
     try {
       await audio.play();
-      message.textContent = "Now playing.";
+      message.textContent = "Now playing from the local music library.";
     } catch (_) {
       message.textContent =
-        "Unable to play this file. Check the filename and music folder.";
+        "Unable to play this file. Check that it exists in your /music/ folder and is deployed.";
     }
   }
 
   audio.addEventListener("error", () => {
     message.textContent =
-      "Audio unavailable. Confirm that the file exists in /music/.";
+      "Audio unavailable. Check the file path, deployment and audio format.";
   });
 
   audio.addEventListener("playing", () => {
@@ -555,10 +697,257 @@
   document.getElementById("stop").addEventListener("click", () => {
     audio.pause();
     audio.currentTime = 0;
+    audio.removeAttribute("src");
+    audio.load();
     message.textContent = "Playback stopped.";
   });
 
   renderTracks();
+
+  // -----------------------------------------
+  // APPLE MUSIC CATALOGUE SEARCH
+  // -----------------------------------------
+
+  const appleForm = document.getElementById("apple-search-form");
+  const appleInput = document.getElementById("apple-search-input");
+  const appleResults = document.getElementById("apple-results");
+  const appleStatus = document.getElementById("apple-status");
+  const appleSearchButton = document.getElementById("apple-search-button");
+
+  let appleRequestNumber = 0;
+  let activeAppleScript = null;
+  let activeAppleTimeout = null;
+
+  function clearAppleRequest() {
+    if (activeAppleTimeout) {
+      clearTimeout(activeAppleTimeout);
+      activeAppleTimeout = null;
+    }
+
+    if (activeAppleScript) {
+      activeAppleScript.remove();
+      activeAppleScript = null;
+    }
+  }
+
+  function searchAppleMusic(term) {
+    const query = term.trim();
+
+    if (!query) {
+      appleStatus.textContent = "Enter a song, artist or music style.";
+      appleResults.replaceChildren();
+      return;
+    }
+
+    clearAppleRequest();
+
+    const requestNumber = ++appleRequestNumber;
+    const callbackName = "cdAppleSearch" + requestNumber;
+
+    appleStatus.className = "status";
+    appleStatus.textContent = "Searching Apple's music catalogue...";
+    appleResults.replaceChildren();
+    appleSearchButton.disabled = true;
+
+    const script = document.createElement("script");
+    activeAppleScript = script;
+
+    let finished = false;
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+
+      if (activeAppleTimeout) {
+        clearTimeout(activeAppleTimeout);
+        activeAppleTimeout = null;
+      }
+
+      script.remove();
+
+      if (activeAppleScript === script) {
+        activeAppleScript = null;
+      }
+
+      try {
+        delete window[callbackName];
+      } catch (_) {
+        window[callbackName] = undefined;
+      }
+
+      if (requestNumber === appleRequestNumber) {
+        appleSearchButton.disabled = false;
+      }
+    }
+
+    window[callbackName] = data => {
+      finish();
+
+      if (requestNumber !== appleRequestNumber) return;
+
+      if (!data || !Array.isArray(data.results)) {
+        appleStatus.className = "status error";
+        appleStatus.textContent =
+          "Apple returned an unexpected response. Please try again.";
+        return;
+      }
+
+      const songs = data.results.filter(item =>
+        item.wrapperType === "track" && item.kind === "song"
+      );
+
+      renderAppleResults(songs);
+    };
+
+    script.onerror = () => {
+      finish();
+
+      if (requestNumber === appleRequestNumber) {
+        appleStatus.className = "status error";
+        appleStatus.textContent =
+          "Could not connect to Apple's search service. Check your internet connection and try again.";
+      }
+    };
+
+    activeAppleTimeout = setTimeout(() => {
+      finish();
+
+      if (requestNumber === appleRequestNumber) {
+        appleStatus.className = "status error";
+        appleStatus.textContent =
+          "The search timed out. Please try again.";
+      }
+    }, 15000);
+
+    const params = new URLSearchParams({
+      term: query,
+      country: "gh",
+      media: "music",
+      entity: "song",
+      limit: "24",
+      callback: callbackName
+    });
+
+    script.src =
+      "https://itunes.apple.com/search?" + params.toString();
+
+    document.head.appendChild(script);
+  }
+
+  function renderAppleResults(songs) {
+    appleResults.replaceChildren();
+
+    if (!songs.length) {
+      appleStatus.className = "status";
+      appleStatus.textContent =
+        "No matching songs found. Try 'Gregorian chant', 'Catholic hymns', 'Ave Maria' or another search.";
+      return;
+    }
+
+    appleStatus.className = "status success";
+    appleStatus.textContent =
+      `${songs.length} results found. Preview availability varies by song.`;
+
+    songs.forEach(track => {
+      const card = createElement("article", "music-card apple-result");
+
+      const artwork = document.createElement("img");
+      artwork.className = "apple-artwork";
+      artwork.alt = "Album artwork for " + (track.trackName || "music track");
+      artwork.loading = "lazy";
+      artwork.referrerPolicy = "no-referrer";
+
+      if (track.artworkUrl100) {
+        artwork.src = track.artworkUrl100.replace(
+          /100x100bb/,
+          "300x300bb"
+        );
+      } else {
+        artwork.hidden = true;
+      }
+
+      artwork.addEventListener("error", () => {
+        artwork.hidden = true;
+      });
+
+      const heading = createElement(
+        "h3", "", track.trackName || "Untitled track"
+      );
+
+      const details = createElement(
+        "p",
+        "track-album",
+        `${track.artistName || "Unknown artist"} · ${track.collectionName || "Single"}`
+      );
+
+      const badge = createElement(
+        "span", "apple-badge", "Apple Music catalogue"
+      );
+
+      const actions = createElement("div", "apple-actions");
+
+      if (track.previewUrl) {
+        const previewButton = createElement(
+          "button", "button", "▶ Play Preview"
+        );
+        previewButton.type = "button";
+
+        previewButton.addEventListener("click", async () => {
+          title.textContent = track.trackName || "Music preview";
+          artist.textContent =
+            `${track.artistName || "Unknown artist"} · Apple catalogue preview`;
+
+          message.textContent = "Loading preview...";
+
+          audio.src = track.previewUrl;
+          audio.load();
+
+          try {
+            await audio.play();
+            message.textContent =
+              "Playing the available Apple catalogue preview.";
+          } catch (_) {
+            message.textContent =
+              "Preview could not play. Try again or open the track on Apple Music.";
+          }
+        });
+
+        actions.appendChild(previewButton);
+      } else {
+        actions.appendChild(
+          createElement(
+            "p",
+            "player-message",
+            "No preview is available for this track."
+          )
+        );
+      }
+
+      if (track.trackViewUrl) {
+        const link = createElement(
+          "a",
+          "apple-link",
+          "View on Apple Music / iTunes"
+        );
+
+        link.href = track.trackViewUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        actions.appendChild(link);
+      }
+
+      card.append(artwork, heading, details, badge, actions);
+      appleResults.appendChild(card);
+    });
+  }
+
+  appleForm.addEventListener("submit", event => {
+    event.preventDefault();
+    searchAppleMusic(appleInput.value);
+  });
+
+  // Show some music automatically when the page opens.
+  searchAppleMusic("Catholic hymns");
 </script>
 </body>
 </html>
