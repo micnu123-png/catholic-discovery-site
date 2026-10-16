@@ -103,6 +103,36 @@
         window.location.href = "./index.html";
       }
     }
+
+    
+const music = document.getElementById("agnus-dei");
+const musicToggle = document.getElementById("music-toggle");
+const musicStatus = document.getElementById("music-status");
+
+musicToggle.addEventListener("click", async () => {
+  if (music.paused) {
+    try {
+      await music.play();
+      musicToggle.textContent = "Pause Agnus Dei";
+      musicToggle.setAttribute("aria-pressed", "true");
+      musicStatus.textContent = "Now playing · Agnus Dei";
+    } catch (error) {
+      musicStatus.textContent =
+        "Unable to play music. Check that agnus-dei.mp3 exists.";
+    }
+  } else {
+    music.pause();
+    musicToggle.textContent = "Play Agnus Dei";
+    musicToggle.setAttribute("aria-pressed", "false");
+    musicStatus.textContent = "Music paused";
+  }
+});
+
+music.addEventListener("ended", () => {
+  musicToggle.textContent = "Play Agnus Dei";
+  musicToggle.setAttribute("aria-pressed", "false");
+});
+
   </script>
 
 </body>
