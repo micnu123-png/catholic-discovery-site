@@ -488,9 +488,15 @@
       <div class="now-playing">
         <strong id="track-title">Welcome to Catholic Discovery Music</strong>
         <span id="track-artist">Select a track from the library</span>
-        <audio id="audio" controls preload="metadata">
-          Your browser does not support audio playback.
-        </audio>
+       <audio
+  id="audio"
+  controls
+  controlsList="nodownload"
+  disablePictureInPicture
+  preload="none"
+>
+  Your browser does not support audio playback.
+</audio>
         <div class="player-message" id="player-message" aria-live="polite">
           Your listening journey starts here.
         </div>
