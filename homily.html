@@ -1,415 +1,672 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#7b1113">
+<meta name="description" content="Daily Catholic Mass readings, Scripture, prayer and reflection from Catholic Discovery.">
+<title>Daily Homily | Catholic Discovery</title>
 
-    <title>Daily Homily & Reflection | Catholic Discovery</title>
-
-    <meta
-        name="description"
-        content="Daily Catholic Gospel reflection, liturgical celebration and prayer."
-    >
-
-    <link rel="stylesheet" href="homily.css">
+<style>
+:root {
+  --red:#7b1113; --darkred:#41080a; --gold:#f6d17a;
+  --bg:#f7f4ef; --card:#fff; --text:#292321;
+  --muted:#756b65; --border:#e8dfd5; --soft:#fbf0df;
+  --shadow:0 8px 28px #3916110d;
+}
+body.dark {
+  --bg:#171313; --card:#241c1c; --text:#f5ede5;
+  --muted:#c0b2aa; --border:#443536; --soft:#362725;
+  --shadow:0 8px 28px #0003;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:16px/1.7 "Segoe UI",Arial,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+a{color:var(--red)}
+body.dark a{color:var(--gold)}
+header{background:var(--darkred);color:white;border-bottom:3px solid var(--gold)}
+.header-inner{max-width:1100px;margin:auto;padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;color:white;text-decoration:none}
+.cross{width:44px;height:44px;border:1px solid var(--gold);border-radius:50%;
+  display:grid;place-items:center;color:var(--gold);font-size:27px}
+.brand strong{display:block;font: bold 20px Georgia,serif}
+.brand small{display:block;color:#ead8bf;font-size:12px}
+.btn{border:1px solid var(--border);border-radius:9px;padding:10px 14px;
+  background:var(--card);color:var(--text);font-weight:650}
+.btn.primary{background:var(--red);color:white;border-color:var(--red)}
+.btn.gold{background:var(--gold);color:#321709;border-color:var(--gold)}
+.btn:disabled{opacity:.55;cursor:wait}
+.hero{padding:52px 18px 57px;text-align:center;color:white;
+  background:radial-gradient(ellipse at top,#f6d17a20,transparent 65%),
+  linear-gradient(135deg,#41080a,#7b1113 60%,#4c090b);
+  border-bottom:4px solid var(--gold)}
+.eyebrow{color:var(--gold);font-weight:800;font-size:12px;letter-spacing:3px;text-transform:uppercase}
+.hero h1{font:500 clamp(36px,6vw,57px)/1.2 Georgia,serif;margin:12px 0}
+.hero p{max-width:650px;margin:12px auto;color:#f3e4d5}
+.gold-line{width:60px;height:3px;background:var(--gold);margin:22px auto}
+main{max-width:1050px;margin:auto;padding:25px 17px 55px}
+.date-panel{display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:15px;background:var(--card);border:1px solid var(--border);
+  border-radius:15px;padding:18px;box-shadow:var(--shadow)}
+.label{font-size:11px;color:var(--muted);font-weight:800;letter-spacing:1.3px;text-transform:uppercase}
+h2.date-title{font:500 22px Georgia,serif;margin:4px 0}
+.date-controls{display:flex;gap:8px;flex-wrap:wrap}
+input[type=date]{max-width:100%;min-width:140px;padding:9px;border-radius:9px;
+  border:1px solid var(--border);background:var(--card);color:var(--text)}
+.status{padding:12px 15px;margin:16px 0;background:var(--soft);
+  border:1px solid var(--border);border-radius:9px;font-size:14px}
+.status:empty{display:none}
+.status.error{border-left:4px solid #b73a32}
+.status.success{border-left:4px solid #4b8d62}
+.section-title{font:500 28px Georgia,serif;margin:32px 0 7px}
+.section-desc{color:var(--muted);font-size:14px;margin:0 0 16px}
+.feast,.reading,.reflection,.prayer{background:var(--card);border:1px solid var(--border);
+  border-radius:14px;box-shadow:var(--shadow)}
+.feast{padding:23px;border-left:5px solid var(--gold-dark, #c99b39);
+  display:flex;align-items:center;justify-content:space-between;gap:16px}
+.feast h3{font:500 26px/1.3 Georgia,serif;margin:6px 0}
+.feast p{margin:4px 0}
+.feast-icon{font-size:46px;color:#c99b39}
+.reading-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.reading{padding:20px;min-width:0}
+.reading.gospel{border-top:4px solid var(--red)}
+.reading h3{margin:0 0 8px;color:var(--muted);font-size:15px}
+.reference{font: bold 21px/1.4 Georgia,serif;overflow-wrap:anywhere;margin:0}
+.passage{margin-top:14px;white-space:pre-line;overflow-wrap:anywhere;
+  font:16px/1.85 Georgia,serif}
+.passage:empty{display:none}
+.passage-note{color:var(--muted);font-size:12px;margin:10px 0 0}
+.reflection{overflow:hidden}
+.reflection-head{padding:23px;color:white;background:linear-gradient(120deg,#41080a,#7b1113)}
+.reflection-head .label{color:var(--gold)}
+.reflection-head h3{font:500 29px Georgia,serif;margin:5px 0}
+.reflection-head p{margin:4px 0;color:#f3e4d5}
+.reflection-content{padding:22px}
+.reflection-content h4{font:500 22px Georgia,serif;margin:20px 0 5px}
+.quote{background:var(--soft);border-left:4px solid #c99b39;
+  padding:14px 17px;font:italic 19px/1.6 Georgia,serif}
+.reflection-actions{padding:0 22px 22px;display:flex;flex-wrap:wrap;gap:8px}
+.prayer{background:var(--soft);padding:22px}
+.prayer h3{font:500 25px Georgia,serif;margin:0 0 8px}
+.source{margin-top:25px;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+footer{background:var(--darkred);color:#f0e2d3;text-align:center;padding:27px 16px;border-top:3px solid var(--gold)}
+footer strong{font: bold 21px Georgia,serif;color:var(--gold)}
+footer p{margin:5px;font-size:13px}
+@media(max-width:650px){
+ .header-inner{padding:12px}.brand strong{font-size:16px}.cross{width:39px;height:39px}
+ .hero{padding:40px 16px}.reading-grid{grid-template-columns:1fr}
+ main{padding:18px 12px 40px}.date-controls{width:100%}
+ .date-controls input{flex:1;min-width:0}.date-controls .btn{padding:9px}
+ .feast{padding:17px}.feast h3{font-size:22px}.feast-icon{font-size:35px}
+ .reflection-content{padding:18px}.reflection-actions{padding:0 18px 18px}
+ .reflection-actions .btn{flex:1 1 40%}
+}
+@media print{
+ .header-actions,.date-controls,.status,.reflection-actions,footer{display:none!important}
+ body{background:white;color:black;--card:white;--text:black;--muted:#555;--border:#ddd;--soft:#f6f1e8;--shadow:none}
+ main{padding:10px}.reading,.feast,.reflection,.prayer{box-shadow:none;break-inside:avoid}
+}
+</style>
 </head>
 
 <body>
-
-    <!-- NAVIGATION -->
-    <header class="site-header">
-
-        <nav class="navbar">
-
-            <a href="index.html" class="brand">
-                <span class="brand-cross">✝</span>
-                <span>Catholic Discovery</span>
-            </a>
-
-            <button
-                class="menu-toggle"
-                id="menuToggle"
-                aria-label="Open navigation"
-            >
-                ☰
-            </button>
-
-            <div class="nav-links" id="navLinks">
-
-                <a href="index.html">Home</a>
-                <a href="readings.html">Readings</a>
-                <a href="homily.html" class="active">Homily</a>
-                <a href="prayer.html">Prayer</a>
-                <a href="saint.html">Saint</a>
-                <a href="videos.html">Videos</a>
-
-                <button id="themeToggle" class="theme-button">
-                    🌙
-                </button>
-
-            </div>
-
-        </nav>
-
-    </header>
-
-
-    <!-- HERO -->
-
-    <section class="hero">
-
-        <div class="hero-content">
-
-            <div class="cross-icon">✝</div>
-
-            <p class="eyebrow">
-                Catholic Discovery
-            </p>
-
-            <h1>
-                Daily Homily & Reflection
-            </h1>
-
-            <p>
-                Discover Christ every day through the Gospel,
-                prayer and reflection.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- MAIN -->
-
-    <main class="container">
-
-        <!-- LOADING -->
-
-        <div id="loading" class="loading-card">
-
-            <div class="loader"></div>
-
-            <p>
-                Preparing today's reflection...
-            </p>
-
-        </div>
-
-
-        <!-- ERROR -->
-
-        <div id="error" class="error-card hidden">
-
-            <h2>
-                Unable to load today's readings
-            </h2>
-
-            <p id="errorMessage">
-                Please check your internet connection and try again.
-            </p>
-
-            <button
-                onclick="loadDailyContent()"
-                class="primary-button"
-            >
-                Try Again
-            </button>
-
-        </div>
-
-
-        <!-- CONTENT -->
-
-        <div id="content" class="hidden">
-
-            <!-- DATE -->
-
-            <section class="date-section">
-
-                <p class="today-label">
-                    TODAY'S LITURGY
-                </p>
-
-                <h2 id="currentDate">
-                    Loading...
-                </h2>
-
-                <p id="season">
-                    Loading...
-                </p>
-
-            </section>
-
-
-            <!-- CELEBRATION -->
-
-            <section class="celebration-card">
-
-                <div class="card-icon">
-                    ✝
-                </div>
-
-                <div>
-
-                    <span class="small-label">
-                        LITURGICAL CELEBRATION
-                    </span>
-
-                    <h2 id="celebrationName">
-                        Loading...
-                    </h2>
-
-                    <p id="celebrationType">
-                        Loading...
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- GOSPEL -->
-
-            <section class="gospel-card">
-
-                <div class="section-heading">
-
-                    <span class="gold-line"></span>
-
-                    <div>
-                        <span class="small-label">
-                            HOLY GOSPEL
-                        </span>
-
-                        <h2 id="gospelReference">
-                            Loading...
-                        </h2>
-                    </div>
-
-                </div>
-
-                <div class="gospel-message">
-
-                    <div class="quote-mark">
-                        “
-                    </div>
-
-                    <p id="gospelMessage">
-                        Today's Gospel calls us to open our hearts
-                        to Christ.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- READINGS -->
-
-            <section class="readings-grid">
-
-                <article class="reading-card">
-
-                    <span class="reading-number">
-                        I
-                    </span>
-
-                    <h3>
-                        First Reading
-                    </h3>
-
-                    <p id="firstReading">
-                        Loading...
-                    </p>
-
-                </article>
-
-
-                <article class="reading-card">
-
-                    <span class="reading-number">
-                        PS
-                    </span>
-
-                    <h3>
-                        Responsorial Psalm
-                    </h3>
-
-                    <p id="psalm">
-                        Loading...
-                    </p>
-
-                </article>
-
-
-                <article
-                    class="reading-card"
-                    id="secondReadingCard"
-                >
-
-                    <span class="reading-number">
-                        II
-                    </span>
-
-                    <h3>
-                        Second Reading
-                    </h3>
-
-                    <p id="secondReading">
-                        Loading...
-                    </p>
-
-                </article>
-
-            </section>
-
-
-            <!-- HOMILY -->
-
-            <section class="homily-card">
-
-                <div class="homily-header">
-
-                    <div class="homily-cross">
-                        ✝
-                    </div>
-
-                    <div>
-
-                        <span class="small-label">
-                            MEDITATION
-                        </span>
-
-                        <h2>
-                            Today's Reflection
-                        </h2>
-
-                    </div>
-
-                </div>
-
-
-                <div id="homilyText" class="homily-text">
-                    Loading today's reflection...
-                </div>
-
-            </section>
-
-
-            <!-- PRAYER -->
-
-            <section class="prayer-card">
-
-                <div class="prayer-symbol">
-                    🙏
-                </div>
-
-                <span class="small-label">
-                    LET US PRAY
-                </span>
-
-                <h2>
-                    Prayer for Today
-                </h2>
-
-                <p id="prayerText">
-                    Loading...
-                </p>
-
-            </section>
-
-
-            <!-- ACTION -->
-
-            <section class="action-card">
-
-                <h2>
-                    Carry Christ With You
-                </h2>
-
-                <p>
-                    Take one message from today's Gospel
-                    and put it into practice.
-                </p>
-
-                <div class="action-buttons">
-
-                    <button
-                        id="listenButton"
-                        class="primary-button"
-                    >
-                        🔊 Listen
-                    </button>
-
-                    <button
-                        id="shareButton"
-                        class="secondary-button"
-                    >
-                        📤 Share
-                    </button>
-
-                    <button
-                        id="copyButton"
-                        class="secondary-button"
-                    >
-                        🔗 Copy Link
-                    </button>
-
-                </div>
-
-            </section>
-
-
-            <!-- OFFICIAL SOURCE -->
-
-            <section class="source-card">
-
-                <p>
-                    Daily reading references are provided for
-                    devotional use.
-                </p>
-
-                <a
-                    id="usccbLink"
-                    href="https://bible.usccb.org/"
-                    target="_blank"
-                    rel="noopener"
-                >
-                    View today's readings on USCCB →
-                </a>
-
-            </section>
-
-        </div>
-
-    </main>
-
-
-    <!-- FOOTER -->
-
-    <footer>
-
-        <div class="footer-cross">
-            ✝
-        </div>
-
-        <h3>
-            Catholic Discovery
-        </h3>
-
-        <p>
-            Discover Christ Every Day
-        </p>
-
-        <p class="copyright">
-            © <span id="year"></span> Catholic Discovery
-        </p>
-
-    </footer>
-
-
-    <script src="homily.js"></script>
-
+<header>
+  <div class="header-inner">
+    <a class="brand" href="https://catholic-discovery-site.micnu123.workers.dev/">
+      <span class="cross">✝</span>
+      <span><strong>Catholic Discovery</strong><small>Discover Christ Every Day</small></span>
+    </a>
+    <div class="header-actions">
+      <button class="btn" id="themeBtn" type="button">☾ Theme</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Daily prayer and reflection</div>
+  <h1>Daily Homily</h1>
+  <div class="gold-line"></div>
+  <p>Encounter the Word of God, reflect on the Gospel, and discover how to live your faith every day.</p>
+</section>
+
+<main>
+  <section class="date-panel">
+    <div>
+      <div class="label">Your daily encounter with Christ</div>
+      <h2 class="date-title" id="dateTitle">Loading date…</h2>
+    </div>
+    <div class="date-controls">
+      <input id="datePicker" type="date" aria-label="Choose date">
+      <button class="btn primary" id="loadBtn" type="button">Load day</button>
+      <button class="btn" id="todayBtn" type="button">Today</button>
+    </div>
+  </section>
+
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
+  <section>
+    <h2 class="section-title">Liturgical Celebration</h2>
+    <div class="feast">
+      <div>
+        <div class="label" id="season">Liturgical season</div>
+        <h3 id="feastName">Loading celebration…</h3>
+        <p id="feastType"></p>
+        <p id="feastDescription"></p>
+        <p id="feastQuote"></p>
+      </div>
+      <div class="feast-icon" aria-hidden="true">✝</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Readings of the Day</h2>
+    <p class="section-desc">The references come from the Catholic liturgical calendar. Full Bible text is retrieved separately where the selected Bible version contains the passage.</p>
+
+    <div class="reading-grid">
+      <article class="reading">
+        <h3>First Reading</h3>
+        <p class="reference" id="firstReading">Loading…</p>
+        <div class="passage" id="firstReadingText">Waiting for reading reference…</div>
+        <p class="passage-note" id="firstReadingNote"></p>
+      </article>
+      <article class="reading">
+        <h3>Responsorial Psalm</h3>
+        <p class="reference" id="psalm">Loading…</p>
+        <div class="passage" id="psalmText">Waiting for psalm reference…</div>
+        <p class="passage-note" id="psalmNote"></p>
+      </article>
+      <article class="reading">
+        <h3>Second Reading</h3>
+        <p class="reference" id="secondReading">Loading…</p>
+        <div class="passage" id="secondReadingText">Waiting for reading reference…</div>
+        <p class="passage-note" id="secondReadingNote"></p>
+      </article>
+      <article class="reading gospel">
+        <h3>Holy Gospel</h3>
+        <p class="reference" id="gospel">Loading…</p>
+        <div class="passage" id="gospelText">Waiting for Gospel reference…</div>
+        <p class="passage-note" id="gospelNote"></p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Today's Reflection</h2>
+    <p class="section-desc">A Scripture-inspired reflection from built-in templates. This is not an official homily or an AI-generated theological analysis.</p>
+
+    <article class="reflection" id="reflection">
+      <div class="reflection-head">
+        <div class="label">Reflect · Believe · Live</div>
+        <h3 id="reflectionTitle">Walking with Christ</h3>
+        <p id="reflectionDate"></p>
+      </div>
+      <div class="reflection-content" id="reflectionContent"></div>
+      <div class="reflection-actions">
+        <button class="btn primary" id="newReflectionBtn" type="button">New reflection</button>
+        <button class="btn" id="readBtn" type="button">Read aloud</button>
+        <button class="btn" id="stopBtn" type="button">Stop voice</button>
+        <button class="btn" id="downloadBtn" type="button">Download TXT</button>
+        <button class="btn" id="copyBtn" type="button">Copy reflection</button>
+        <button class="btn" id="printBtn" type="button">Print / PDF</button>
+      </div>
+    </article>
+  </section>
+
+  <section>
+    <h2 class="section-title">Closing Prayer</h2>
+    <div class="prayer">
+      <h3>A Prayer for Today</h3>
+      <p id="closingPrayer">Heavenly Father, open my heart to Your Word and help me to live with faith, hope, and love. Through Jesus Christ our Lord. Amen.</p>
+    </div>
+  </section>
+
+  <div class="source">
+    <strong>Sources and notes</strong>
+    <p>Liturgical references and celebrations: <a href="https://github.com/cpbjr/catholic-readings-api" target="_blank" rel="noopener noreferrer">Catholic Readings API</a>.</p>
+    <p>Bible passage text: <a href="https://github.com/midvash/bible-api" target="_blank" rel="noopener noreferrer">Midvash Bible API</a>. The default WEB translation is not a Catholic 73-book edition; some readings from books such as Wisdom or Sirach may be unavailable.</p>
+    <p id="officialLink"></p>
+    <p id="bibleCopyright"></p>
+  </div>
+</main>
+
+<footer>
+  <strong>Catholic Discovery</strong>
+  <p>Discover Christ Every Day</p>
+  <p>May the Word of God enlighten your mind and strengthen your faith.</p>
+</footer>
+
+<script>
+"use strict";
+
+const READINGS_API = "https://cpbjr.github.io/catholic-readings-api";
+const BIBLE_API = "https://api.midvash.com/v1";
+const BIBLE_VERSION = "web";
+
+const $ = id => document.getElementById(id);
+
+const reflectionTemplates = [
+  {
+    title: "Allow the Word to Change You",
+    quote: "God's Word is not only something to hear; it is something to live.",
+    paragraphs: [
+      "Every day gives us another opportunity to draw closer to God. Scripture invites us to look beyond our routines and ask whether our choices reflect the love of Christ.",
+      "Faith becomes visible in ordinary moments: the patience we show, the truth we speak, the forgiveness we offer, and the help we give to someone in need. We do not need to wait for a perfect moment to begin doing good.",
+      "As you consider today's readings, choose one practical way to put God's message into action. A small act of sincere love can become a meaningful witness to the Gospel."
+    ],
+    question: "What one action can you take today to put God's Word into practice?"
+  },
+  {
+    title: "Trust in God's Providence",
+    quote: "The Lord walks with us even when the road ahead is unclear.",
+    paragraphs: [
+      "There are moments when our plans do not work out as expected. We may feel uncertain, worried, or impatient. Prayer helps us remember that we do not have to carry every burden alone.",
+      "Trusting God does not mean ignoring our responsibilities. It means doing what is right, seeking wisdom, and placing what we cannot control into God's hands.",
+      "Take a quiet moment today to tell the Lord what is troubling you. Ask for the courage to take the next good step, even if you cannot yet see the whole journey."
+    ],
+    question: "What worry can you bring honestly to God in prayer today?"
+  },
+  {
+    title: "Love in Action",
+    quote: "Love of God grows stronger when it becomes love of neighbour.",
+    paragraphs: [
+      "Christian love is more than a feeling. It is expressed through patience, kindness, mercy, honesty, and respect for the dignity of every person.",
+      "Sometimes the person who needs our love is someone close to us. At other times, it is a person we overlook, misunderstand, or find difficult to forgive. Christ invites us to look at others with compassion.",
+      "Ask the Holy Spirit to show you one person you can encourage today. A thoughtful message, a sincere apology, or an act of service can become a simple expression of the Gospel."
+    ],
+    question: "Who could experience God's kindness through you today?"
+  },
+  {
+    title: "Make Room for Prayer",
+    quote: "A heart that pauses to pray learns to listen more deeply.",
+    paragraphs: [
+      "Our days can become crowded with responsibilities, conversations, and distractions. In the middle of these things, prayer creates space to remember God's presence.",
+      "Prayer does not always require many words. We can read a short passage of Scripture, sit quietly before God, express gratitude, or ask for help with an honest heart.",
+      "Set aside a few quiet minutes today. Read the Gospel slowly, consider what it invites you to believe, and ask how it can guide your choices."
+    ],
+    question: "When can you make a few quiet minutes for God today?"
+  },
+  {
+    title: "Begin Again with Hope",
+    quote: "Every sincere return to God is an opportunity for renewal.",
+    paragraphs: [
+      "We all have moments when we fall short of the people God calls us to be. Our failures should lead us to humility and conversion, not to despair.",
+      "The Christian life is a journey of continually turning towards the Lord. We can acknowledge our mistakes, seek forgiveness, make amends, and begin again with God's grace.",
+      "If there is something you need to change, do not postpone every good decision until tomorrow. Begin with one honest step and ask God to strengthen you along the way."
+    ],
+    question: "What is one step towards renewal you can take today?"
+  }
+];
+
+let currentReadings = null;
+let currentCalendar = null;
+let reflectionIndex = 0;
+let requestNumber = 0;
+let currentBibleCopyright = "";
+
+function localDateString(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+function formatDate(value) {
+  return new Date(value + "T12:00:00").toLocaleDateString(undefined, {
+    weekday: "long", year: "numeric", month: "long", day: "numeric"
+  });
+}
+
+function status(message = "", type = "") {
+  $("status").textContent = message;
+  $("status").className = "status" + (type ? " " + type : "");
+}
+
+function text(id, value, fallback = "Not available") {
+  $(id).textContent = typeof value === "string" && value.trim()
+    ? value.trim() : fallback;
+}
+
+async function fetchJSON(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Request failed (${response.status})`);
+  return response.json();
+}
+
+function readingsFrom(data) {
+  const r = data?.readings || {};
+  return {
+    firstReading: r.firstReading || r.first_reading || "",
+    psalm: r.psalm || r.responsorialPsalm || r.responsorial_psalm || "",
+    secondReading: r.secondReading || r.second_reading || "",
+    gospel: r.gospel || ""
+  };
+}
+
+/* Resolve a Bible reference through the API's reference parser.
+   Then request the actual chapter/verse range from the same version. */
+function parseReference(reference) {
+  let s = String(reference || "").trim();
+
+  // Convert common Catholic reading notation into a range the parser can read.
+  s = s.replace(/\bPsalm\s+(\d+)/i, "Psalms $1");
+  s = s.replace(/\bPsalms\s+(\d+)\b/i, "Psalms $1");
+
+  // The Midvash catalogue uses a 66-book Protestant canon.
+  // Keep missing Catholic deuterocanonical books explicit.
+  const deuterocanonical =
+    /\b(Wisdom|Sirach|Ecclesiasticus|Tobit|Judith|Baruch|Maccabees|1 Macc|2 Macc|1 Maccabees|2 Maccabees)\b/i;
+
+  if (deuterocanonical.test(s)) {
+    throw new Error("This book is not included in the selected 66-book Bible version.");
+  }
+
+  return s;
+}
+
+function getTextFromBiblePayload(payload) {
+  const data = payload?.data ?? payload;
+  const meta = payload?.meta ?? data?.meta ?? {};
+  const copyright = meta?.copyright || data?.copyright || "";
+  let result = "";
+
+  if (Array.isArray(data)) {
+    result = data.map(item => {
+      const ref = item?.reference || item?.ref || "";
+      const passage = item?.text || item?.passage?.text || "";
+      return passage ? (ref ? ref + "\n" : "") + passage : "";
+    }).filter(Boolean).join("\n\n");
+  } else if (typeof data?.text === "string") {
+    result = data.text;
+  } else if (typeof data?.passage?.text === "string") {
+    result = data.passage.text;
+  } else if (Array.isArray(data?.passages)) {
+    result = data.passages.map(item => item?.text || "")
+      .filter(Boolean).join("\n\n");
+  }
+
+  return { text: result, copyright };
+}
+
+async function loadBiblePassage(reference, targetId, noteId, token) {
+  const target = $(targetId);
+  const note = $(noteId);
+
+  if (!reference) {
+    target.textContent = "No reading reference was supplied for this day.";
+    note.textContent = "";
+    return;
+  }
+
+  target.textContent = "Loading Bible text…";
+  note.textContent = "";
+
+  try {
+    const cleanReference = parseReference(reference);
+    const url = new URL(`${BIBLE_API}/passages`);
+    url.searchParams.set("refs", cleanReference);
+    url.searchParams.set("version", BIBLE_VERSION);
+
+    const payload = await fetchJSON(url.toString());
+
+    if (token !== requestNumber) return;
+
+    const result = getTextFromBiblePayload(payload);
+    if (!result.text) {
+      throw new Error("The Bible API did not return passage text.");
+    }
+
+    target.textContent = result.text;
+    if (result.copyright) {
+      currentBibleCopyright = result.copyright;
+      $("bibleCopyright").textContent = "Bible translation attribution: " + result.copyright;
+    }
+    note.textContent = "Bible version: WEB. Check the translation attribution below.";
+  } catch (error) {
+    if (token !== requestNumber) return;
+    target.textContent =
+      "The passage text could not be retrieved for this reference. " +
+      "This can happen when the book is not included in the selected Bible version " +
+      "or the API cannot resolve the reference.";
+    note.textContent = "Reference: " + reference;
+    console.warn("Bible passage retrieval failed:", reference, error);
+  }
+}
+
+async function loadBibleTexts(readings, token) {
+  await Promise.all([
+    loadBiblePassage(readings.firstReading, "firstReadingText", "firstReadingNote", token),
+    loadBiblePassage(readings.psalm, "psalmText", "psalmNote", token),
+    loadBiblePassage(readings.secondReading, "secondReadingText", "secondReadingNote", token),
+    loadBiblePassage(readings.gospel, "gospelText", "gospelNote", token)
+  ]);
+}
+
+function renderReflection() {
+  const item = reflectionTemplates[reflectionIndex % reflectionTemplates.length];
+  $("reflectionTitle").textContent = item.title;
+  $("reflectionDate").textContent =
+    `${$("dateTitle").textContent} · Scripture-inspired reflection`;
+
+  const container = $("reflectionContent");
+  container.replaceChildren();
+
+  const quote = document.createElement("div");
+  quote.className = "quote";
+  quote.textContent = "“" + item.quote + "”";
+  container.append(quote);
+
+  item.paragraphs.forEach(paragraph => {
+    const p = document.createElement("p");
+    p.textContent = paragraph;
+    container.append(p);
+  });
+
+  const heading = document.createElement("h4");
+  heading.textContent = "Question for Reflection";
+  container.append(heading);
+
+  const question = document.createElement("p");
+  question.textContent = item.question;
+  container.append(question);
+
+  $("closingPrayer").textContent =
+    "Heavenly Father, thank You for the gift of this day and for the light of Your Word. " +
+    "Open my heart to Your truth, strengthen my faith, and help me to live with love, " +
+    "patience, and humility. Guide my thoughts, words, and actions so that I may serve " +
+    "You and my neighbour faithfully. Through Jesus Christ our Lord. Amen.";
+}
+
+function reflectionText() {
+  const item = reflectionTemplates[reflectionIndex % reflectionTemplates.length];
+  const r = currentReadings || {};
+  return [
+    "CATHOLIC DISCOVERY — Discover Christ Every Day",
+    "DAILY REFLECTION",
+    $("reflectionTitle").textContent,
+    $("dateTitle").textContent,
+    "",
+    "LITURGICAL CELEBRATION: " + $("feastName").textContent,
+    "SEASON: " + $("season").textContent,
+    "",
+    "FIRST READING: " + (r.firstReading || "Not available"),
+    "PSALM: " + (r.psalm || "Not available"),
+    "SECOND READING: " + (r.secondReading || "Not provided"),
+    "GOSPEL: " + (r.gospel || "Not available"),
+    "",
+    item.quote,
+    "",
+    ...item.paragraphs,
+    "",
+    "QUESTION FOR REFLECTION",
+    item.question,
+    "",
+    "CLOSING PRAYER",
+    $("closingPrayer").textContent
+  ].join("\n");
+}
+
+async function copyReflection() {
+  try {
+    await navigator.clipboard.writeText(reflectionText());
+    status("Reflection copied to clipboard.", "success");
+  } catch {
+    status("Clipboard access was blocked. Use Download TXT instead.", "error");
+  }
+}
+
+function downloadReflection() {
+  const blob = new Blob([reflectionText()], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "catholic-discovery-reflection-" + $("datePicker").value + ".txt";
+  document.body.append(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  status("Reflection text downloaded.", "success");
+}
+
+function readAloud() {
+  if (!("speechSynthesis" in window)) {
+    status("Your browser does not support speech playback.", "error");
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const speech = new SpeechSynthesisUtterance(reflectionText());
+  speech.lang = "en-US";
+  speech.rate = 0.9;
+  speech.onstart = () => status("Reading the reflection aloud…");
+  speech.onend = () => status("Reading finished.", "success");
+  speech.onerror = () => status("Browser voice playback failed.", "error");
+  window.speechSynthesis.speak(speech);
+}
+
+async function loadDay(dateString) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    status("Choose a valid date.", "error");
+    return;
+  }
+
+  const token = ++requestNumber;
+  const [year, month, day] = dateString.split("-");
+  const monthDay = `${month}-${day}`;
+
+  $("dateTitle").textContent = formatDate(dateString);
+  $("datePicker").value = dateString;
+  $("loadBtn").disabled = true;
+  currentReadings = null;
+  currentCalendar = null;
+  currentBibleCopyright = "";
+  $("bibleCopyright").textContent = "";
+  status("Loading Catholic readings and liturgical calendar…");
+
+  const readingUrl = `${READINGS_API}/readings/${year}/${monthDay}.json`;
+  const calendarUrl = `${READINGS_API}/liturgical-calendar/${year}/${monthDay}.json`;
+
+  const [readingResult, calendarResult] = await Promise.allSettled([
+    fetchJSON(readingUrl),
+    fetchJSON(calendarUrl)
+  ]);
+
+  if (token !== requestNumber) return;
+
+  const problems = [];
+
+  if (readingResult.status === "fulfilled") {
+    currentReadings = readingResult.value;
+    const r = readingsFrom(currentReadings);
+
+    text("firstReading", r.firstReading, "Reference unavailable");
+    text("psalm", r.psalm, "Reference unavailable");
+    text("secondReading", r.secondReading, "No second reading listed");
+    text("gospel", r.gospel, "Reference unavailable");
+
+    const link = currentReadings.usccbLink;
+    $("officialLink").replaceChildren();
+
+    if (typeof link === "string" && link.startsWith("https://")) {
+      const a = document.createElement("a");
+      a.href = link;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "Verify readings on the official USCCB website";
+      $("officialLink").append(a);
+    } else {
+      $("officialLink").textContent = "No official verification link was supplied for this date.";
+    }
+
+    loadBibleTexts(r, token);
+  } else {
+    problems.push("Catholic reading references could not be loaded.");
+    ["firstReading","psalm","secondReading","gospel"].forEach(id =>
+      text(id, "", "Reading data unavailable")
+    );
+    ["firstReadingText","psalmText","secondReadingText","gospelText"].forEach(id =>
+      $(id).textContent = "The Bible text cannot be requested until a reading reference is available."
+    );
+    $("officialLink").textContent = "";
+  }
+
+  if (calendarResult.status === "fulfilled") {
+    currentCalendar = calendarResult.value;
+    const c = currentCalendar.celebration || {};
+    text("season", currentCalendar.season, "Liturgical season unavailable");
+    text("feastName", c.name, "Celebration not listed");
+    text("feastType", c.type, "");
+    text("feastDescription", c.description, "");
+    text("feastQuote", c.quote ? "“" + c.quote + "”" : "", "");
+  } else {
+    problems.push("Liturgical calendar information could not be loaded.");
+    text("season", "", "Season unavailable");
+    text("feastName", "", "Calendar information unavailable");
+    text("feastType", "", "");
+    text("feastDescription", "", "");
+    text("feastQuote", "", "");
+  }
+
+  reflectionIndex = 0;
+  renderReflection();
+  $("loadBtn").disabled = false;
+
+  if (problems.length) {
+    status(problems.join(" ") + " You can still use the reflection and prayer features.", "error");
+  } else {
+    status("Daily Catholic reading references loaded. Bible passages are loading below.", "success");
+  }
+}
+
+$("loadBtn").addEventListener("click", () => loadDay($("datePicker").value));
+$("todayBtn").addEventListener("click", () => loadDay(localDateString()));
+$("datePicker").addEventListener("keydown", e => {
+  if (e.key === "Enter") loadDay($("datePicker").value);
+});
+$("newReflectionBtn").addEventListener("click", () => {
+  reflectionIndex = (reflectionIndex + 1) % reflectionTemplates.length;
+  renderReflection();
+  status("A different reflection template is ready.", "success");
+});
+$("readBtn").addEventListener("click", readAloud);
+$("stopBtn").addEventListener("click", () => {
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  status("Voice playback stopped.");
+});
+$("downloadBtn").addEventListener("click", downloadReflection);
+$("copyBtn").addEventListener("click", copyReflection);
+$("printBtn").addEventListener("click", () => window.print());
+$("themeBtn").addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  $("themeBtn").textContent =
+    document.body.classList.contains("dark") ? "☀ Light" : "☾ Theme";
+});
+
+$("datePicker").value = localDateString();
+renderReflection();
+loadDay(localDateString());
+</script>
 </body>
 </html>
